@@ -35,21 +35,21 @@ exports.signup = (req, res) => {
             if(user) {
                 return res.status(401).json({ error : '401 - Email address already exists ' + '(' + email + ')'})
             } else {
-                bcrypt.hash(password, 10, function(err, hash) {
-                    if (err) {
-                        return res.status(500).json({ error: 'A - 500 - ' + err })
-                    } else {
-                        models.User.create({
-                            firstName: firstName,
-                            lastName: lastName,
-                            email: email,
-                            password: hash
-                        })
-                    }
+                bcrypt.hash(password, 10)
+                .then(hash => {
+                    models.User.create({
+                        firstName: firstName,
+                        lastName: lastName,
+                        email: email,
+                        password: hash
+                    })
+                    .then(() => res.status(201).json({ message: 'User created with success' }))
+                    .catch(err => res.status(400).json({ error: 'A - 400 - ' + err }))
                 })
+                .catch(err => res.status(500).json({ error: 'B - 500 - ' + err}))
             }
         })
-        .catch(err => res.status(500).json({ error: 'B - 500 - ' + err }))
+        .catch(err => res.status(500).json({ error: 'C - 500 - ' + err }))
 }
 
 exports.login = (req, res) => {
@@ -60,17 +60,24 @@ exports.login = (req, res) => {
         .then(user => {
             if(!user){
                 return res.status(404).json({ error: '404 - User not found' })
+            } else {
+                bcrypt.compare(password, user.password)
+                .then(valid => {
+                    if (!valid) {
+                        return res.status(401).json({ error: '401 - Incorrect password' })
+                    } else {
+                        return res.status(201).json({
+                            userId: user.id,
+                            token: jwt.sign(
+                                {userId : user.id},
+                                secretToken,
+                                { expiresIn: '24h'}
+                            )
+                        })
+                    }
+                })
+                .catch(err => res.status(500).json({ error : 'A - 500 - ' + err }))
             }
-            bcrypt.compare(password, user.password, function(err, match) {
-                if (err) {
-                    return res.status(500).json({ error: '500 - ' + err })
-                } else if (match == false) {
-                    return res.status(401).json({ error: '401 - Incorrect password' })
-                } else {
-                    callback(user)
-                    return user
-                }
-            })
         })
         .catch(err => res.status(500).json({ error : 'B - 500 - ' + err }))
 }

@@ -25,6 +25,10 @@ module.exports = (sequelize, DataTypes) => {
       unique: true,
       is: /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/
     },
+    password: {
+      type: DataTypes.STRING,
+      allowNull: false
+    },
     profilePicture: {
       type: DataTypes.STRING
     },
