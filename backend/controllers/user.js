@@ -82,13 +82,10 @@ exports.login = (req, res) => {
         .catch(err => res.status(500).json({ error : 'B - 500 - ' + err }))
 }
 
-exports.getProfile = (req, res) => {
-    const token = req.headers.authorization.split(' ')[1]
-    const decodedToken = jwt.verify(token, secretToken)
-
+exports.getOneUser = (req, res) => {
     models.User.findOne({
-        attributes: [ 'email', 'lastName', 'firstName' ],
-        where: { id : user.id }
+        attributes: [ 'firstName', 'lastName', 'profilePicture', 'biography', 'jobTitle', 'birthday' ],
+        where: { id : req.params.id }
     })
     .then(user => {
         if(!user){
@@ -96,19 +93,18 @@ exports.getProfile = (req, res) => {
         }
         res.status(200).send(user)
     })
-    .catch(err => res.status(500).json({ error : 'An error occured (user not found): ' + err }))
+    .catch(err => res.status(500).json({ error : 'A - 500 - ' + err }))
 }
 
 exports.getAllUsers = (req, res) => {
-    const token = req.headers.authorization.split(' ')[1]
-    const decodedToken = jwt.verify(token, secretToken)
-
-    models.User.findAll()
-    .then(user =>  {
-        if(!user){
-            return res.status(404).json({ error: 'User not found' })
-        }
-        res.status(200).send({user})
+    models.User.findAll({
+        attributes: [ 'firstName', 'lastName', 'profilePicture', 'biography', 'jobTitle', 'birthday' ]
     })
-    .catch(error => res.status(400).json({ error: 'An error occured (user): ' + error }))
+    .then(users =>  {
+        if(!users){
+            return res.status(404).json({ error: 'No user found' })
+        }
+        res.status(200).send(users)
+    })
+    .catch(error => res.status(400).json({ error: 'A - 500 - ' + error }))
 }
