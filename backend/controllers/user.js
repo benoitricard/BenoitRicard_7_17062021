@@ -11,6 +11,7 @@ const textRegex = /^[A-Za-z]{2,}$/
 const emailRegex = /^[A-Za-z0-9_.+-]+\@[A-Za-z0-9_.+-]+\.[A-Za-z]+$/
 const passwordRegex = /[\w]{8,24}/
 
+// Inscription
 exports.signup = (req, res) => {
     const firstName = req.body.firstName
     const lastName = req.body.lastName
@@ -52,6 +53,7 @@ exports.signup = (req, res) => {
         .catch(err => res.status(500).json({ error: 'C - 500 - ' + err }))
 }
 
+// Login
 exports.login = (req, res) => {
     const email = req.body.email
     const password = req.body.password
@@ -82,10 +84,14 @@ exports.login = (req, res) => {
         .catch(err => res.status(500).json({ error : 'B - 500 - ' + err }))
 }
 
+// Obtention d'un user
 exports.getOneUser = (req, res) => {
+    const token = req.headers.authorization.split(' ')[1]
+    const decodedToken = jwt.verify(token, secretToken)
+
     models.User.findOne({
         attributes: [ 'firstName', 'lastName', 'profilePicture', 'biography', 'jobTitle', 'birthday' ],
-        where: { id : req.params.id }
+        where: { id : decodedToken.userId }
     })
     .then(user => {
         if(!user){
@@ -96,6 +102,7 @@ exports.getOneUser = (req, res) => {
     .catch(err => res.status(500).json({ error : 'A - 500 - ' + err }))
 }
 
+// Obtention de tous les users
 exports.getAllUsers = (req, res) => {
     models.User.findAll({
         attributes: [ 'firstName', 'lastName', 'profilePicture', 'biography', 'jobTitle', 'birthday' ]
@@ -107,4 +114,14 @@ exports.getAllUsers = (req, res) => {
         res.status(200).send(users)
     })
     .catch(error => res.status(400).json({ error: 'A - 500 - ' + error }))
+}
+
+// Modifier un user
+exports.modifyUser = (req, res) => {
+
+}
+
+// Supprimer un user
+exports.deleteUser = (req, res) => {
+    
 }

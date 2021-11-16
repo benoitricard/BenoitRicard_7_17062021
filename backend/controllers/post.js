@@ -1,31 +1,34 @@
 // Dépendances
-const User = require('../models/User')
-const Post = require('../models/Post')
-const Comment = require('../models/Comment')
+const models = require('../models')
 const fs = require('fs')
 const { Op } = require('sequelize')
+const jwt = require('jsonwebtoken')
+require('dotenv').config()
+
+const secretToken = process.env.TOKEN
 
 exports.createPost = (req, res, next) => {
     const token = req.headers.authorization.split(' ')[1]
-    const decodedToken = jwt.verify(token, process.env.SECRET_TOKEN)
-
-    User.findOne({ where : { id : decodedToken.userId } })
+    const decodedToken = jwt.verify(token, secretToken)
+    
+    models.User.findOne({ where : { id : decodedToken.userId } })
         .then(user => {
             if(!user){
-                return res.status(404).json({ error : 'User not found' });
+                return res.status(404).json({ error : 'User not found' })
             }
+
             let content = req.body.content
             let attachment = req.file ? `${req.protocol}://${req.get('host')}/images/${req.file.filename}`: null
 
-            Post.create({
-                content : content,
-                attachment : attachment,
-                userId : User.id
+            models.Post.create({
+                content: content,
+                attachment: attachment,
+                user_id: user.id
             })
             .then(() =>  res.status(201).json({ message: 'Post created with success' }))
-            .catch(error => res.status(400).json({ error : 'An error occured (creation): ' + error }));
+            .catch(error => res.status(500).json({ error : 'A - 500 - ' + error }))
         })
-        .catch(error => res.status(400).json({ error : 'An error occured (user): ' + error }))
+        .catch(error => res.status(500).json({ error : 'B - 500 - ' + error }))
 }
 
 exports.modifyPost = (req, res, next) => {
