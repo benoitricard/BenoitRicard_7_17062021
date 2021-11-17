@@ -7,14 +7,15 @@ require('dotenv').config()
 
 const secretToken = process.env.TOKEN
 
-exports.createPost = (req, res, next) => {
+// Création d'un post
+exports.createPost = (req, res) => {
     const token = req.headers.authorization.split(' ')[1]
     const decodedToken = jwt.verify(token, secretToken)
     
-    models.User.findOne({ where : { id : decodedToken.userId } })
+    models.User.findOne({ where : { id: decodedToken.userId } })
         .then(user => {
             if(!user){
-                return res.status(404).json({ error : '404 - User not found' })
+                return res.status(404).json({ error: '404 - User not found' })
             }
 
             let content = req.body.content
@@ -26,21 +27,22 @@ exports.createPost = (req, res, next) => {
                 user_id: user.id
             })
             .then(() =>  res.status(201).json({ message: 'Post created with success' }))
-            .catch(error => res.status(500).json({ error : 'A - 500 - ' + error }))
+            .catch(error => res.status(500).json({ error: 'A - 500 - ' + error }))
         })
-        .catch(error => res.status(500).json({ error : 'B - 500 - ' + error }))
+        .catch(error => res.status(500).json({ error: 'B - 500 - ' + error }))
 }
 
-exports.modifyPost = (req, res, next) => {
+// Modification d'un post
+exports.modifyPost = (req, res) => {
     const token = req.headers.authorization.split(' ')[1]
     const decodedToken = jwt.verify(token, secretToken)
 
-    models.User.findOne({ where : { id : decodedToken.userId } })
+    models.User.findOne({ where: { id : decodedToken.userId } })
     .then(user => {
         if(!user){
             return res.status(404).json({ error: '404 - User not found' })
         }
-        models.Post.findOne({ where : { id : req.params.id } })
+        models.Post.findOne({ where: { id : req.params.id } })
             .then(post => {
                 if(!post){
                     return res.status(404).json({ error: '404 - Post not found' } )
@@ -63,36 +65,36 @@ exports.modifyPost = (req, res, next) => {
             })
             .catch(error => res.status(500).json({ error: 'B - 500 - ' + error }))
     })
-    .catch(error => res.status(500).json({ error : 'C - 500 - ' + error }))
+    .catch(error => res.status(500).json({ error: 'C - 500 - ' + error }))
 }
 
-exports.likePost = (req, res, next) => {
+// Like d'un post
+exports.likePost = (req, res) => {
 
 }
 
-exports.deletePost = (req, res, next) => {
+// Suppression d'un post
+exports.deletePost = (req, res) => {
     const token = req.headers.authorization.split(' ')[1]
-    const decodedToken = jwt.verify(token, process.env.SECRET_TOKEN)
+    const decodedToken = jwt.verify(token, secretToken)
 
-    User.findOne({ where: {id : decodedToken.userId} })
+    models.User.findOne({ where: { id : decodedToken.userId } })
         .then(user => {
             if(!user){
-                return res.status(404).json({ error : 'User not found' })
+                return res.status(404).json({ error : '404 - User not found' })
             }
-            Post.findOne({ where : { id : req.params.id } })
+            models.Post.findOne({ where: { id : req.params.id } })
                 .then(post => {
-
-                    if(!article){
-                        return res.status(404).json({ error : 'Post not found' })
+                    if(!post){
+                        return res.status(404).json({ error : '404 - Post not found' })
+                    }
+                    if(user.id !== post.user_id) {
+                        return res.status(401).json({ error : '401 - You aren\'t authorized' })
                     }
 
-                    if(user.id !== post.userId) {
-                        return res.status(401).json({ error : 'You aren\'t authorized' })
-                    }
-
-                    Comment.destroy({ where : { postId : post.id }})
-                        .then(() => res.status(200).json({ message: 'Comments deleted with success' }))
-                        .catch(error => res.status(500).json({ error: 'An error occured (comments): ' + error }))
+                    models.Comment.destroy({ where: { post_id : post.id } })
+                        .then(() => res.status(200).json({ message: 'Comment(s) deleted with success' }))
+                        .catch(error => res.status(500).json({ error: 'A - 500 - ' + error }))
 
                     let filename = post.attachment ? post.attachment.split('/images/')[1] : null
                     fs.unlink(`images/${filename}`, () => {
@@ -100,58 +102,60 @@ exports.deletePost = (req, res, next) => {
                             .then(() => {
                                 res.status(200).json({ message: 'Post deleted with success' })
                             })
-                            .catch(error => res.status(500).json({ error : 'An error occured (deletion): ' + error }))
+                            .catch(error => res.status(500).json({ error : 'B - 500 - ' + error }))
                     })
 
                 })
-                .catch(error => res.status(500).json({ error : 'An error occured (post): ' + error }))
+                .catch(error => res.status(500).json({ error: 'C - 500 - ' + error }))
         })
-        .catch(error => res.status(500).json({ error : 'An error occured (authentification): ' + error }))
+        .catch(error => res.status(500).json({ error: 'D - 500 - ' + error }))
 }
 
-exports.getAllPosts = (req, res, next) => {
+// Obtention de tous les posts
+exports.getAllPosts = (req, res) => {
     const token = req.headers.authorization.split(' ')[1]
-    const decodedToken = jwt.verify(token, process.env.SECRET_TOKEN)
+    const decodedToken = jwt.verify(token, secretToken)
 
-    User.findOne({ where: {id : decodedToken.userId} })
+    models.User.findOne({ where: { id : decodedToken.userId } })
         .then(user => {
             if(!user){
-                return res.status(404).json({ error : 'User not found' })
+                return res.status(404).json({ error: '404 - User not found' })
             }
-            Post.findAll({
+            models.Post.findAll({
                 include : [
                     {
-                        model: User,
+                        model: models.User,
                         attributes: ['firstName', 'lastName', 'profilePicture'],
-                        where: { id: {[Op.col] : 'Post.userId'}}
+                        where: { id: {[Op.col] : 'Post.user_id'} }
                     },
                     {
-                        model: Comment,
-                        where: { postId: {[Op.col] : 'Post.id'} },
+                        model: models.Comment,
+                        where: { post_id: {[Op.col] : 'Post.id'} },
                         include : {
-                            model: User,
+                            model: models.User,
                             attributes: ['firstName', 'lastName', 'profilePicture']
                         },
                         required: false
                     }
                 ],
                 order: [
-                    ['id', 'ASC'],
-                ],
+                    ['createdAt', 'ASC'],
+                ]
             })
-            .then(post =>  {
-                if(!post){
-                    return res.status(404).json({ error: 'Post not found' })
+            .then(posts =>  {
+                if(!posts){
+                    return res.status(404).json({ error: '404 - No post found' })
                 }
-                res.status(200).send({post})
+                res.status(200).send(posts)
             })
-            .catch(error => res.status(400).json({ error: 'An error occured (post): ' + error }))
+            .catch(error => res.status(500).json({ error: 'A - 500 - ' + error }))
 
         })
-        .catch(error => res.status(500).json({ error : 'An error occured (authentification): ' + error }))
+        .catch(error => res.status(500).json({ error: 'B - 500 - ' + error }))
 
 }
 
+// Obtention d'un post
 exports.getOnePost = (req, res) => {
     const token = req.headers.authorization.split(' ')[1]
     const decodedToken = jwt.verify(token, secretToken)
@@ -159,7 +163,7 @@ exports.getOnePost = (req, res) => {
     models.User.findOne({ where: { id : decodedToken.userId } })
         .then(user => {
             if(!user){
-                return res.status(404).json({ error : 'User not found' })
+                return res.status(404).json({ error: '404 - User not found' })
             }
                 models.Post.findOne({ where: 
                     { id: req.params.id },
