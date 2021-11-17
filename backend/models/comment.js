@@ -14,18 +14,10 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false
     },
     user_id: {
-      type: DataTypes.INTEGER,
-      references: {
-        model: 'User',
-        key: 'id'
-      }
+      type: DataTypes.INTEGER
     },
     post_id: {
-      type: DataTypes.INTEGER,
-      references: {
-        model: 'Post',
-        key: 'id'
-      }
+      type: DataTypes.INTEGER
     },
     createdAt: {
       type: DataTypes.DATE,
@@ -40,5 +32,11 @@ module.exports = (sequelize, DataTypes) => {
   }, {
     freezeTableName: true
   })
+
+  Comment.associate = (models) => {
+    Comment.belongsTo(models.User, { foreignKey: 'user_id' })
+    Comment.belongsTo(models.Post, { foreignKey: 'post_id' })
+  }
+
   return Comment
 }

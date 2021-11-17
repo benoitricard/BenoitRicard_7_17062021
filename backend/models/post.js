@@ -22,11 +22,7 @@ module.exports = (sequelize, DataTypes) => {
       defaultValue: 0
     },
     user_id: {
-      type: DataTypes.INTEGER,
-      references: {
-        model: 'User',
-        key: 'id'
-      }
+      type: DataTypes.INTEGER
     },
     createdAt: {
       type: DataTypes.DATE,
@@ -41,5 +37,11 @@ module.exports = (sequelize, DataTypes) => {
   }, {
     freezeTableName: true
   })
+
+  Post.associate = (models) => {
+    Post.belongsTo(models.User, { foreignKey: 'user_id' })
+    Post.hasMany(models.Comment, { foreignKey: 'post_id' })
+  }
+
   return Post
 }

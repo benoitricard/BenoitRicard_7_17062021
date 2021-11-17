@@ -14,7 +14,7 @@ exports.createPost = (req, res, next) => {
     models.User.findOne({ where : { id : decodedToken.userId } })
         .then(user => {
             if(!user){
-                return res.status(404).json({ error : 'User not found' })
+                return res.status(404).json({ error : '404 - User not found' })
             }
 
             let content = req.body.content
@@ -33,36 +33,37 @@ exports.createPost = (req, res, next) => {
 
 exports.modifyPost = (req, res, next) => {
     const token = req.headers.authorization.split(' ')[1]
-    const decodedToken = jwt.verify(token, process.env.SECRET_TOKEN)
+    const decodedToken = jwt.verify(token, secretToken)
 
-    User.findOne({ where : { id : decodedToken.userId } })
+    models.User.findOne({ where : { id : decodedToken.userId } })
     .then(user => {
         if(!user){
-            return res.status(404).json({ error: 'User not found' })
+            return res.status(404).json({ error: '404 - User not found' })
         }
-        Post.findOne({ where : { id : req.params.id } })
+        models.Post.findOne({ where : { id : req.params.id } })
             .then(post => {
                 if(!post){
-                    return res.status(404).json({ error: 'Post not found' } )
+                    return res.status(404).json({ error: '404 - Post not found' } )
                 }
 
                 let content = req.body.content ? req.body.content : post.content
                 let attachment = req.file ? `${req.protocol}://${req.get('host')}/images/${req.file.filename}` : post.attachment
 
-                if(post.userId !== User.id) {
-                    return res.status(401).json({ error: 'You aren\'t authorized' })
+                if(post.user_id !== user.id) {
+                    return res.status(401).json({ error: '401 - You aren\'t authorized' })
                 }
                 
                 post.update({
-                    content : content,
-                    attachment : attachment
+                    content: content,
+                    attachment: attachment,
+                    updatedAt: Date.now()
                 })
                 .then(() => res.status(200).json({ message: 'Post has been modified' }))
-                .catch(error => res.status(500).json({ error: 'An error occured (creation): ' + error }))
+                .catch(error => res.status(500).json({ error: 'A - 500 - ' + error }))
             })
-            .catch(error => res.status(500).json({ error: 'An error occured (post): ' + error }))
+            .catch(error => res.status(500).json({ error: 'B - 500 - ' + error }))
     })
-    .catch(error => res.status(500).json({ error : 'An error occured (authentification): ' + error }))
+    .catch(error => res.status(500).json({ error : 'C - 500 - ' + error }))
 }
 
 exports.likePost = (req, res, next) => {
@@ -151,32 +152,42 @@ exports.getAllPosts = (req, res, next) => {
 
 }
 
-exports.getOnePost = (req, res, next) => {
-    Post.findOne({ where : 
-        { id : req.params.id },
-        include : [{
-            model: User,
-            attributes: ['firstName', 'lastName', 'profilePicture'],
-            where: {
-                id: {[Op.col] : 'Post.userId'}
+exports.getOnePost = (req, res) => {
+    const token = req.headers.authorization.split(' ')[1]
+    const decodedToken = jwt.verify(token, secretToken)
+
+    models.User.findOne({ where: { id : decodedToken.userId } })
+        .then(user => {
+            if(!user){
+                return res.status(404).json({ error : 'User not found' })
             }
-        },
-        {
-            model: Comment,
-            where: {
-                postId: {[Op.col] : 'Post.id'}
-            },
-            include : [{
-                model: User,
-                attributes: ['firstName', 'lastName', 'profilePicture'],
-            }],
-            required: false
-        }]
-    })
-        .then(post =>  {
-            if(!post){
-                return res.status(404).json({ error: 'Post not found' })
-            }
-            res.status(200).send(post)})
-        .catch(error => res.status(400).json({ error: 'An error occured (post): ' + error }))
+                models.Post.findOne({ where: 
+                    { id: req.params.id },
+                    include: [{
+                        model: models.User,
+                        attributes: ['firstName', 'lastName', 'profilePicture'],
+                        where: {
+                            id: {[Op.col] : 'Post.user_id'}
+                        }
+                    },
+                    {
+                        model: models.Comment,
+                        where: {
+                            post_id: {[Op.col] : 'Post.id'}
+                        },
+                        include : [{
+                            model: models.User,
+                            attributes: ['firstName', 'lastName', 'profilePicture'],
+                        }],
+                        required: false
+                    }]
+                })
+            .then(post =>  {
+                if(!post){
+                    return res.status(404).json({ error: '404 - Post not found' })
+                }
+                res.status(200).send(post)
+            })
+        })
+        .catch(error => res.status(500).json({ error: 'A - 500 - ' + error }))
 }
