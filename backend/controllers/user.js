@@ -136,7 +136,6 @@ exports.modifyUser = (req, res) => {
 
                     let firstName = req.body.firstName ? req.body.firstName : user.firstName
                     let lastName = req.body.lastName ? req.body.lastName : user.lastName
-                    let email = req.body.email ? req.body.email : user.email
                     let profilePicture = req.file ? `${req.protocol}://${req.get('host')}/images/${req.file.filename}` : user.profilePicture
                     let jobTitle = req.body.jobTitle ? req.body.jobTitle : user.jobTitle
                     let biography = req.body.biography ? req.body.biography : user.biography
@@ -149,7 +148,6 @@ exports.modifyUser = (req, res) => {
                     user.update({
                         firstName: firstName,
                         lastName: lastName,
-                        email: email,
                         profilePicture: profilePicture,
                         jobTitle: jobTitle,
                         biography: biography,

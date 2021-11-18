@@ -22,7 +22,8 @@ module.exports = (sequelize, DataTypes) => {
       defaultValue: 0
     },
     user_id: {
-      type: DataTypes.INTEGER
+      type: DataTypes.INTEGER,
+      allowNull: false
     },
     createdAt: {
       type: DataTypes.DATE,
@@ -41,6 +42,7 @@ module.exports = (sequelize, DataTypes) => {
   Post.associate = (models) => {
     Post.belongsTo(models.User, { foreignKey: 'user_id' })
     Post.hasMany(models.Comment, { foreignKey: 'post_id' })
+    Post.hasMany(models.Like, { foreignKey: 'post_id' })
   }
 
   return Post

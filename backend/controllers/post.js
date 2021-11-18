@@ -68,11 +68,6 @@ exports.modifyPost = (req, res) => {
     .catch(error => res.status(500).json({ error: 'C - 500 - ' + error }))
 }
 
-// Like d'un post
-exports.likePost = (req, res) => {
-
-}
-
 // Suppression d'un post
 exports.deletePost = (req, res) => {
     const token = req.headers.authorization.split(' ')[1]
@@ -81,9 +76,9 @@ exports.deletePost = (req, res) => {
     models.User.findOne({ where: { id : decodedToken.userId } })
         .then(user => {
             if(!user){
-                return res.status(404).json({ error : '404 - User not found' })
+                return res.status(404).json({ error: '404 - User not found' })
             }
-            models.Post.findOne({ where: { id : req.params.id } })
+            models.Post.findOne({ where: { id: req.params.id } })
                 .then(post => {
                     if(!post){
                         return res.status(404).json({ error : '404 - Post not found' })

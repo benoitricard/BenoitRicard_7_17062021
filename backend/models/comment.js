@@ -14,10 +14,12 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false
     },
     user_id: {
-      type: DataTypes.INTEGER
+      type: DataTypes.INTEGER,
+      allowNull: false
     },
     post_id: {
-      type: DataTypes.INTEGER
+      type: DataTypes.INTEGER,
+      allowNull: false
     },
     createdAt: {
       type: DataTypes.DATE,
