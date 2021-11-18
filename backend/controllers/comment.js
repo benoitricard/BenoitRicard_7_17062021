@@ -17,7 +17,7 @@ exports.createComment = (req, res) => {
             if (!user) {
                 return res.status(404).json({ error: '404 - User not found' })
             }
-            models.Post.findOne({ where: { id: req.params./* post */id } })
+            models.Post.findOne({ where: { id: req.params.postid } })
                 .then(post => {
                     if (!post) {
                         return res.status(404).json({ error: '404 - Post not found' })
@@ -48,13 +48,13 @@ exports.modifyComment = (req, res) => {
                 return res.status(404).json({ error: '404 - User not found' })
             }
 
-            models.Post.findOne({ where: { id: req.params./* post */id } })
+            models.Post.findOne({ where: { id: req.params.postid } })
                 .then(post => {
                     if (!post) {
                         return res.status(404).json({ error: '404 - Post not found' })
                     }
 
-                    models.Comment.findOne({ where: { id: req.params./* comment */id } })
+                    models.Comment.findOne({ where: { id: req.params.id } })
                         .then(comment => {
                             if (!comment) {
                                 return res.status(404).json({ error: '404 - Comment not found' })
@@ -94,13 +94,13 @@ exports.deleteComment = (req, res) => {
                 return res.status(404).json({ error: '404 - User not found' })
             }
 
-            models.Post.findOne({ where: { id: req.params./* post */id } })
+            models.Post.findOne({ where: { id: req.params.postid } })
                 .then(post => {
                     if (!post) {
                         return res.status(404).json({ error: '404 - Post not found' })
                     }
 
-                    models.Comment.findOne({ where: { id: req.params./* comment */id } })
+                    models.Comment.findOne({ where: { id: req.params.id } })
                         .then(comment => {
                             if (!comment) {
                                 return res.status(404).json({ error: '404 - Comment not found' })
@@ -110,7 +110,7 @@ exports.deleteComment = (req, res) => {
                                 return res.status(401).json({ error: '401 - You aren\'t authorized' })
                             }
 
-                            models.Comment.destroy({ where: { id : req.params./* comment */id } })
+                            models.Comment.destroy({ where: { id : req.params.id } })
                                 .then(() => res.status(200).json({ message: 'Comment deleted with success' }))
                                 .catch(error => res.status(500).json({ error: 'A - 500 - ' + error }))
 
@@ -135,14 +135,14 @@ exports.getOneComment = (req, res) => {
                 return res.status(404).json({ error: '404 - User not found' })
             }
 
-            models.Post.findOne({ where: { id: req.params./* post */id } })
+            models.Post.findOne({ where: { id: req.params.postid } })
                 .then(post => {
                     if (!post) {
                         return res.status(404).json({ error: '404 - Post not found' })
                     }
 
                     models.Comment.findOne({ where: 
-                        { id: req.params./* comment */id },
+                        { id: req.params.id },
                         include: {
                             model: models.User,
                             attributes: ['firstName', 'lastName', 'profilePicture'],
@@ -178,14 +178,14 @@ exports.getAllComments = (req, res) => {
                 return res.status(404).json({ error: '404 - User not found' })
             }
 
-            models.Post.findOne({ where: { id: req.params./* post */id } })
+            models.Post.findOne({ where: { id: req.params.postid } })
                 .then(post => {
                     if (!post) {
                         return res.status(404).json({ error: '404 - Post not found' })
                     }
 
                     models.Comment.findOne({ where: 
-                        { id: req.params./* post */id },
+                        { id: req.params.id },
                         include: {
                             model: models.User,
                             attributes: ['firstName', 'lastName', 'profilePicture'],

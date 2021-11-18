@@ -88,18 +88,17 @@ exports.deletePost = (req, res) => {
                     }
 
                     models.Comment.destroy({ where: { post_id : post.id } })
-                        .then(() => res.status(200).json({ message: 'Comment(s) deleted with success' }))
+                        .then(() => {
+                            let filename = post.attachment ? post.attachment.split('/images/')[1] : null
+                            fs.unlink(`images/${filename}`, () => {
+                            post.destroy()
+                                .then(() => {
+                                    res.status(200).json({ message: 'Post deleted with success' })
+                                })
+                                .catch(error => res.status(500).json({ error : 'B - 500 - ' + error }))
+                                })
+                        })
                         .catch(error => res.status(500).json({ error: 'A - 500 - ' + error }))
-
-                    let filename = post.attachment ? post.attachment.split('/images/')[1] : null
-                    fs.unlink(`images/${filename}`, () => {
-                        post.destroy()
-                            .then(() => {
-                                res.status(200).json({ message: 'Post deleted with success' })
-                            })
-                            .catch(error => res.status(500).json({ error : 'B - 500 - ' + error }))
-                    })
-
                 })
                 .catch(error => res.status(500).json({ error: 'C - 500 - ' + error }))
         })
@@ -113,7 +112,7 @@ exports.getAllPosts = (req, res) => {
 
     models.User.findOne({ where: { id : decodedToken.userId } })
         .then(user => {
-            if(!user){
+            if(!user) {
                 return res.status(404).json({ error: '404 - User not found' })
             }
 
