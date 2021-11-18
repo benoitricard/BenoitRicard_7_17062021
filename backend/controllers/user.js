@@ -103,19 +103,22 @@ exports.getOneUser = (req, res) => {
 
 // Obtention de tous les users
 exports.getAllUsers = (req, res) => {
-    models.User.findAll({
-        attributes: [ 'id', 'firstName', 'lastName', 'profilePicture', 'biography', 'jobTitle', 'birthday' ],
-        order: [
-           ['createdAt', 'ASC']
-        ]
-    })
-    .then(users =>  {
-        if(!users){
-            return res.status(404).json({ error: '404 - No user found' })
-        }
-        res.status(200).send(users)
-    })
-    .catch(error => res.status(400).json({ error: 'A - 500 - ' + error }))
+    models.User.count()
+        .then(nbOfUsers => {
+            if (nbOfUsers < 1) {
+                return res.status(404).json({ error: '404 - No user found' })
+            }
+            models.User.findAll({
+                attributes: [ 'id', 'firstName', 'lastName', 'profilePicture', 'biography', 'jobTitle', 'birthday' ],
+                order: [
+                   ['createdAt', 'ASC']
+                ]
+            })
+                .then(users =>  {
+                    res.status(200).send(users)
+                })
+                .catch(error => res.status(400).json({ error: 'A - 500 - ' + error }))
+        })
 }
 
 // Modification d'un user
@@ -216,4 +219,50 @@ exports.deleteUser = (req, res) => {
                 })
         })
         .catch(error => res.status(500).json({ error: 'E - 500 - ' + error }))
+}
+
+// Obtention de tous les posts d'un user
+exports.getAllPostsFromUser = (req, res) => {
+    models.User.findOne({ where: { id: req.params.id } })
+        .then(user => {
+            if (!user) {
+                return res.status(404).json({ error: '404 - User not found' })
+            }
+            models.Post.count({ where: { user_id: req.params.id } })
+                .then(nbOfPosts => {
+                    if (nbOfPosts < 1) {
+                        return res.status(404).json({ error: '404 - No post found' })
+                    }
+                    models.Post.findAll({ where:
+                        { user_id: req.params.id },
+                        attributes: [ 'id', 'content', 'attachment', 'user_id', 'createdAt', 'updatedAt' ],
+                        include: [
+                           {
+                               model: models.User,
+                               attributes: [ 'id', 'firstName', 'lastName', 'profilePicture' ],
+                               where: { id: {[Op.col]: 'Post.user_id'} }
+                           },
+                           {
+                                model: models.Comment,
+                                attributes: [ 'id', 'content', 'user_id', 'post_id', 'createdAt', 'updatedAt' ],
+                                where: { post_id: {[Op.col]: 'Post.id'} },
+                                include : {
+                                    model: models.User,
+                                    attributes: [ 'firstName', 'lastName', 'profilePicture' ]
+                                },
+                                required: false
+                           }
+                        ],
+                        order: [
+                            [ 'createdAt', 'ASC' ]
+                        ]
+                    })
+                        .then(likes => {
+                            res.status(200).send(likes)
+                        })
+                        .catch(error => res.status(500).json({ error: 'A - 500 - ' + error }))
+                })
+                .catch(error => res.status(500).json({ error: 'B - 500 - ' + error }))
+        })
+        .catch(error => res.status(500).json({ error: 'C - 500 - ' + error }))
 }

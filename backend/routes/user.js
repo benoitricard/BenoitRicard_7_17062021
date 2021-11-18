@@ -9,6 +9,7 @@ router.post('/signup', userCtrl.signup)
 router.post('/login', userCtrl.login)
 router.get('/:id', auth, userCtrl.getOneUser)
 router.get('/', auth, userCtrl.getAllUsers)
+router.get('/:id/posts', auth, userCtrl.getAllPostsFromUser)
 router.put('/:id', auth, multer, userCtrl.modifyUser)
 router.delete('/:id', auth, userCtrl.deleteUser)
 

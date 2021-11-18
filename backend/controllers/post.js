@@ -116,38 +116,90 @@ exports.getAllPosts = (req, res) => {
             if(!user){
                 return res.status(404).json({ error: '404 - User not found' })
             }
-            models.Post.findAll({
-                include : [
-                    {
-                        model: models.User,
-                        attributes: ['firstName', 'lastName', 'profilePicture'],
-                        where: { id: {[Op.col] : 'Post.user_id'} }
-                    },
-                    {
-                        model: models.Comment,
-                        where: { post_id: {[Op.col] : 'Post.id'} },
-                        include : {
-                            model: models.User,
-                            attributes: ['firstName', 'lastName', 'profilePicture']
-                        },
-                        required: false
+
+            models.Post.count()
+                .then(nbOfPosts => {
+                    if (nbOfPosts < 1) {
+                        return res.status(404).json({ error: '404 - No post found' })
                     }
-                ],
-                order: [
-                    ['createdAt', 'ASC'],
-                ]
-            })
-            .then(posts =>  {
-                if(!posts){
-                    return res.status(404).json({ error: '404 - No post found' })
-                }
-                res.status(200).send(posts)
-            })
-            .catch(error => res.status(500).json({ error: 'A - 500 - ' + error }))
+
+                    models.Post.findAll({
+                        include : [
+                            {
+                                model: models.User,
+                                attributes: ['firstName', 'lastName', 'profilePicture'],
+                                where: { id: {[Op.col] : 'Post.user_id'} }
+                            },
+                            {
+                                model: models.Comment,
+                                where: { post_id: {[Op.col] : 'Post.id'} },
+                                include : {
+                                    model: models.User,
+                                    attributes: ['firstName', 'lastName', 'profilePicture']
+                                },
+                                required: false
+                            }
+                        ],
+                        order: [
+                            ['createdAt', 'ASC'],
+                        ]
+                    })
+                        .then(posts =>  {
+                            res.status(200).send(posts)
+                        })
+                        .catch(error => res.status(500).json({ error: 'A - 500 - ' + error }))
+
+                })
+                .catch(error => res.status(500).json({ error: 'B - 500 - ' + error }))
 
         })
         .catch(error => res.status(500).json({ error: 'B - 500 - ' + error }))
+}
 
+// Obtention de tous les posts d'un user
+exports.getAllPostsFromUser = (req, res) => {
+    models.User.findOne({ where: { id: req.params.id } })
+        .then(user => {
+            if (!user) {
+                return res.status(404).json({ error: '404 - User not found' })
+            }
+            models.Post.count({ where: { user_id: req.params.id } })
+                .then(nbOfPosts => {
+                    if (nbOfPosts < 1) {
+                        return res.status(404).json({ error: '404 - No post found' })
+                    }
+                    models.Post.findAll({ where:
+                        { user_id: req.params.id },
+                        attributes: [ 'id', 'user_id', 'post_id' ],
+                        include: [
+                           {
+                               model: models.User,
+                               attributes: [ 'id', 'firstName', 'lastName', 'profilePicture' ],
+                               where: { id: {[Op.col]: 'Post.user_id'} }
+                           },
+                           {
+                                model: models.Comment,
+                                attributes: [ 'id', 'content', 'user_id', 'post_id', 'createdAt', 'updatedAt' ],
+                                where: { post_id: {[Op.col]: 'Post.id'} },
+                                include : {
+                                    model: models.User,
+                                    attributes: [ 'firstName', 'lastName', 'profilePicture' ]
+                                },
+                                required: false
+                           }
+                        ],
+                        order: [
+                            [ 'createdAt', 'ASC' ]
+                        ]
+                    })
+                        .then(likes => {
+                            res.status(200).send(likes)
+                        })
+                        .catch(error => res.status(500).json({ error: 'A - 500 - ' + error }))
+                })
+                .catch(error => res.status(500).json({ error: 'B - 500 - ' + error }))
+        })
+        .catch(error => res.status(500).json({ error: 'C - 500 - ' + error }))
 }
 
 // Obtention d'un post
@@ -162,24 +214,25 @@ exports.getOnePost = (req, res) => {
             }
                 models.Post.findOne({ where: 
                     { id: req.params.id },
-                    include: [{
-                        model: models.User,
-                        attributes: ['firstName', 'lastName', 'profilePicture'],
-                        where: {
-                            id: {[Op.col] : 'Post.user_id'}
-                        }
-                    },
-                    {
-                        model: models.Comment,
-                        where: {
-                            post_id: {[Op.col] : 'Post.id'}
-                        },
-                        include : [{
+                    include: [
+                        {
                             model: models.User,
                             attributes: ['firstName', 'lastName', 'profilePicture'],
-                        }],
-                        required: false
-                    }]
+                            where: {
+                                id: {[Op.col] : 'Post.user_id'}
+                            }
+                        },
+                        {
+                            model: models.Comment,
+                            attributes: [ 'id', 'content', 'user_id', 'post_id', 'createdAt', 'updatedAt' ],
+                            where: { post_id: {[Op.col]: 'Post.id'} },
+                            include : {
+                                model: models.User,
+                                attributes: [ 'firstName', 'lastName', 'profilePicture' ]
+                            },
+                            required: false
+                        }
+                    ]
                 })
             .then(post =>  {
                 if(!post){
