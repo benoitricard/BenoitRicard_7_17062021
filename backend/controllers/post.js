@@ -12,24 +12,26 @@ exports.createPost = (req, res) => {
     const token = req.headers.authorization.split(' ')[1]
     const decodedToken = jwt.verify(token, secretToken)
     
+    // vérifier que l'user est connecté
     models.User.findOne({ where : { id: decodedToken.userId } })
         .then(user => {
             if(!user){
-                return res.status(404).json({ error: '404 - User not found' })
+                return res.status(404).json({ error: 'TOKEN' })
             }
 
             let content = req.body.content
             let attachment = req.file ? `${req.protocol}://${req.get('host')}/images/${req.file.filename}`: null
 
+            // créer le post
             models.Post.create({
                 content: content,
                 attachment: attachment,
                 user_id: user.id
             })
-            .then(() =>  res.status(201).json({ message: 'Post created with success' }))
-            .catch(error => res.status(500).json({ error: 'A - 500 - ' + error }))
+                .then(() =>  res.status(201).json())
+                .catch(error => res.status(500).json({ error: 'A - ' + error }))
         })
-        .catch(error => res.status(500).json({ error: 'B - 500 - ' + error }))
+        .catch(error => res.status(500).json({ error: 'B - ' + error }))
 }
 
 // Modification d'un post
@@ -37,35 +39,39 @@ exports.modifyPost = (req, res) => {
     const token = req.headers.authorization.split(' ')[1]
     const decodedToken = jwt.verify(token, secretToken)
 
+    // vérifier que l'user est connecté
     models.User.findOne({ where: { id : decodedToken.userId } })
     .then(user => {
-        if(!user){
-            return res.status(404).json({ error: '404 - User not found' })
+        if(!user) {
+            return res.status(404).json({ error: 'TOKEN' })
         }
+        // vérifier que le post recherché existe
         models.Post.findOne({ where: { id : req.params.id } })
             .then(post => {
-                if(!post){
-                    return res.status(404).json({ error: '404 - Post not found' } )
+                if(!post) {
+                    return res.status(404).json({ error: 'POST NOT FOUND' } )
                 }
 
                 let content = req.body.content ? req.body.content : post.content
                 let attachment = req.file ? `${req.protocol}://${req.get('host')}/images/${req.file.filename}` : post.attachment
 
-                if(post.user_id !== user.id) {
-                    return res.status(401).json({ error: '401 - You aren\'t authorized' })
+                // vérifier que l'user est l'auteur du post OU est admin
+                if (user.id == decodedToken.userId || user.isAdmin == 1) {
+                    // mettre à jour le post
+                    post.update({
+                        content: content,
+                        attachment: attachment,
+                        updatedAt: Date.now()
+                    })
+                        .then(() => res.status(200).json())
+                        .catch(error => res.status(500).json({ error: 'A - ' + error }))
+                } else {
+                    return res.status(401).json({ error: 'AUTHORIZATION' })
                 }
-                
-                post.update({
-                    content: content,
-                    attachment: attachment,
-                    updatedAt: Date.now()
-                })
-                .then(() => res.status(200).json({ message: 'Post has been modified' }))
-                .catch(error => res.status(500).json({ error: 'A - 500 - ' + error }))
             })
-            .catch(error => res.status(500).json({ error: 'B - 500 - ' + error }))
+            .catch(error => res.status(500).json({ error: 'B - ' + error }))
     })
-    .catch(error => res.status(500).json({ error: 'C - 500 - ' + error }))
+    .catch(error => res.status(500).json({ error: 'C - ' + error }))
 }
 
 // Suppression d'un post
@@ -73,36 +79,40 @@ exports.deletePost = (req, res) => {
     const token = req.headers.authorization.split(' ')[1]
     const decodedToken = jwt.verify(token, secretToken)
 
+    // vérifier que l'user est connecté
     models.User.findOne({ where: { id : decodedToken.userId } })
         .then(user => {
             if(!user){
-                return res.status(404).json({ error: '404 - User not found' })
+                return res.status(404).json({ error: 'TOKEN' })
             }
+            // vérifier que le post recherché existe
             models.Post.findOne({ where: { id: req.params.id } })
                 .then(post => {
                     if(!post){
-                        return res.status(404).json({ error : '404 - Post not found' })
-                    }
-                    if(user.id !== post.user_id) {
-                        return res.status(401).json({ error : '401 - You aren\'t authorized' })
+                        return res.status(404).json({ error: 'POST NOT FOUND' })
                     }
 
-                    models.Comment.destroy({ where: { post_id : post.id } })
-                        .then(() => {
-                            let filename = post.attachment ? post.attachment.split('/images/')[1] : null
-                            fs.unlink(`images/${filename}`, () => {
-                            post.destroy()
-                                .then(() => {
-                                    res.status(200).json({ message: 'Post deleted with success' })
+                    // vérifier que l'user est l'auteur du post OU est admin
+                    if (user.id == post.user_id || user.isAdmin == 1) {
+                        // supprimer les commentaires associés au post
+                        models.Comment.destroy({ where: { post_id : post.id } })
+                            .then(() => {
+                                let filename = post.attachment ? post.attachment.split('/images/')[1] : null
+                                fs.unlink(`images/${filename}`, () => {
+                                    // supprimer le post recherché
+                                    post.destroy()
+                                        .then(() => res.status(200).json())
+                                        .catch(error => res.status(500).json({ error : 'B - ' + error }))
                                 })
-                                .catch(error => res.status(500).json({ error : 'B - 500 - ' + error }))
-                                })
-                        })
-                        .catch(error => res.status(500).json({ error: 'A - 500 - ' + error }))
+                            })
+                            .catch(error => res.status(500).json({ error: 'A - ' + error }))
+                    } else {
+                        return res.status(401).json({ error: 'AUTHORIZATION' })
+                    }
                 })
-                .catch(error => res.status(500).json({ error: 'C - 500 - ' + error }))
+                .catch(error => res.status(500).json({ error: 'C - ' + error }))
         })
-        .catch(error => res.status(500).json({ error: 'D - 500 - ' + error }))
+        .catch(error => res.status(500).json({ error: 'D - ' + error }))
 }
 
 // Obtention de tous les posts
@@ -110,18 +120,19 @@ exports.getAllPosts = (req, res) => {
     const token = req.headers.authorization.split(' ')[1]
     const decodedToken = jwt.verify(token, secretToken)
 
+    // vérifier que l'user est connecté
     models.User.findOne({ where: { id : decodedToken.userId } })
         .then(user => {
             if(!user) {
-                return res.status(404).json({ error: '404 - User not found' })
+                return res.status(404).json({ error: 'TOKEN' })
             }
-
+            // vérifier que des posts ont déjà été publiés
             models.Post.count()
                 .then(nbOfPosts => {
-                    if (nbOfPosts < 1) {
-                        return res.status(404).json({ error: '404 - No post found' })
+                    if (nbOfPosts === 0) {
+                        return res.status(404).json({ error: 'POST NOT FOUND' })
                     }
-
+                    // trouver tous les posts
                     models.Post.findAll({
                         include : [
                             {
@@ -131,6 +142,7 @@ exports.getAllPosts = (req, res) => {
                             },
                             {
                                 model: models.Comment,
+                                attributes: [ 'id', 'content', 'user_id', 'post_id', 'createdAt', 'updatedAt' ],
                                 where: { post_id: {[Op.col] : 'Post.id'} },
                                 include : {
                                     model: models.User,
@@ -139,66 +151,18 @@ exports.getAllPosts = (req, res) => {
                                 required: false
                             }
                         ],
-                        order: [
-                            ['createdAt', 'ASC'],
-                        ]
+                        order: [ ['createdAt', 'ASC'] ]
                     })
                         .then(posts =>  {
                             res.status(200).send(posts)
                         })
-                        .catch(error => res.status(500).json({ error: 'A - 500 - ' + error }))
+                        .catch(error => res.status(500).json({ error: 'A - ' + error }))
 
                 })
-                .catch(error => res.status(500).json({ error: 'B - 500 - ' + error }))
+                .catch(error => res.status(500).json({ error: 'B - ' + error }))
 
         })
-        .catch(error => res.status(500).json({ error: 'B - 500 - ' + error }))
-}
-
-// Obtention de tous les posts d'un user
-exports.getAllPostsFromUser = (req, res) => {
-    models.User.findOne({ where: { id: req.params.id } })
-        .then(user => {
-            if (!user) {
-                return res.status(404).json({ error: '404 - User not found' })
-            }
-            models.Post.count({ where: { user_id: req.params.id } })
-                .then(nbOfPosts => {
-                    if (nbOfPosts < 1) {
-                        return res.status(404).json({ error: '404 - No post found' })
-                    }
-                    models.Post.findAll({ where:
-                        { user_id: req.params.id },
-                        attributes: [ 'id', 'user_id', 'post_id' ],
-                        include: [
-                           {
-                               model: models.User,
-                               attributes: [ 'id', 'firstName', 'lastName', 'profilePicture' ],
-                               where: { id: {[Op.col]: 'Post.user_id'} }
-                           },
-                           {
-                                model: models.Comment,
-                                attributes: [ 'id', 'content', 'user_id', 'post_id', 'createdAt', 'updatedAt' ],
-                                where: { post_id: {[Op.col]: 'Post.id'} },
-                                include : {
-                                    model: models.User,
-                                    attributes: [ 'firstName', 'lastName', 'profilePicture' ]
-                                },
-                                required: false
-                           }
-                        ],
-                        order: [
-                            [ 'createdAt', 'ASC' ]
-                        ]
-                    })
-                        .then(likes => {
-                            res.status(200).send(likes)
-                        })
-                        .catch(error => res.status(500).json({ error: 'A - 500 - ' + error }))
-                })
-                .catch(error => res.status(500).json({ error: 'B - 500 - ' + error }))
-        })
-        .catch(error => res.status(500).json({ error: 'C - 500 - ' + error }))
+        .catch(error => res.status(500).json({ error: 'C - ' + error }))
 }
 
 // Obtention d'un post
@@ -206,39 +170,84 @@ exports.getOnePost = (req, res) => {
     const token = req.headers.authorization.split(' ')[1]
     const decodedToken = jwt.verify(token, secretToken)
 
+    // vérifier que l'user est connecté
     models.User.findOne({ where: { id : decodedToken.userId } })
         .then(user => {
             if(!user){
-                return res.status(404).json({ error: '404 - User not found' })
+                return res.status(404).json({ error: 'TOKEN' })
             }
-                models.Post.findOne({ where: 
-                    { id: req.params.id },
-                    include: [
-                        {
+            // récupérer le post recherché
+            models.Post.findOne({ where: 
+                { id: req.params.id },
+                include: [
+                    {
+                        model: models.User,
+                        attributes: ['id', 'firstName', 'lastName', 'profilePicture'],
+                        where: { id: {[Op.col] : 'Post.user_id'} }
+                    },
+                    {
+                        model: models.Comment,
+                        attributes: ['id', 'content', 'user_id', 'post_id', 'createdAt', 'updatedAt'],
+                        where: { post_id: {[Op.col]: 'Post.id'} },
+                        include : {
                             model: models.User,
-                            attributes: ['firstName', 'lastName', 'profilePicture'],
-                            where: {
-                                id: {[Op.col] : 'Post.user_id'}
-                            }
+                            attributes: [ 'firstName', 'lastName', 'profilePicture' ]
                         },
-                        {
-                            model: models.Comment,
-                            attributes: [ 'id', 'content', 'user_id', 'post_id', 'createdAt', 'updatedAt' ],
-                            where: { post_id: {[Op.col]: 'Post.id'} },
-                            include : {
-                                model: models.User,
-                                attributes: [ 'firstName', 'lastName', 'profilePicture' ]
-                            },
-                            required: false
-                        }
-                    ]
-                })
+                        required: false
+                    }
+                ]
+            })
+            // vérifier que le post existe
             .then(post =>  {
                 if(!post){
-                    return res.status(404).json({ error: '404 - Post not found' })
+                    return res.status(404).json({ error: 'POST NOT FOUND' })
                 }
                 res.status(200).send(post)
             })
+            .catch(error => res.status(500).json({ error: 'A - ' + error }))
         })
-        .catch(error => res.status(500).json({ error: 'A - 500 - ' + error }))
+        .catch(error => res.status(500).json({ error: 'B - ' + error }))
+}
+
+exports.getAllLikesFromPost = (req, res) => {
+    const token = req.headers.authorization.split(' ')[1]
+    const decodedToken = jwt.verify(token, secretToken)
+
+    // vérifier que l'user est connecté
+    models.User.findOne({ where: { id : decodedToken.userId } })
+        .then(user => {
+            if (!user) {
+                return res.status(404).json({ error: 'TOKEN' })
+            }
+            // vérifier que l'user recherché existe
+            models.Post.findOne({ where: { id : req.params.id } })
+                .then(post => {
+                    if (!post) {
+                        return res.status(404).json({ error: 'POST NOT FOUND' })
+                    }
+                    models.Like.count({ where: { post_id: req.params.id } })
+                        .then(nbOfLikes => {
+                            if (nbOfLikes === 0) {
+                                return res.status(404).json({ error: 'LIKES NOT FOUND' })
+                            }
+                            models.Like.findAll({ where: 
+                                { post_id: req.params.id },
+                                attributes: ['id', 'user_id', 'post_id', 'createdAt', 'updatedAt'],
+                                include: {
+                                   model: models.User,
+                                   attributes: ['firstName', 'lastName', 'profilePicture'],
+                                   where: { id: {[Op.col]: 'Like.user_id'} }
+                                },
+                                order: [ ['createdAt', 'ASC'] ]
+                            })
+                                .then(likes => {
+                                    res.status(200).send(likes)
+                                })
+                                .catch(error => res.status(500).json({ error: 'A - ' + error }))
+                        })
+                        .catch(error => res.status(500).json({ error: 'B - ' + error }))
+                })
+                .catch(error => res.status(500).json({ error: 'C - ' + error }))
+        })
+        .catch(error => res.status(500).json({ error: 'D - ' + error }))
 }

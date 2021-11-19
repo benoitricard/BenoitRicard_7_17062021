@@ -7,11 +7,12 @@ const multer = require('../middlewares/multer-config')
 
 router.post('/signup', userCtrl.signup)
 router.post('/login', userCtrl.login)
-router.get('/:id', auth, userCtrl.getOneUser)
-router.get('/', auth, userCtrl.getAllUsers)
-router.get('/:id/posts', auth, userCtrl.getAllPostsFromUser)
 router.put('/:id', auth, multer, userCtrl.modifyUser)
 router.delete('/:id', auth, userCtrl.deleteUser)
+router.get('/:id', auth, userCtrl.getOneUser)
+router.get('/', auth, userCtrl.getAllUsers)
+router.get('/:id/post', auth, userCtrl.getAllPostsFromUser)
+router.get('/:id/like', auth, userCtrl.getAllLikesFromUser)
 
 
 module.exports = router

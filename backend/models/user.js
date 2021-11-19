@@ -41,6 +41,11 @@ module.exports = (sequelize, DataTypes) => {
     jobTitle: {
       type: DataTypes.STRING
     },
+    isAdmin: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      defaultValue: 0
+    },
     createdAt: {
       type: DataTypes.DATE,
       allowNull: false,
