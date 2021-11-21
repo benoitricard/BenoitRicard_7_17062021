@@ -56,7 +56,7 @@ exports.modifyPost = (req, res) => {
                 let attachment = req.file ? `${req.protocol}://${req.get('host')}/images/${req.file.filename}` : post.attachment
 
                 // vérifier que l'user est l'auteur du post OU est admin
-                if (user.id == decodedToken.userId || user.isAdmin == 1) {
+                if (user.id == post.user_id || user.isAdmin == 1) {
                     // mettre à jour le post
                     post.update({
                         content: content,
@@ -99,20 +99,24 @@ exports.deletePost = (req, res) => {
                             .then(() => {
                                 let filename = post.attachment ? post.attachment.split('/images/')[1] : null
                                 fs.unlink(`images/${filename}`, () => {
+                                    // supprimer les likes associés au post
+                                    models.Like.destroy({ where: { post_id : post.id } })
+                                        .then(() => res.status(200).json())
+                                        .catch(error => res.status(500).json({ error : 'A - ' + error }))
                                     // supprimer le post recherché
                                     post.destroy()
                                         .then(() => res.status(200).json())
                                         .catch(error => res.status(500).json({ error : 'B - ' + error }))
                                 })
                             })
-                            .catch(error => res.status(500).json({ error: 'A - ' + error }))
+                            .catch(error => res.status(500).json({ error: 'C - ' + error }))
                     } else {
                         return res.status(401).json({ error: 'AUTHORIZATION' })
                     }
                 })
-                .catch(error => res.status(500).json({ error: 'C - ' + error }))
+                .catch(error => res.status(500).json({ error: 'D - ' + error }))
         })
-        .catch(error => res.status(500).json({ error: 'D - ' + error }))
+        .catch(error => res.status(500).json({ error: 'E - ' + error }))
 }
 
 // Obtention de tous les posts

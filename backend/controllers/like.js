@@ -22,7 +22,7 @@ exports.likePost = (req, res) => {
                     if (!post) {
                         return res.status(404).json({ error: 'POST NOT FOUND' })
                     }
-                    models.Like.findOne({ where: { user_id: user.id } })
+                    models.Like.findOne({ where: { user_id: decodedToken.userId, post_id: post.id } })
                         .then(like => {
                             if (!like) { // si le like n'existe pas, on le crée
                                 models.Like.create({

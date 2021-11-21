@@ -164,27 +164,36 @@ exports.deleteUser = (req, res) => {
                                         ]
                                     }
                                     })
-                                    .then(() => res.status(200).json())
-                                    .catch(error => res.status(500).json({ error: 'A - ' + error}))
+                                        .then(() => res.status(200).json())
+                                        .catch(error => res.status(500).json({ error: 'A - ' + error}))
+                                    models.Like.destroy({ where: {
+                                        [Op.or]: [
+                                            { post_id: post.id },
+                                            { user_id: user.id }
+                                        ]
+                                    }
+                                    })
+                                        .then(() => res.status(200).json())
+                                        .catch(error => res.status(500).json({ error: 'B - ' + error}))
                                 })
                                 models.Post.destroy({ where: { user_id : user.id } })
                                     .then(() => res.status(200).json())
-                                    .catch(error => res.status(500).json({ error: 'B - ' + error }))
+                                    .catch(error => res.status(500).json({ error: 'C - ' + error }))
                             })
-                            .catch(error => res.status(500).json({ error: 'C - ' + error }))
+                            .catch(error => res.status(500).json({ error: 'D - ' + error }))
 
                         let filename = user.profilePicture ? user.profilePicture.split('/images/')[1] : null
                         fs.unlink(`images/${filename}`, () => {
                         user.destroy({ where: { user_id : user.id } })
                             .then(() => res.status(200).json())
-                            .catch(error => res.status(500).json({ error: 'D - ' + error }))
+                            .catch(error => res.status(500).json({ error: 'E - ' + error }))
                         })
                     } else {
                         return res.status(401).json({ error: 'AUTHORIZATION' })
                     }
                 })
         })
-        .catch(error => res.status(500).json({ error: 'E - ' + error }))
+        .catch(error => res.status(500).json({ error: 'F - ' + error }))
 }
 
 // Obtention d'un user
@@ -200,7 +209,7 @@ exports.getOneUser = (req, res) => {
             }
             // trouver l'user recherché
             models.User.findOne({
-                attributes: ['id', 'firstName', 'lastName', 'profilePicture', 'biography', 'jobTitle', 'birthday', 'createdAt', 'updatedAt', 'isAdmin'],
+                attributes: ['id', 'email', 'firstName', 'lastName', 'profilePicture', 'biography', 'jobTitle', 'birthday', 'createdAt', 'updatedAt', 'isAdmin'],
                 where: { id : req.params.id }
             })
                 .then(user => {
@@ -229,7 +238,7 @@ exports.getAllUsers = (req, res) => {
                         return res.status(404).json({ error: 'USER NOT FOUND' })
                     }
                     models.User.findAll({
-                        attributes: ['id', 'firstName', 'lastName', 'profilePicture', 'biography', 'jobTitle', 'birthday', 'createdAt', 'updatedAt', 'isAdmin'],
+                        attributes: ['id', 'email', 'firstName', 'lastName', 'profilePicture', 'biography', 'jobTitle', 'birthday', 'createdAt', 'updatedAt', 'isAdmin'],
                         order: [ ['createdAt', 'ASC'] ]
                     })
                         .then(users =>  {
@@ -329,7 +338,7 @@ exports.getAllLikesFromUser = (req, res) => {
                                    {
                                        model: models.User,
                                        attributes: ['firstName', 'lastName', 'profilePicture'],
-                                       where: { id: {[Op.col]: 'Post.user_id'} }
+                                       where: { id: {[Op.col]: 'Like.user_id'} }
                                    },
                                    {
                                         model: models.Post,
