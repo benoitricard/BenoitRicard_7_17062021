@@ -14,5 +14,4 @@ router.get('/', auth, userCtrl.getAllUsers)
 router.get('/:id/post', auth, userCtrl.getAllPostsFromUser)
 router.get('/:id/like', auth, userCtrl.getAllLikesFromUser)
 
-
 module.exports = router

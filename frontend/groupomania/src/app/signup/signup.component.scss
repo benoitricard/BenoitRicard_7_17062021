@@ -1,0 +1,123 @@
+@import "../../sass/styles.scss";
+
+// Variables
+$signup-width: 350px;
+$signup-height: 530px;
+
+// Mixins
+@mixin flexbox {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+@mixin button {
+  background-color: $primary-color;
+  color: white;
+  border: none;
+  border-radius: $border-radius/1.5;
+  height: 60px;
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.container {
+  display: flex;
+  justify-content: center;
+  margin-top: 160px;
+
+  .signup-slogan {
+    margin-right: 200px;
+    height: $signup-height;
+
+    .col-sentence {
+      margin-bottom: 40px;
+    }
+
+    .col-users {
+      margin-bottom: 151px;
+    }
+
+    .col-connexion {
+      p {
+        margin-bottom: 15px;
+      }
+
+      button {
+        @include button;
+        width: 250px;
+      }
+    }
+
+    .col {
+      img {
+        margin-bottom: 20px;
+      }
+
+      p {
+        font-size: 30px;
+        font-weight: 700;
+
+        span {
+          color: $primary-color;
+        }
+      }
+    }
+  }
+
+  .signup-box {
+    background-color: white;
+    border-radius: $border-radius;
+    box-shadow: 0px 0px 8px 0px rgba(0, 0, 0, 0.3);
+    width: $signup-width;
+    height: $signup-height;
+    @include flexbox;
+
+    h2 {
+      color: $primary-color;
+      font-weight: 700;
+      margin-top: 10px;
+      margin-bottom: -10px;
+    }
+
+    .col-form {
+      margin-bottom: 30px;
+
+      form {
+        @include flexbox;
+
+        input {
+          color: $primary-color;
+          font-size: 15px;
+          font-weight: 600;
+          padding-left: 12px;
+          width: $signup-width/1.1;
+          border-radius: $border-radius/1.5;
+          border: solid 4px $primary-color;
+          height: 60px;
+          margin-bottom: 15px;
+        }
+
+        ::placeholder {
+          color: $primary-color;
+          opacity: 50%;
+        }
+      }
+
+      p {
+        font-size: 15px;
+        color: $primary-color;
+        font-weight: 600;
+        margin: 5px 0 0 5px;
+      }
+    }
+
+    .col {
+
+      button {
+        @include button;
+        width: $signup-width/1.1;
+      }
+    }
+  }
+}
