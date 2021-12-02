@@ -26,8 +26,17 @@ $signup-height: 530px;
   justify-content: center;
   margin-top: 130px;
 
-  button {
-    width: 250px;
+  .alert {
+    p {
+      text-align: center;
+      word-wrap: wrap;
+    }
+  }
+
+  button,
+  form {
+    min-width: 250px;
+    max-width: 250px;
   }
 
   .col-xs-12 {

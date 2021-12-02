@@ -14,11 +14,16 @@ export class SignupComponent implements OnInit {
       .subscribe(
         () => {
           console.log('User registered');
+          return true;
         },
         (error) => {
           console.log('Erreur : ' + error);
         }
       );
+  }
+
+  onVerifyErrors() {
+    return true;
   }
 
   constructor(private httpClient: HttpClient) {}

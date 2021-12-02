@@ -8,15 +8,27 @@
 
             <form class="form-group" #signupForm="ngForm" (ngSubmit)="onSignup(signupForm.value)">
 
-                <input type="text" class="form-control" placeholder="Prénom" name="firstName" ngModel>
+                <input type="text" class="form-control" placeholder="Prénom" #firstName="ngModel" name="firstName"
+                    required ngModel>
                 <br>
-                <input type="text" class="form-control" placeholder="Nom" name="lastName" ngModel>
+                <input type="text" class="form-control" placeholder="Nom" #lastName="ngModel" name="lastName" required
+                    ngModel>
                 <br>
-                <input type="text" class="form-control" placeholder="Adresse e-mail" name="email" ngModel>
+                <input type="email" class="form-control" placeholder="Adresse e-mail" #email="ngModel" name="email"
+                    required ngModel>
                 <br>
-                <input type="password" class="form-control" placeholder="Mot de passe" name="password" ngModel>
+                <input type="password" class="form-control" placeholder="Mot de passe" #password="ngModel"
+                    name="password" minlength="8" maxlength="24" required ngModel>
                 <br>
                 <button class="btn btn-primary" type="submit">Créer un compte</button>
+                <br><br>
+                <div class="alert alert-danger"
+                    *ngIf="(firstName.invalid && (firstName.dirty || firstName.touched)) || (lastName.invalid && (lastName.dirty || lastName.touched)) || (email.invalid && (email.dirty || email.touched)) || (password.invalid && (password.dirty || password.touched))">
+                    <p *ngIf="!password.errors?.['minlength'] && !password.errors?.['maxlength']">Tous les champs sont
+                        requis.</p>
+                    <p class="text-wrap" *ngIf="password.errors?.['minlength'] || password.errors?.['maxlength']">Le mot
+                        de passe doit contenir entre 8 et 24 caractères.</p>
+                </div>
 
             </form>
         </div>
