@@ -1,38 +1,26 @@
 <div class="container">
 
-    <div class="row signup-slogan">
-        <div class="col">
-            <img src="../../assets/images/login-success.png" alt="groupomania-logo" height="55px" width="250px">
-        </div>
-        <div class="col col-sentence">
-            <p>Votre futur <span>meilleur ami </span>travaille<br>peut-être déjà dans votre entreprise</p>
-        </div>
-        <div class="col col-users">
-            <p>Rejoignez plus de <span>{{ usersNumber }} </span>utilisateurs</p>
-            <div class="users"></div>
-        </div>
-        <div class="col col-connexion">
-            <p>Vous avez déjà un <span>compte </span>?</p>
-            <button>Se connecter</button>
-        </div>
-    </div>
+    <div class="row">
 
-    <div class="row signup-box">
-        <div class="col col-title">
-            <h2>Inscription</h2>
-        </div>
-        <div class="col col-form">
-            <form>
-                <input type="text" placeholder="Prénom" required>
-                <input type="text" placeholder="Nom" required>
-                <input type="text" placeholder="Adresse e-mail" required>
-                <input type="password" placeholder="Mot de passe" required>
+        <div class="col-xs-12">
+            <h3>Inscription</h3>
+            <br>
+
+            <form class="form-group" #signupForm="ngForm" (ngSubmit)="onSignup(signupForm.value)">
+
+                <input type="text" class="form-control" placeholder="Prénom" name="firstName" ngModel>
+                <br>
+                <input type="text" class="form-control" placeholder="Nom" name="lastName" ngModel>
+                <br>
+                <input type="text" class="form-control" placeholder="Adresse e-mail" name="email" ngModel>
+                <br>
+                <input type="password" class="form-control" placeholder="Mot de passe" name="password" ngModel>
+                <br>
+                <button class="btn btn-primary" type="submit">Créer un compte</button>
+
             </form>
-            <p>Tout est bon, c'est parti !</p>
         </div>
-        <div class="col col-create">
-            <button>Créer un compte</button>
-        </div>
+
     </div>
 
 </div>

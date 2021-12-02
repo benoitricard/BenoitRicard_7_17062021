@@ -1,0 +1,22 @@
+<div class="container">
+
+    <div class="row">
+
+        <div class="col-xs-12">
+            <h3>Connexion</h3>
+            <br>
+
+            <form class="form-group" #loginForm="ngForm" (ngSubmit)="onLogin(loginForm.value)">
+
+                <input type="text" class="form-control" placeholder="Adresse e-mail" name="email" ngModel>
+                <br>
+                <input type="password" class="form-control" placeholder="Mot de passe" name="password" ngModel>
+                <br>
+                <button class="btn btn-primary" type="submit">Se connecter</button>
+
+            </form>
+        </div>
+
+    </div>
+
+</div>

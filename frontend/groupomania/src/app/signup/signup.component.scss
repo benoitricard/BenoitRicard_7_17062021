@@ -1,7 +1,7 @@
 @import "../../sass/styles.scss";
 
 // Variables
-$signup-width: 350px;
+$signup-width: 570px;
 $signup-height: 530px;
 
 // Mixins
@@ -24,45 +24,37 @@ $signup-height: 530px;
 .container {
   display: flex;
   justify-content: center;
-  margin-top: 160px;
+  margin-top: 130px;
+
+  button {
+    width: 250px;
+  }
+
+  .col-xs-12 {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  h3 {
+    font-weight: 600;
+  }
 
   .signup-slogan {
+    h2 {
+      font-size: 50px;
+      font-weight: 700;
+
+      span {
+        color: $primary-color;
+      }
+    }
+
+    :nth-child(2) {
+      margin-top: 40px;
+    }
+
     margin-right: 200px;
-    height: $signup-height;
-
-    .col-sentence {
-      margin-bottom: 40px;
-    }
-
-    .col-users {
-      margin-bottom: 151px;
-    }
-
-    .col-connexion {
-      p {
-        margin-bottom: 15px;
-      }
-
-      button {
-        @include button;
-        width: 250px;
-      }
-    }
-
-    .col {
-      img {
-        margin-bottom: 20px;
-      }
-
-      p {
-        font-size: 30px;
-        font-weight: 700;
-
-        span {
-          color: $primary-color;
-        }
-      }
-    }
   }
 
   .signup-box {
@@ -71,13 +63,14 @@ $signup-height: 530px;
     box-shadow: 0px 0px 8px 0px rgba(0, 0, 0, 0.3);
     width: $signup-width;
     height: $signup-height;
+    padding: 0 10px;
     @include flexbox;
 
     h2 {
       color: $primary-color;
       font-weight: 700;
       margin-top: 10px;
-      margin-bottom: -10px;
+      margin-bottom: -30px;
     }
 
     .col-form {
@@ -86,12 +79,22 @@ $signup-height: 530px;
       form {
         @include flexbox;
 
+        .first-last-name {
+          display: flex;
+
+          #firstName,
+          #lastName {
+            width: $signup-width/2.3;
+            margin: 20px 12px;
+          }
+        }
+
         input {
           color: $primary-color;
           font-size: 15px;
           font-weight: 600;
           padding-left: 12px;
-          width: $signup-width/1.1;
+          width: $signup-width/1.095;
           border-radius: $border-radius/1.5;
           border: solid 4px $primary-color;
           height: 60px;
@@ -108,7 +111,7 @@ $signup-height: 530px;
         font-size: 15px;
         color: $primary-color;
         font-weight: 600;
-        margin: 5px 0 0 5px;
+        margin: 10px 0 0 12px;
       }
     }
 
@@ -116,7 +119,7 @@ $signup-height: 530px;
 
       button {
         @include button;
-        width: $signup-width/1.1;
+        width: $signup-width/1.095;
       }
     }
   }

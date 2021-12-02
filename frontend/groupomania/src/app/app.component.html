@@ -1,16 +1,17 @@
-<div class="navbar-fixed-top" id="header">
-    <a class="navbar-left" href="#"><img src="../../assets/images/icon-left-font-monochrome-white.svg"
-            alt="groupomania-logo"></a>
-</div>
-<div class="navbar-fixed-top blur-effect"></div>
-<app-signup></app-signup>
-<div id="footer">
-    <div class="container-alt">
-        <div class="buttons">
-            <button>Contact</button>
-            <button>FAQ & Aide</button>
-            <button>Conditions générales</button>
+<nav class="navbar navbar-default">
+    <div class="container-fluid">
+        <div class="navbar-collapse">
+            <div class="navbar-brand"><a routerLink="signup">Groupomania</a></div>
+            <ul *ngIf="navbarUser()" class="nav navbar-nav navbar-right">
+                <li routerLinkActive="active"><a routerLink="signup">S'inscrire</a></li>
+                <li routerLinkActive="active"><a routerLink="login">Se connecter</a></li>
+            </ul>
+            <ul *ngIf="navbarDashboard()" class="nav navbar-nav navbar-right">
+                <li routerLinkActive="active"><a routerLink="post-list">Publications</a></li>
+                <li routerLinkActive="active"><a routerLink="user-list">Utilisateurs</a></li>
+                <li routerLinkActive="active"><a routerLink="my-profile">Profil</a></li>
+            </ul>
         </div>
-        <p>Copyright © 2021 - GROUPOMANIA INC.</p>
     </div>
-</div>
+</nav>
+<router-outlet></router-outlet>
