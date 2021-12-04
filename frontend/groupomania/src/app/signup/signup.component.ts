@@ -1,5 +1,5 @@
 import { Component, Injectable, OnInit } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { AuthService } from '../services/auth.service';
 
 @Component({
   selector: 'app-signup',
@@ -9,24 +9,10 @@ import { HttpClient } from '@angular/common/http';
 @Injectable()
 export class SignupComponent implements OnInit {
   onSignup(form: any) {
-    this.httpClient
-      .post('http://localhost:3000/api/user/signup', form)
-      .subscribe(
-        () => {
-          console.log('User registered');
-          return true;
-        },
-        (error) => {
-          console.log('Erreur : ' + error);
-        }
-      );
+    this.authService.signUser(form);
   }
 
-  onVerifyErrors() {
-    return true;
-  }
-
-  constructor(private httpClient: HttpClient) {}
+  constructor(public authService: AuthService) {}
 
   ngOnInit(): void {}
 }

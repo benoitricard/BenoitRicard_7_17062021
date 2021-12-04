@@ -14,14 +14,21 @@
                 <input type="password" class="form-control" placeholder="Mot de passe" name="password"
                     #password="ngModel" required ngModel>
                 <br>
-                <button class="btn btn-primary" type="submit">Se connecter</button>
+                <button class="btn btn-primary" type="submit" [disabled]="email.invalid && password.invalid">Se
+                    connecter</button>
+                <br>
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" id="checkbox" name="checkbox" #checkbox="ngModel"
+                        ngModel>
+                    <label class="form-check-label" for="checkbox">Se souvenir de moi</label>
+                </div>
                 <br>
                 <div class="alert alert-danger"
                     *ngIf="(email.invalid && (email.dirty || email.touched)) || (password.invalid && (password.dirty || password.touched))">
                     <p>Tous les champs sont requis.</p>
                 </div>
                 <br><br><br>
-                <a routerLink="signup">Informations de compte oubliées ?</a>
+                <a routerLink="/signup">Informations de compte oubliées ?</a>
 
             </form>
         </div>

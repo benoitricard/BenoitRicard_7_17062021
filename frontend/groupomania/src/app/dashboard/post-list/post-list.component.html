@@ -1,0 +1,25 @@
+<h3>Publications</h3>
+<br>
+<div class="list-group" id="post-list">
+    <div class="list-group-item" *ngFor="let post of posts;">
+        <div class="header-post">
+            <div class="user">
+                <img *ngIf="post.User.profilePicture == null"
+                    src="../../../assets/images/default_pp.png1637522636718.png" alt="default-profile-picture">
+                <img *ngIf="post.User.profilePicture !== null" src="{{ post.User.profilePicture }}"
+                    alt="profile-picture">
+                <div class="user-name-date">
+                    <h4>{{ post.User.firstName }} {{ post.User.lastName }}</h4>
+                    <p>{{ post.createdAt | date:'medium' }}</p>
+                </div>
+            </div>
+            <button type="button" class="btn btn-secondary">● ● ●</button>
+        </div>
+        <div *ngIf="post.attachment !== null" id="attachment">
+            <span class="span-center"></span>
+            <img src="{{ post.attachment }}" alt="post-file">
+        </div>
+        <p id="content">{{ post.content }}</p>
+        <p id="likes">Likes: {{ post.nbOfLikes }}</p>
+    </div>
+</div>

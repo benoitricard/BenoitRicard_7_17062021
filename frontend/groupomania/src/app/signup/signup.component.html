@@ -20,7 +20,9 @@
                 <input type="password" class="form-control" placeholder="Mot de passe" #password="ngModel"
                     name="password" minlength="8" maxlength="24" required ngModel>
                 <br>
-                <button class="btn btn-primary" type="submit">Créer un compte</button>
+                <button class="btn btn-primary" type="submit"
+                    [disabled]="firstName.invalid && lastName.invalid &&email.invalid && password.invalid">Créer un
+                    compte</button>
                 <br><br>
                 <div class="alert alert-danger"
                     *ngIf="(firstName.invalid && (firstName.dirty || firstName.touched)) || (lastName.invalid && (lastName.dirty || lastName.touched)) || (email.invalid && (email.dirty || email.touched)) || (password.invalid && (password.dirty || password.touched))">

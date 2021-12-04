@@ -1,5 +1,6 @@
 import { Component, Injectable, OnInit } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { Router } from '@angular/router';
+import { AuthService } from '../services/auth.service';
 
 @Component({
   selector: 'app-login',
@@ -9,19 +10,14 @@ import { HttpClient } from '@angular/common/http';
 @Injectable()
 export class LoginComponent implements OnInit {
   onLogin(form: any) {
-    this.httpClient
-      .post('http://localhost:3000/api/user/login', form)
-      .subscribe(
-        () => {
-          console.log('User connected');
-        },
-        (error) => {
-          console.log('Erreur : ' + error);
-        }
-      );
+    this.authService.logUser(form);
   }
 
-  constructor(private httpClient: HttpClient) {}
+  constructor(public authService: AuthService, private router: Router) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    if (localStorage.getItem('auth') || sessionStorage.getItem('auth')) {
+      this.router.navigate(['dashboard/posts']);
+    }
+  }
 }

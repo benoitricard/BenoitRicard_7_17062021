@@ -1,0 +1,18 @@
+<h3>Utilisateurs</h3>
+<br>
+<div class="list-group" id="user-list">
+    <div class="list-group-item" *ngFor="let user of users;">
+        <div class="header-user">
+            <div class="user">
+                <img *ngIf="user.profilePicture == null" src="../../../assets/images/default_pp.png1637522636718.png"
+                    alt="default-profile-picture">
+                <img *ngIf="user.profilePicture !== null" src="{{ user.profilePicture }}" alt="profile-picture">
+                <div class="user-name-date">
+                    <h4>{{ user.firstName }} {{ user.lastName }}</h4>
+                    <p>Membre depuis: {{ user.createdAt | date:'medium' }}</p>
+                </div>
+            </div>
+            <button type="button" class="btn btn-secondary">● ● ●</button>
+        </div>
+    </div>
+</div>

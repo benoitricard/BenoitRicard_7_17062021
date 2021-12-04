@@ -1,0 +1,32 @@
+@import "../../sass/styles.scss";
+
+* {
+  margin: auto;
+  padding: auto;
+}
+
+form {
+  .text-input {
+    padding: 20px 0 100px 10px;
+  }
+
+  .buttons {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    padding: 0;
+
+    button,
+    label {
+      min-height: 35px;
+      min-width: 49%;
+    }
+
+    label {
+      position: relative;
+      left: -11px;
+      bottom: 2.3px;
+    }
+  }
+}
