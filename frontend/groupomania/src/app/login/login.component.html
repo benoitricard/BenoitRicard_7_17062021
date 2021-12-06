@@ -8,13 +8,13 @@
 
             <form class="form-group" #loginForm="ngForm" (ngSubmit)="onLogin(loginForm.value)">
 
-                <input type="text" class="form-control" placeholder="Adresse e-mail" name="email" #email="ngModel"
-                    required ngModel>
+                <input type="text" class="form-control" placeholder="Adresse e-mail" name="email" minlength="5"
+                    #email="ngModel" required ngModel>
                 <br>
-                <input type="password" class="form-control" placeholder="Mot de passe" name="password"
-                    #password="ngModel" required ngModel>
+                <input type="password" class="form-control" placeholder="Mot de passe" minlength="8" maxlength="24"
+                    name="password" #password="ngModel" required ngModel>
                 <br>
-                <button class="btn btn-primary" type="submit" [disabled]="email.invalid && password.invalid">Se
+                <button class="btn btn-primary" type="submit" [disabled]="password.invalid || email.invalid">Se
                     connecter</button>
                 <br>
                 <div class="form-check">

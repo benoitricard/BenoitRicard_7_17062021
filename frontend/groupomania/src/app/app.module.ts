@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 
 import { AppComponent } from './app.component';
@@ -18,6 +18,8 @@ import { AuthService } from './services/auth.service';
 import { AuthGuard } from './guard/auth-guard.guard';
 import { AccessDeniedComponent } from './access-denied/access-denied.component';
 import { UserListComponent } from './dashboard/user-list/user-list.component';
+import { FileUploadService } from './services/file-upload.service';
+import { FileUploadComponent } from './dashboard/post-list/file-upload/file-upload.component';
 
 @NgModule({
   declarations: [
@@ -31,16 +33,19 @@ import { UserListComponent } from './dashboard/user-list/user-list.component';
     PostListComponent,
     AccessDeniedComponent,
     UserListComponent,
+    FileUploadComponent,
   ],
   imports: [
     BrowserModule,
     FormsModule,
+    ReactiveFormsModule,
     HttpClientModule,
     RouterModule.forRoot(appRoutes),
   ],
   providers: [
     AuthService,
     AuthGuard,
+    FileUploadService,
     {
       provide: HTTP_INTERCEPTORS,
       useClass: TokenInterceptorService,

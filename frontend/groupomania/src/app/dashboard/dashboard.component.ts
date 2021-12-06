@@ -1,5 +1,5 @@
 import { Component, Injectable, OnInit } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-dashboard',
@@ -8,18 +8,15 @@ import { HttpClient } from '@angular/common/http';
 })
 @Injectable()
 export class DashboardComponent implements OnInit {
-  onCreatePost(form: any) {
-    this.httpClient.post('http://localhost:3000/api/post', form).subscribe(
-      () => {
-        window.location.reload();
-      },
-      (err) => {
-        console.error(err);
-      }
-    );
+  userTitle() {
+    if (this.router.url == '/dashboard/users') {
+      return true;
+    } else {
+      return false;
+    }
   }
 
-  constructor(private httpClient: HttpClient) {}
+  constructor(private router: Router) {}
 
   ngOnInit(): void {}
 }

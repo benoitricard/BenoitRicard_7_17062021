@@ -8,20 +8,20 @@
 
             <form class="form-group" #signupForm="ngForm" (ngSubmit)="onSignup(signupForm.value)">
 
-                <input type="text" class="form-control" placeholder="Prénom" #firstName="ngModel" name="firstName"
-                    required ngModel>
+                <input type="text" class="form-control" placeholder="Prénom" #firstName="ngModel" minlength="2"
+                    name="firstName" required ngModel>
                 <br>
-                <input type="text" class="form-control" placeholder="Nom" #lastName="ngModel" name="lastName" required
-                    ngModel>
+                <input type="text" class="form-control" placeholder="Nom" #lastName="ngModel" minlength="2"
+                    name="lastName" required ngModel>
                 <br>
-                <input type="email" class="form-control" placeholder="Adresse e-mail" #email="ngModel" name="email"
-                    required ngModel>
+                <input type="email" class="form-control" placeholder="Adresse e-mail" minlength="5" #email="ngModel"
+                    name="email" required ngModel>
                 <br>
                 <input type="password" class="form-control" placeholder="Mot de passe" #password="ngModel"
                     name="password" minlength="8" maxlength="24" required ngModel>
                 <br>
                 <button class="btn btn-primary" type="submit"
-                    [disabled]="firstName.invalid && lastName.invalid &&email.invalid && password.invalid">Créer un
+                    [disabled]="password.invalid || firstName.invalid || lastName.invalid || email.invalid">Créer un
                     compte</button>
                 <br><br>
                 <div class="alert alert-danger"
