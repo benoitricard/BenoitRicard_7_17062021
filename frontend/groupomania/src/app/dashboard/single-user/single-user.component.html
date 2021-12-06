@@ -1,0 +1,34 @@
+<div class="container">
+    <div class="row">
+        <div class="col-xs-12">
+
+            <h3>Utilisateur (n°{{ user.id }})</h3>
+            <br>
+            <div class="list-group" id="post-list">
+                <div class="list-group-item">
+                    <div class="header-post">
+                        <div class="user">
+                            <img *ngIf="user.profilePicture == null"
+                                src="../../../assets/images/default_pp.png1637522636718.png"
+                                alt="default-profile-picture">
+                            <img *ngIf="user.profilePicture !== null" src="{{ user.profilePicture }}"
+                                alt="profile-picture">
+                            <div class="user-name-date">
+                                <h4>{{ user.firstName + ' ' + user.lastName }}<span *ngIf="user.isAdmin === 1"
+                                        id="admin">ADMIN</span></h4>
+                                <p>Membre depuis: {{ user.createdAt | date:'medium' }}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="buttons" *ngIf="(connectedUserInfo.isAdmin == 1) || (connectedUserInfo.id == user.id)">
+                <button class="btn btn-primary" type="submit" [disabled]="">Modifier les informations</button>
+                <br><br>
+                <button class="btn btn-danger" type="submit" [disabled]="" (click)="onDeleteUser()">Supprimer
+                    l'utilisateur</button>
+            </div>
+
+        </div>
+    </div>
+</div>

@@ -1,7 +1,6 @@
 import { Component, Injectable, OnInit } from '@angular/core';
-import { HttpClient, HttpEventType, HttpResponse } from '@angular/common/http';
-import { Observable } from 'rxjs';
-import { FileUploadService } from 'src/app/services/file-upload.service';
+import { HttpClient } from '@angular/common/http';
+import { FormGroup, FormControl, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-file-upload',
@@ -10,21 +9,44 @@ import { FileUploadService } from 'src/app/services/file-upload.service';
 })
 @Injectable()
 export class FileUploadComponent implements OnInit {
-  onCreatePost(form: any) {
-    this.httpClient.post('http://localhost:3000/api/post', form).subscribe(
-      () => {
-        window.location.reload();
-      },
-      (err) => {
-        console.error(err);
-      }
-    );
+  postCreationForm = new FormGroup({
+    content: new FormControl('', [
+      Validators.required,
+      Validators.minLength(5),
+    ]),
+    attachment: new FormControl(''),
+    attachmentSource: new FormControl(''),
+  });
+
+  get f() {
+    return this.postCreationForm.controls;
   }
 
-  constructor(
-    private httpClient: HttpClient,
-    private uploadService: FileUploadService
-  ) {}
+  onFileChange(event: any) {
+    if (event.target.files.length > 0) {
+      const attachment = event.target.files[0];
+      this.postCreationForm.patchValue({
+        attachmentSource: attachment,
+      });
+    }
+  }
+
+  onPostCreation() {
+    const formData = new FormData();
+    formData.append(
+      'attachment',
+      this.postCreationForm.get('attachmentSource')?.value
+    );
+    formData.append('content', this.postCreationForm.get('content')?.value);
+
+    this.httpClient
+      .post('http://localhost:3000/api/post', formData)
+      .subscribe(() => {
+        window.location.reload();
+      });
+  }
+
+  constructor(private httpClient: HttpClient) {}
 
   ngOnInit(): void {}
 }

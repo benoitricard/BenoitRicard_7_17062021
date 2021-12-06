@@ -1,0 +1,40 @@
+<br><br>
+<div class="container">
+    <div class="row">
+        <div class="col-xs-12">
+
+            <div class="pp">
+                <img *ngIf="user.profilePicture === null" src="../../../assets/images/default_pp.png1637522636718.png"
+                    alt="profile-picture">
+                <img *ngIf="user.profilePicture !== null" src="{{ user.profilePicture }}" alt="profile-picture">
+            </div>
+            <h3>{{ user.firstName + ' ' + user.lastName }}<span *ngIf="user.isAdmin === 1" id="admin">ADMIN</span></h3>
+            <p>Membre depuis: <span>{{ user.createdAt | date:'medium' }}</span> --- Dernière connexion: <span>{{
+                    user.lastConnexion | date:'medium' }}</span></p>
+            <br>
+            <div class="bio">
+                <h4>Biography</h4>
+                <p *ngIf="user.biography !== null">{{ user.biography }}</p>
+                <p *ngIf="user.biography === null">-</p>
+            </div>
+            <br>
+            <div class="job">
+                <h4>Job Title</h4>
+                <p *ngIf="user.jobTitle !== null">{{ user.jobTitle }}</p>
+                <p *ngIf="user.jobTitle === null">-</p>
+            </div>
+            <br>
+            <div class="birthday">
+                <h4>Birthday</h4>
+                <p *ngIf="user.birthday !== null">{{ user.birthday }}</p>
+                <p *ngIf="user.birthday === null">-</p>
+            </div>
+            <br>
+            <div class="buttons">
+                <button class="btn btn-primary">Modifier le profil</button>
+                <button class="btn btn-danger">Supprimer le profil</button>
+            </div>
+
+        </div>
+    </div>
+</div>

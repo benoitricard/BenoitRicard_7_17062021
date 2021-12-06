@@ -1,14 +1,15 @@
-<form class="form-group" #postCreationForm="ngForm" (ngSubmit)="onCreatePost(postCreationForm.value)">
+<form class="form-group" [formGroup]="postCreationForm" (ngSubmit)="onPostCreation()">
 
     <br>
-    <input class="form-control text-input" type="text" minlength="5" maxlength="700"
-        placeholder="Écrivez quelque chose..." name="content" #content="ngModel" required ngModel>
+    <input class="form-control text-input" type="text" minlength="5" maxlength="700" placeholder="Quoi de neuf ?"
+        formControlName="content" id="content">
     <br>
     <div class="buttons">
         <label for="attachment" class="btn btn-primary" id="file">Ajouter une photo</label>
-        <input class="hidden" id="attachment" name="attachment" type="file" #attachment="ngModel" ngModel>
+        <input class="hidden" id="attachment" formControlName="attachment" id="attachment" type="file"
+            (change)="onFileChange($event)">
         <br><br>
-        <button class="btn btn-primary" type="submit" [disabled]="content.invalid">Publier</button>
+        <button class="btn btn-primary" type="submit" [disabled]="f.content.invalid">Publier</button>
     </div>
 
 </form>

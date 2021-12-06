@@ -1,0 +1,40 @@
+@import "../../../sass/styles.scss";
+
+$pp-height: 45px;
+
+.buttons {
+  button {
+    margin-right: 10px;
+  }
+}
+
+#admin {
+  font-size: 20px;
+  margin-left: 12px;
+  background-color: $primary-color;
+  color: white;
+  padding: 3px 12px;
+  border-radius: 5px;
+}
+
+p {
+  font-size: 16px;
+}
+
+span {
+  font-weight: 700;
+}
+
+.pp {
+  display: flex;
+  width: 70%;
+  margin-bottom: 20px;
+  margin-left: 150px;
+
+  img {
+    height: $pp-height*2;
+    width: $pp-height*2;
+    border-radius: 100px;
+    margin-left: -150px;
+  }
+}

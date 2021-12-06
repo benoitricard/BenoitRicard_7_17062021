@@ -8,7 +8,7 @@ export class AuthService {
 
   signUser(form: any) {
     this.http.post('http://localhost:3000/api/user/signup', form).subscribe(
-      (res) => {
+      () => {
         this.router.navigate(['login']);
       },
       (err) => {
@@ -23,13 +23,17 @@ export class AuthService {
         if (form['checkbox'] == true) {
           localStorage.setItem('token', res['token']);
           localStorage.setItem('auth', 'true');
+          localStorage.setItem('userId', res['userId']);
           sessionStorage.removeItem('token');
           sessionStorage.removeItem('auth');
+          sessionStorage.removeItem('userId');
         } else {
           sessionStorage.setItem('token', res['token']);
           sessionStorage.setItem('auth', 'true');
+          sessionStorage.setItem('userId', res['userId']);
           localStorage.removeItem('token');
           localStorage.removeItem('auth');
+          localStorage.removeItem('userId');
         }
         this.router.navigate(['dashboard/posts']);
       },
@@ -44,6 +48,8 @@ export class AuthService {
     sessionStorage.removeItem('token');
     localStorage.removeItem('auth');
     sessionStorage.removeItem('auth');
+    localStorage.removeItem('userId');
+    sessionStorage.removeItem('userId');
   }
 
   getToken() {

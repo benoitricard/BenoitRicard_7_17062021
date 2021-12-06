@@ -1,0 +1,40 @@
+<div class="container">
+    <div class="row">
+        <div class="col-xs-12">
+
+            <h3>Post (n°{{ post.id }})</h3>
+            <br>
+            <div class="list-group" id="post-list">
+                <div class="list-group-item">
+                    <div class="header-post">
+                        <div class="user">
+                            <img *ngIf="post.User.profilePicture == null"
+                                src="../../../assets/images/default_pp.png1637522636718.png"
+                                alt="default-profile-picture">
+                            <img *ngIf="post.User.profilePicture !== null" src="{{ post.User.profilePicture }}"
+                                alt="profile-picture">
+                            <div class="user-name-date">
+                                <h4>{{ post.User.firstName + ' ' + post.User.lastName }}<span
+                                        *ngIf="post.User.isAdmin === 1" id="admin">ADMIN</span></h4>
+                                <p>{{ post.createdAt | date:'medium' }}</p>
+                            </div>
+                        </div>
+                    </div>
+                    <p id="content">{{ post.content }}</p>
+                    <div *ngIf="post.attachment !== null" id="attachment">
+                        <img src="{{ post.attachment }}" alt="post-file">
+                    </div>
+                    <p id="likes">Likes: {{ post.nbOfLikes }}</p>
+                </div>
+            </div>
+            <div class="buttons" *ngIf="(connectedUserInfo.isAdmin == 1) || (connectedUserInfo.id == post.user_id)">
+                <button class="btn btn-primary" type="submit" [disabled]="">Sauvegarder les modifications</button>
+                <br><br>
+                <button class="btn btn-danger" type="submit" (click)="onDeletePost()">Supprimer la
+                    publication</button>
+            </div>
+
+        </div>
+    </div>
+</div>
+<br><br><br><br><br><br>

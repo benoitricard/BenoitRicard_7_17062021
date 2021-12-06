@@ -11,17 +11,17 @@
                 <img *ngIf="post.User.profilePicture !== null" src="{{ post.User.profilePicture }}"
                     alt="profile-picture">
                 <div class="user-name-date">
-                    <h4>{{ post.User.firstName }} {{ post.User.lastName }}</h4>
+                    <h4>{{ post.User.firstName }} {{ post.User.lastName }}<span *ngIf="post.User.isAdmin === 1"
+                            id="admin">ADMIN</span></h4>
                     <p>{{ post.createdAt | date:'medium' }}</p>
                 </div>
             </div>
-            <button type="button" class="btn btn-secondary">● ● ●</button>
-        </div>
-        <div *ngIf="post.attachment !== null" id="attachment">
-            <span class="span-center"></span>
-            <img src="{{ post.attachment }}" alt="post-file">
+            <button type="button" class="btn btn-secondary" routerLink="{{ post.id }}">● ● ●</button>
         </div>
         <p id="content">{{ post.content }}</p>
+        <div *ngIf="post.attachment !== null" id="attachment">
+            <img src="{{ post.attachment }}" alt="post-file">
+        </div>
         <p id="likes">Likes: {{ post.nbOfLikes }}</p>
     </div>
 </div>

@@ -2,6 +2,15 @@
 
 $pp-height: 45px;
 
+#admin {
+  font-size: 14px;
+  margin-left: 6px;
+  background-color: $primary-color;
+  color: white;
+  padding: 3px 12px;
+  border-radius: 5px;
+}
+
 .list-group {
   margin-bottom: 100px;
 }
@@ -40,10 +49,15 @@ $pp-height: 45px;
   }
 
   .user-name-date {
-    margin-left: -560px;
+    text-align: left;
+    margin-left: -240px;
 
     p {
       margin-top: -6px;
+
+      span {
+        font-weight: 600;
+      }
     }
   }
 }

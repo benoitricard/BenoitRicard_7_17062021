@@ -7,11 +7,13 @@
                     alt="default-profile-picture">
                 <img *ngIf="user.profilePicture !== null" src="{{ user.profilePicture }}" alt="profile-picture">
                 <div class="user-name-date">
-                    <h4>{{ user.firstName }} {{ user.lastName }}</h4>
-                    <p>Membre depuis: {{ user.createdAt | date:'medium' }}</p>
+                    <h4>{{ user.firstName }} {{ user.lastName }}<span *ngIf="user.isAdmin === 1" id="admin">ADMIN</span>
+                    </h4>
+                    <p>Membre depuis: <span>{{ user.createdAt | date:'medium' }}</span> --- Dernière connexion: <span>{{
+                            user.lastConnexion | date:'medium' }}</span></p>
                 </div>
             </div>
-            <button type="button" class="btn btn-secondary">● ● ●</button>
+            <button type="button" class="btn btn-secondary" routerLink="{{ user.id }}">● ● ●</button>
         </div>
     </div>
 </div>

@@ -83,6 +83,14 @@ exports.login = (req, res) => {
             if (!valid) {
               return res.status(401).json({ error: 'Mot de passe incorrect' });
             } else {
+              user
+                .update({
+                  lastConnexion: Date.now(),
+                })
+                .then(() => res.status(200).json())
+                .catch((error) =>
+                  res.status(500).json({ error: 'A - ' + error })
+                );
               return res.status(201).json({
                 userId: user.id,
                 token: jwt.sign({ userId: user.id }, secretToken, {
@@ -91,10 +99,10 @@ exports.login = (req, res) => {
               });
             }
           })
-          .catch((err) => res.status(500).json({ error: 'A - ' + err }));
+          .catch((err) => res.status(500).json({ error: 'B - ' + err }));
       }
     })
-    .catch((err) => res.status(500).json({ error: 'B - ' + err }));
+    .catch((err) => res.status(500).json({ error: 'C - ' + err }));
 };
 
 // Modification d'un user
@@ -248,6 +256,7 @@ exports.getOneUser = (req, res) => {
         'createdAt',
         'updatedAt',
         'isAdmin',
+        'lastConnexion',
       ],
       where: { id: req.params.id },
     })
@@ -287,6 +296,7 @@ exports.getAllUsers = (req, res) => {
           'createdAt',
           'updatedAt',
           'isAdmin',
+          'lastConnexion',
         ],
         order: [['createdAt', 'ASC']],
       })
@@ -332,11 +342,20 @@ exports.getAllPostsFromUser = (req, res) => {
                   'user_id',
                   'createdAt',
                   'updatedAt',
+                  'lastConnexion',
                 ],
                 include: [
                   {
                     model: models.User,
-                    attributes: ['firstName', 'lastName', 'profilePicture'],
+                    attributes: [
+                      'firstName',
+                      'lastName',
+                      'profilePicture',
+                      'isAdmin',
+                      'createdAt',
+                      'updatedAt',
+                      'lastConnexion',
+                    ],
                     where: {
                       id: { [Op.col]: 'Post.user_id' },
                     },
@@ -356,7 +375,15 @@ exports.getAllPostsFromUser = (req, res) => {
                     },
                     include: {
                       model: models.User,
-                      attributes: ['firstName', 'lastName', 'profilePicture'],
+                      attributes: [
+                        'firstName',
+                        'lastName',
+                        'profilePicture',
+                        'isAdmin',
+                        'createdAt',
+                        'updatedAt',
+                        'lastConnexion',
+                      ],
                     },
                     required: false,
                   },
@@ -407,7 +434,15 @@ exports.getAllLikesFromUser = (req, res) => {
                 include: [
                   {
                     model: models.User,
-                    attributes: ['firstName', 'lastName', 'profilePicture'],
+                    attributes: [
+                      'firstName',
+                      'lastName',
+                      'profilePicture',
+                      'isAdmin',
+                      'createdAt',
+                      'updatedAt',
+                      'lastConnexion',
+                    ],
                     where: {
                       id: { [Op.col]: 'Like.user_id' },
                     },
@@ -428,7 +463,15 @@ exports.getAllLikesFromUser = (req, res) => {
                     },
                     include: {
                       model: models.User,
-                      attributes: ['firstName', 'lastName', 'profilePicture'],
+                      attributes: [
+                        'firstName',
+                        'lastName',
+                        'profilePicture',
+                        'isAdmin',
+                        'createdAt',
+                        'updatedAt',
+                        'lastConnexion',
+                      ],
                     },
                     required: false,
                   },

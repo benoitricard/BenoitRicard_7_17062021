@@ -20,6 +20,9 @@ import { AccessDeniedComponent } from './access-denied/access-denied.component';
 import { UserListComponent } from './dashboard/user-list/user-list.component';
 import { FileUploadService } from './services/file-upload.service';
 import { FileUploadComponent } from './dashboard/post-list/file-upload/file-upload.component';
+import { SinglePostComponent } from './dashboard/single-post/single-post.component';
+import { SingleUserComponent } from './dashboard/single-user/single-user.component';
+import { MyProfileComponent } from './dashboard/my-profile/my-profile.component';
 
 @NgModule({
   declarations: [
@@ -34,6 +37,9 @@ import { FileUploadComponent } from './dashboard/post-list/file-upload/file-uplo
     AccessDeniedComponent,
     UserListComponent,
     FileUploadComponent,
+    SinglePostComponent,
+    SingleUserComponent,
+    MyProfileComponent,
   ],
   imports: [
     BrowserModule,

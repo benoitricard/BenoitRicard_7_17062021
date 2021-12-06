@@ -11,10 +11,6 @@ $pp-height: 45px;
   border-radius: 5px;
 }
 
-#post-list {
-  margin-bottom: 200px;
-}
-
 #content {
   margin-bottom: 20px;
   font-size: 18px;
@@ -23,6 +19,7 @@ $pp-height: 45px;
 .list-group-item {
   margin-bottom: 20px;
   padding: 15px 25px;
+  height: 100px;
 }
 
 #attachment {
@@ -39,26 +36,11 @@ $pp-height: 45px;
   }
 }
 
-.header-post {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-
-  button {
-    padding: 10px;
-    font-size: 6px;
-    margin-top: -20px;
-
-    &:hover {
-      background-color: #e3e3e3;
-    }
-  }
-}
-
 .user {
   display: flex;
   width: 70%;
   margin-bottom: 20px;
+  margin-left: 150px;
 
   img {
     height: $pp-height;
@@ -68,10 +50,23 @@ $pp-height: 45px;
   }
 
   .user-name-date {
-    margin-left: -670px;
+    margin-left: -560px;
 
     p {
       margin-top: -6px;
     }
+  }
+}
+
+.buttons {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 0;
+
+  button {
+    min-height: 35px;
+    min-width: 49%;
   }
 }
