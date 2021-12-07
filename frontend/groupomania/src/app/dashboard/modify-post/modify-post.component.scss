@@ -2,30 +2,6 @@
 
 $pp-height: 45px;
 
-#comments-form {
-  display: flex;
-  justify-content: space-between;
-
-  p {
-    margin-top: 8px;
-  }
-
-  input {
-    width: 78%;
-  }
-}
-
-#like-div {
-  p {
-    font-size: 20px;
-    margin-left: 20px;
-    margin-top: 8px;
-  }
-
-  display: flex;
-  align-items: center;
-}
-
 #admin {
   font-size: 14px;
   margin-left: 6px;
@@ -33,10 +9,6 @@ $pp-height: 45px;
   color: white;
   padding: 3px 12px;
   border-radius: 5px;
-}
-
-#post-list {
-  margin-bottom: 200px;
 }
 
 #content {
@@ -47,6 +19,10 @@ $pp-height: 45px;
 .list-group-item {
   margin-bottom: 20px;
   padding: 15px 25px;
+}
+
+#file {
+  min-width: 100%;
 }
 
 #attachment {
@@ -63,26 +39,11 @@ $pp-height: 45px;
   }
 }
 
-.header-post {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-
-  button {
-    padding: 10px;
-    font-size: 6px;
-    margin-top: -20px;
-
-    &:hover {
-      background-color: #e3e3e3;
-    }
-  }
-}
-
 .user {
   display: flex;
   width: 70%;
   margin-bottom: 20px;
+  margin-left: 140px;
 
   img {
     height: $pp-height;
@@ -98,4 +59,13 @@ $pp-height: 45px;
       margin-top: -6px;
     }
   }
+}
+
+button {
+  min-height: 35px;
+  min-width: 100%;
+}
+
+.text-input {
+  padding: 20px 0 100px 10px;
 }

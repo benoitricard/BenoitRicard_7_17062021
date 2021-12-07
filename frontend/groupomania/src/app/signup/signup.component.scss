@@ -34,7 +34,8 @@ $signup-height: 530px;
   }
 
   button,
-  form {
+  form,
+  #file {
     min-width: 250px;
     max-width: 250px;
   }
@@ -42,6 +43,7 @@ $signup-height: 530px;
   .col-xs-12 {
     display: flex;
     flex-direction: column;
+    align-items: center;
     justify-content: center;
   }
 

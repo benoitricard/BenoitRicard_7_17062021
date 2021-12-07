@@ -11,7 +11,8 @@ $pp-height: 45px;
   border-radius: 5px;
 }
 
-#content {
+#content,
+#contentComment {
   margin-bottom: 20px;
   font-size: 18px;
 }
@@ -37,7 +38,8 @@ $pp-height: 45px;
 
 .user {
   display: flex;
-  width: 70%;
+  width: 86%;
+  justify-content: space-between;
   margin-bottom: 20px;
   margin-left: 140px;
 
@@ -49,11 +51,18 @@ $pp-height: 45px;
   }
 
   .user-name-date {
-    margin-left: -670px;
+    margin-left: -720px;
 
     p {
       margin-top: -6px;
     }
+  }
+
+  button {
+    font-size: 8px;
+    height: 40px;
+    width: 50px;
+    margin-top: 10px;
   }
 }
 

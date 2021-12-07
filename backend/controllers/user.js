@@ -8,39 +8,12 @@ require('dotenv').config();
 
 const secretToken = process.env.TOKEN;
 
-// Regex
-const textRegex = /^[A-Za-z]{2,}$/;
-const emailRegex = /^[A-Za-z0-9_.+-]+\@[A-Za-z0-9_.+-]+\.[A-Za-z]+$/;
-const passwordRegex = /[\w]{8,24}/;
-
 // Inscription
 exports.signup = (req, res) => {
   const firstName = req.body.firstName;
   const lastName = req.body.lastName;
   const email = req.body.email;
   const password = req.body.password;
-
-  if (!textRegex.test(firstName)) {
-    return res
-      .status(400)
-      .json({ error: 'Le prénom doit contenir uniquement des lettres' });
-  }
-  if (!textRegex.test(lastName)) {
-    return res.status(400).json({
-      error: 'Le nom de famille doit contenir uniquement des lettres',
-    });
-  }
-  if (!emailRegex.test(email)) {
-    return res.status(400).json({
-      error:
-        "Veuillez écrire l'adresse e-mail avec cette syntaxe: exemple@exemple.com",
-    });
-  }
-  if (!passwordRegex.test(password)) {
-    return res.status(400).json({
-      error: 'Le mot de passe doit contenir entre 8 et 24 caractères',
-    });
-  }
 
   models.User.findOne({ where: { email: email } })
     .then((user) => {

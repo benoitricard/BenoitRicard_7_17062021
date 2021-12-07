@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
-import { Component, Injectable, Input, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { Component, Injectable, OnInit } from '@angular/core';
+import { AuthService } from '../services/auth.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -9,17 +9,9 @@ import { Router } from '@angular/router';
 })
 @Injectable()
 export class DashboardComponent implements OnInit {
-  public connectedUserInfo: any = {};
+  connectedUserInfo: any = {};
 
-  userTitle() {
-    if (this.router.url == '/dashboard/users') {
-      return true;
-    } else {
-      return false;
-    }
-  }
-
-  constructor(private router: Router, private http: HttpClient) {}
+  constructor(private http: HttpClient, private authService: AuthService) {}
 
   ngOnInit(): void {
     let connectedUserId: any;

@@ -9,6 +9,7 @@ $checkbox-size: 18px;
 
   .form-check {
     display: flex;
+    justify-content: center;
 
     input {
       cursor: pointer;
@@ -41,6 +42,7 @@ $checkbox-size: 18px;
     display: flex;
     flex-direction: column;
     justify-content: center;
+    align-items: center;
 
     form {
       display: flex;

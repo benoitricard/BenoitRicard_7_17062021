@@ -6,8 +6,7 @@
     <br>
     <div class="buttons">
         <label for="attachment" class="btn btn-primary" id="file">Ajouter une photo</label>
-        <input class="hidden" id="attachment" formControlName="attachment" id="attachment" type="file"
-            (change)="onFileChange($event)">
+        <input class="hidden" id="attachment" formControlName="attachment" type="file" (change)="onFileChange($event)">
         <br><br>
         <button class="btn btn-primary" type="submit" [disabled]="f.content.invalid">Publier</button>
     </div>

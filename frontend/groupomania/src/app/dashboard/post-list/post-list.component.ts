@@ -9,8 +9,21 @@ import { HttpClient } from '@angular/common/http';
 export class PostListComponent implements OnInit {
   posts: any[] = [];
 
-  constructor(private httpClient: HttpClient) {
-    this.httpClient.get<any[]>('http://localhost:3000/api/post').subscribe(
+  onCreateComment(form: any, postId: any) {
+    this.http
+      .post(`http://localhost:3000/api/comment/${postId}`, form)
+      .subscribe(
+        () => {
+          window.location.reload();
+        },
+        (err) => {
+          console.error(err);
+        }
+      );
+  }
+
+  constructor(private http: HttpClient) {
+    this.http.get<any[]>('http://localhost:3000/api/post').subscribe(
       (res) => {
         this.posts = res;
       },

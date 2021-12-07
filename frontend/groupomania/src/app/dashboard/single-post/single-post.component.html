@@ -25,10 +25,35 @@
                         <img src="{{ post.attachment }}" alt="post-file">
                     </div>
                     <p id="likes">Likes: {{ post.nbOfLikes }}</p>
+                    <br>
+                    <h3 *ngIf="post.Comments.length === 0" class="comments-title">Aucun commentaire</h3>
+                    <div *ngIf="post.Comments.length > 0" class="list-group" id="comments-list">
+                        <h3 class="comments-title">Commentaires ({{ post.Comments.length }})</h3>
+                        <br>
+                        <div class="list-group-item" *ngFor="let comment of post.Comments;">
+                            <div class="user">
+                                <img *ngIf="comment.User.profilePicture == null"
+                                    src="../../../assets/images/default_pp.png1637522636718.png"
+                                    alt="default-profile-picture">
+                                <img *ngIf="comment.User.profilePicture !== null"
+                                    src="{{ comment.User.profilePicture }}" alt="profile-picture">
+                                <div class="user-name-date">
+                                    <h4>{{ comment.User.firstName + ' ' + comment.User.lastName }}<span
+                                            *ngIf="post.User.isAdmin === 1" id="admin">ADMIN</span></h4>
+                                    <p>{{ comment.createdAt | date:'medium' }}</p>
+                                </div>
+                                <button type="button" class="btn btn-secondary"
+                                    routerLink="../../comment/{{ comment.id }}">●
+                                    ●
+                                    ●</button>
+                            </div>
+                            <p id="contentComment">{{ comment.content }}</p>
+                        </div>
+                    </div>
                 </div>
             </div>
             <div class="buttons" *ngIf="(connectedUserInfo.isAdmin == 1) || (connectedUserInfo.id == post.user_id)">
-                <button class="btn btn-primary" type="submit" [disabled]="">Sauvegarder les modifications</button>
+                <button class="btn btn-primary" type="submit" routerLink="modify">Modifier la publication</button>
                 <br><br>
                 <button class="btn btn-danger" type="submit" (click)="onDeletePost()">Supprimer la
                     publication</button>

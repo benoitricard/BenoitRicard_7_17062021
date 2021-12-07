@@ -7,10 +7,12 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 import { AuthGuard } from './guard/auth-guard.guard';
 import { AccessDeniedComponent } from './access-denied/access-denied.component';
 import { PostListComponent } from './dashboard/post-list/post-list.component';
-import { UserListComponent } from './dashboard/user-list/user-list.component';
 import { SinglePostComponent } from './dashboard/single-post/single-post.component';
 import { SingleUserComponent } from './dashboard/single-user/single-user.component';
 import { MyProfileComponent } from './dashboard/my-profile/my-profile.component';
+import { UserListComponent } from './dashboard/user-list/user-list.component';
+import { ModifyPostComponent } from './dashboard/modify-post/modify-post.component';
+import { SingleCommentComponent } from './dashboard/single-comment/single-comment.component';
 
 export const appRoutes: Routes = [
   { path: 'signup', component: SignupComponent },
@@ -25,11 +27,6 @@ export const appRoutes: Routes = [
     ],
   },
   {
-    path: 'dashboard/users',
-    canActivate: [AuthGuard],
-    component: DashboardComponent,
-  },
-  {
     path: 'dashboard/my-profile',
     canActivate: [AuthGuard],
     component: MyProfileComponent,
@@ -40,9 +37,19 @@ export const appRoutes: Routes = [
     component: SinglePostComponent,
   },
   {
+    path: 'dashboard/posts/:id/modify',
+    canActivate: [AuthGuard],
+    component: ModifyPostComponent,
+  },
+  {
     path: 'dashboard/users/:id',
     canActivate: [AuthGuard],
     component: SingleUserComponent,
+  },
+  {
+    path: 'dashboard/comment/:id',
+    canActivate: [AuthGuard],
+    component: SingleCommentComponent,
   },
   {
     path: '',

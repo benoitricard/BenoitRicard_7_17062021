@@ -1,0 +1,36 @@
+<div class="container">
+    <div class="row">
+        <div class="col-xs-12">
+
+            <h3>Commentaire (n°{{ comment.id }})</h3>
+            <br>
+            <div class="list-group" id="post-list">
+                <div class="list-group-item">
+                    <div class="header-post">
+                        <div class="user">
+                            <img *ngIf="comment.User.profilePicture == null"
+                                src="../../../assets/images/default_pp.png1637522636718.png"
+                                alt="default-profile-picture">
+                            <img *ngIf="comment.User.profilePicture !== null" src="{{ comment.User.profilePicture }}"
+                                alt="profile-picture">
+                            <div class="user-name-date">
+                                <h4>{{ comment.User.firstName + ' ' + comment.User.lastName }}<span
+                                        *ngIf="comment.User.isAdmin === 1" id="admin">ADMIN</span></h4>
+                                <p>{{ comment.createdAt | date:'medium' }}</p>
+                            </div>
+                        </div>
+                    </div>
+                    <p id="content">{{ comment.content }}</p>
+                </div>
+            </div>
+            <div class="buttons" *ngIf="(connectedUserInfo.isAdmin == 1) || (connectedUserInfo.id == comment.user_id)">
+                <button class="btn btn-primary" type="submit">Modifier le commentaire</button>
+                <br><br>
+                <button class="btn btn-danger" type="submit" (click)="onDeleteComment()">Supprimer le
+                    commentaire</button>
+            </div>
+
+        </div>
+    </div>
+</div>
+<br><br><br><br><br><br>

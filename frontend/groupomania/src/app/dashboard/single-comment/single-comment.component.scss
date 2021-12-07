@@ -2,28 +2,17 @@
 
 $pp-height: 45px;
 
-#comments-form {
-  display: flex;
-  justify-content: space-between;
-
-  p {
-    margin-top: 8px;
-  }
-
-  input {
-    width: 78%;
-  }
-}
-
-#like-div {
-  p {
-    font-size: 20px;
-    margin-left: 20px;
-    margin-top: 8px;
-  }
-
+.buttons {
   display: flex;
   align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 0;
+
+  button {
+    min-height: 35px;
+    min-width: 49%;
+  }
 }
 
 #admin {
@@ -35,11 +24,8 @@ $pp-height: 45px;
   border-radius: 5px;
 }
 
-#post-list {
-  margin-bottom: 200px;
-}
-
-#content {
+#content,
+#contentComment {
   margin-bottom: 20px;
   font-size: 18px;
 }
@@ -63,26 +49,12 @@ $pp-height: 45px;
   }
 }
 
-.header-post {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-
-  button {
-    padding: 10px;
-    font-size: 6px;
-    margin-top: -20px;
-
-    &:hover {
-      background-color: #e3e3e3;
-    }
-  }
-}
-
 .user {
   display: flex;
-  width: 70%;
+  width: 86%;
+  justify-content: space-between;
   margin-bottom: 20px;
+  margin-left: 140px;
 
   img {
     height: $pp-height;
@@ -92,7 +64,7 @@ $pp-height: 45px;
   }
 
   .user-name-date {
-    margin-left: -640px;
+    margin-left: -800px;
 
     p {
       margin-top: -6px;

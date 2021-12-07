@@ -1,6 +1,6 @@
 <app-file-upload></app-file-upload>
 <br>
-<h3>Publications</h3>
+<h3>Publications ({{ posts.length }})</h3>
 <br>
 <div class="list-group" id="post-list">
     <div class="list-group-item" *ngFor="let post of posts;">
@@ -22,6 +22,14 @@
         <div *ngIf="post.attachment !== null" id="attachment">
             <img src="{{ post.attachment }}" alt="post-file">
         </div>
-        <p id="likes">Likes: {{ post.nbOfLikes }}</p>
+        <br>
+        <form class="form-group" id="comments-form" #createCommentForm="ngForm"
+            (ngSubmit)="onCreateComment(createCommentForm.value, post.id)">
+            <button class="btn btn-danger">Liker</button>
+            <p id="likes">Likes: {{ post.nbOfLikes }}</p>
+            <input type="text" class="form-control" placeholder="Commenter la publication..." name="content"
+                #content="ngModel" required ngModel>
+            <button type="submit" class="btn btn-primary" [disabled]="content.invalid">Publier</button>
+        </form>
     </div>
 </div>

@@ -1,0 +1,40 @@
+<div class="container">
+    <div class="row">
+        <div class="col-xs-12">
+
+            <h3>Post (n°{{ post.id }})</h3>
+            <br>
+            <div class="list-group" id="post-list">
+                <div class="list-group-item">
+                    <div class="header-post">
+                        <div class="user">
+                            <img *ngIf="post.User.profilePicture == null"
+                                src="../../../assets/images/default_pp.png1637522636718.png"
+                                alt="default-profile-picture">
+                            <img *ngIf="post.User.profilePicture !== null" src="{{ post.User.profilePicture }}"
+                                alt="profile-picture">
+                            <div class="user-name-date">
+                                <h4>{{ post.User.firstName + ' ' + post.User.lastName }}<span
+                                        *ngIf="post.User.isAdmin === 1" id="admin">ADMIN</span></h4>
+                                <p>{{ post.createdAt | date:'medium' }}</p>
+                            </div>
+                        </div>
+                    </div>
+                    <input class="form-control text-input" type="text" value="{{ post.content }}" id="content">
+                    <div *ngIf="post.attachment !== null" id="attachment">
+                        <img src="{{ post.attachment }}" alt="post-file">
+                    </div>
+                    <label for="attachment" class="btn btn-primary" id="file"><span
+                            *ngIf="post.attachment !== null">Modifier la photo</span><span
+                            *ngIf="post.attachment === null">Ajouter une photo</span></label>
+                    <input class="hidden" id="attachment" name="attachment" type="file">
+                    <br><br>
+                </div>
+            </div>
+            <button *ngIf="(connectedUserInfo.isAdmin == 1) || (connectedUserInfo.id == post.user_id)"
+                class="btn btn-primary" type="submit" routerLink="modify">Sauvegarder les modifications</button>
+
+        </div>
+    </div>
+</div>
+<br><br><br><br><br><br>
