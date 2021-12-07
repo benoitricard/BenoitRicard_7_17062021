@@ -8,6 +8,17 @@ import { HttpClient } from '@angular/common/http';
 })
 export class PostListComponent implements OnInit {
   posts: any[] = [];
+  connectedUserInfo: any = {};
+  likesFromUser: any = [];
+
+  isThisPostLiked(postId: any) {
+    for (let i = 0; i < this.likesFromUser.length; i++) {
+      if (this.likesFromUser[i].post_id === postId) {
+        return true;
+      }
+    }
+    return false;
+  }
 
   onCreateComment(form: any, postId: any) {
     this.http
@@ -22,6 +33,17 @@ export class PostListComponent implements OnInit {
       );
   }
 
+  onLikePost(postId: any) {
+    this.http.post(`http://localhost:3000/api/like/${postId}`, null).subscribe(
+      () => {
+        window.location.reload();
+      },
+      (err) => {
+        console.error(err);
+      }
+    );
+  }
+
   constructor(private http: HttpClient) {
     this.http.get<any[]>('http://localhost:3000/api/post').subscribe(
       (res) => {
@@ -33,5 +55,37 @@ export class PostListComponent implements OnInit {
     );
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    let connectedUserId: any;
+
+    if (localStorage.getItem('userId')) {
+      connectedUserId = localStorage.getItem('userId');
+    } else {
+      connectedUserId = sessionStorage.getItem('userId');
+    }
+
+    this.http
+      .get(`http://localhost:3000/api/user/${connectedUserId}`)
+      .subscribe(
+        (res: any) => {
+          this.connectedUserInfo = res;
+          return res;
+        },
+        (err) => {
+          console.error(err);
+        }
+      );
+
+    this.http
+      .get(`http://localhost:3000/api/user/${connectedUserId}/like`)
+      .subscribe(
+        (res: any) => {
+          this.likesFromUser = res;
+          return res;
+        },
+        (err) => {
+          console.error(err);
+        }
+      );
+  }
 }

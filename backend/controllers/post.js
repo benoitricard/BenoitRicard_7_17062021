@@ -238,7 +238,12 @@ exports.getOnePost = (req, res) => {
             where: { post_id: { [Op.col]: 'Post.id' } },
             include: {
               model: models.User,
-              attributes: ['firstName', 'lastName', 'profilePicture'],
+              attributes: [
+                'firstName',
+                'lastName',
+                'profilePicture',
+                'isAdmin',
+              ],
             },
             required: false,
           },

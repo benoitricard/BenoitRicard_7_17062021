@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
+import { FormGroup, FormControl, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-modify-post',
@@ -11,7 +12,48 @@ export class ModifyPostComponent implements OnInit {
   post: any = {};
   connectedUserInfo: any = {};
 
-  constructor(private http: HttpClient, private route: ActivatedRoute) {}
+  postUpdateForm = new FormGroup({
+    content: new FormControl('', [
+      Validators.required,
+      Validators.minLength(5),
+    ]),
+    attachment: new FormControl(''),
+    attachmentSource: new FormControl(''),
+  });
+
+  get f() {
+    return this.postUpdateForm.controls;
+  }
+
+  onFileChange(event: any) {
+    if (event.target.files.length > 0) {
+      const attachment = event.target.files[0];
+      this.postUpdateForm.patchValue({
+        attachmentSource: attachment,
+      });
+    }
+  }
+
+  onPostUpdate() {
+    const formData = new FormData();
+    formData.append(
+      'attachment',
+      this.postUpdateForm.get('attachmentSource')?.value
+    );
+    formData.append('content', this.postUpdateForm.get('content')?.value);
+
+    this.http
+      .put(`http://localhost:3000/api/post/${this.post.id}`, formData)
+      .subscribe(() => {
+        this.router.navigate([`dashboard/posts/${this.post.id}`]);
+      });
+  }
+
+  constructor(
+    private http: HttpClient,
+    private route: ActivatedRoute,
+    private router: Router
+  ) {}
 
   ngOnInit(): void {
     let connectedUserId: any;

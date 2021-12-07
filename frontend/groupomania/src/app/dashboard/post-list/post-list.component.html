@@ -5,7 +5,7 @@
 <div class="list-group" id="post-list">
     <div class="list-group-item" *ngFor="let post of posts;">
         <div class="header-post">
-            <div class="user">
+            <div class="user" routerLink="../users/{{ post.user_id }}">
                 <img *ngIf="post.User.profilePicture == null"
                     src="../../../assets/images/default_pp.png1637522636718.png" alt="default-profile-picture">
                 <img *ngIf="post.User.profilePicture !== null" src="{{ post.User.profilePicture }}"
@@ -23,13 +23,23 @@
             <img src="{{ post.attachment }}" alt="post-file">
         </div>
         <br>
-        <form class="form-group" id="comments-form" #createCommentForm="ngForm"
-            (ngSubmit)="onCreateComment(createCommentForm.value, post.id)">
-            <button class="btn btn-danger">Liker</button>
-            <p id="likes">Likes: {{ post.nbOfLikes }}</p>
-            <input type="text" class="form-control" placeholder="Commenter la publication..." name="content"
-                #content="ngModel" required ngModel>
-            <button type="submit" class="btn btn-primary" [disabled]="content.invalid">Publier</button>
-        </form>
+        <p>Commentaires ({{ post.Comments.length }})</p>
+        <br>
+        <div class="like-comment">
+            <div class="like">
+                <button
+                    [ngClass]="{'btn': true, 'btn-danger': !isThisPostLiked(post.id), 'btn-warning': isThisPostLiked(post.id)}"
+                    (click)="onLikePost(post.id)"><span *ngIf="isThisPostLiked(post.id)">Disliker</span><span
+                        *ngIf="!isThisPostLiked(post.id)">Liker</span></button>
+                <p id="likes">Likes: {{ post.nbOfLikes }}</p>
+            </div>
+            <form class="form-group" id="comments-form" #createCommentForm="ngForm"
+                (ngSubmit)="onCreateComment(createCommentForm.value, post.id)">
+                <input type="text" class="form-control" placeholder="Commenter la publication..." minlength="5"
+                    name="content" #content="ngModel" required ngModel>
+                <button type="submit" class="btn btn-primary" [disabled]="content.invalid">Publier</button>
+            </form>
+        </div>
+        <br>
     </div>
 </div>

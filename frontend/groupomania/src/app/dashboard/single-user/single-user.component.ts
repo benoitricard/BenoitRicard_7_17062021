@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { FormGroup, FormControl, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-single-user',
@@ -11,17 +12,67 @@ export class SingleUserComponent implements OnInit {
   user: any = {};
   connectedUserInfo: any = {};
 
-  onDeleteUser() {
+  userUpdateForm = new FormGroup({
+    firstName: new FormControl('', [
+      Validators.required,
+      Validators.minLength(2),
+    ]),
+    lastName: new FormControl('', [
+      Validators.required,
+      Validators.minLength(2),
+    ]),
+    biography: new FormControl(''),
+    jobTitle: new FormControl(''),
+    birthday: new FormControl(''),
+    attachment: new FormControl(''),
+    attachmentSource: new FormControl(''),
+  });
+
+  get f() {
+    return this.userUpdateForm.controls;
+  }
+
+  onFileChange(event: any) {
+    if (event.target.files.length > 0) {
+      const attachment = event.target.files[0];
+      this.userUpdateForm.patchValue({
+        attachmentSource: attachment,
+      });
+    }
+  }
+
+  onUserUpdate() {
+    const formData = new FormData();
+    formData.append(
+      'attachment',
+      this.userUpdateForm.get('attachmentSource')?.value
+    );
+    formData.append('firstName', this.userUpdateForm.get('firstName')?.value);
+    formData.append('lastName', this.userUpdateForm.get('lastName')?.value);
+    formData.append('biography', this.userUpdateForm.get('biography')?.value);
+    formData.append('jobTitle', this.userUpdateForm.get('jobTitle')?.value);
+    formData.append('birthday', this.userUpdateForm.get('birthday')?.value);
+
     this.http
-      .delete(`http://localhost:3000/api/user/${this.user['id']}`)
-      .subscribe(
-        () => {
-          this.router.navigate(['dashboard/users']);
-        },
-        (err) => {
-          console.error(err);
-        }
-      );
+      .put(`http://localhost:3000/api/user/${this.user.id}`, formData)
+      .subscribe(() => {
+        window.location.reload();
+      });
+  }
+
+  onDeleteUser() {
+    if (confirm('Êtes-vous sûr de vouloir supprimer cet utilisateur ?')) {
+      this.http
+        .delete(`http://localhost:3000/api/user/${this.user['id']}`)
+        .subscribe(
+          () => {
+            this.router.navigate(['dashboard/users']);
+          },
+          (err) => {
+            console.error(err);
+          }
+        );
+    }
   }
 
   constructor(
@@ -58,6 +109,7 @@ export class SingleUserComponent implements OnInit {
         this.user = res;
       },
       (err) => {
+        this.router.navigate(['not-found']);
         console.error(err);
       }
     );

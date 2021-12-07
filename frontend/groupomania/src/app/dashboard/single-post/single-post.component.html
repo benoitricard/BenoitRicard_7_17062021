@@ -39,7 +39,7 @@
                                     src="{{ comment.User.profilePicture }}" alt="profile-picture">
                                 <div class="user-name-date">
                                     <h4>{{ comment.User.firstName + ' ' + comment.User.lastName }}<span
-                                            *ngIf="post.User.isAdmin === 1" id="admin">ADMIN</span></h4>
+                                            *ngIf="comment.User.isAdmin === 1" id="admin">ADMIN</span></h4>
                                     <p>{{ comment.createdAt | date:'medium' }}</p>
                                 </div>
                                 <button type="button" class="btn btn-secondary"
@@ -55,7 +55,7 @@
             <div class="buttons" *ngIf="(connectedUserInfo.isAdmin == 1) || (connectedUserInfo.id == post.user_id)">
                 <button class="btn btn-primary" type="submit" routerLink="modify">Modifier la publication</button>
                 <br><br>
-                <button class="btn btn-danger" type="submit" (click)="onDeletePost()">Supprimer la
+                <button class="btn btn-danger" type="button" (click)="onDeletePost()">Supprimer la
                     publication</button>
             </div>
 

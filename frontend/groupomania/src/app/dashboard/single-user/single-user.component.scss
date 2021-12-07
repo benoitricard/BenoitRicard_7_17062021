@@ -2,6 +2,19 @@
 
 $pp-height: 45px;
 
+#updatedAt {
+  font-weight: 700;
+}
+
+.first-last-name {
+  display: flex;
+  margin-bottom: 20px;
+
+  input {
+    margin-right: 20px;
+  }
+}
+
 #admin {
   font-size: 14px;
   margin-left: 6px;
@@ -19,7 +32,6 @@ $pp-height: 45px;
 .list-group-item {
   margin-bottom: 20px;
   padding: 15px 25px;
-  height: 100px;
 }
 
 #attachment {
@@ -39,8 +51,9 @@ $pp-height: 45px;
 .user {
   display: flex;
   width: 70%;
+  margin-top: -15px;
   margin-bottom: 20px;
-  margin-left: 150px;
+  margin-left: 140px;
 
   img {
     height: $pp-height;
@@ -50,7 +63,12 @@ $pp-height: 45px;
   }
 
   .user-name-date {
-    margin-left: -560px;
+    margin-top: 30px;
+    margin-left: -200px;
+
+    span {
+      font-weight: 700;
+    }
 
     p {
       margin-top: -6px;

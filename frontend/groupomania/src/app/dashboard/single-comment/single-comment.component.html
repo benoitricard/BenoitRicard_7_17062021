@@ -20,14 +20,18 @@
                             </div>
                         </div>
                     </div>
-                    <p id="content">{{ comment.content }}</p>
+                    <form class="form-group" #commentForm="ngForm" (ngSubmit)="onCommentUpdate(commentForm.value)">
+                        <input class="form-control" id="content" placeholder="{{ comment.content }}" name="content"
+                            minlength="5" #content="ngModel" required ngModel>
+                        <div class="buttons"
+                            *ngIf="(connectedUserInfo.isAdmin == 1) || (connectedUserInfo.id == comment.user_id)">
+                            <button class="btn btn-primary" type="submit">Sauvegarder les modifications</button>
+                            <br><br>
+                            <button class="btn btn-danger" type="submit" (click)="onDeleteComment()">Supprimer le
+                                commentaire</button>
+                        </div>
+                    </form>
                 </div>
-            </div>
-            <div class="buttons" *ngIf="(connectedUserInfo.isAdmin == 1) || (connectedUserInfo.id == comment.user_id)">
-                <button class="btn btn-primary" type="submit">Modifier le commentaire</button>
-                <br><br>
-                <button class="btn btn-danger" type="submit" (click)="onDeleteComment()">Supprimer le
-                    commentaire</button>
             </div>
 
         </div>

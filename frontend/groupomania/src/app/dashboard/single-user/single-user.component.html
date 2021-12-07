@@ -7,28 +7,63 @@
             <div class="list-group" id="post-list">
                 <div class="list-group-item">
                     <div class="header-post">
-                        <div class="user">
-                            <img *ngIf="user.profilePicture == null"
-                                src="../../../assets/images/default_pp.png1637522636718.png"
-                                alt="default-profile-picture">
-                            <img *ngIf="user.profilePicture !== null" src="{{ user.profilePicture }}"
-                                alt="profile-picture">
-                            <div class="user-name-date">
-                                <h4>{{ user.firstName + ' ' + user.lastName }}<span *ngIf="user.isAdmin === 1"
-                                        id="admin">ADMIN</span></h4>
-                                <p>Membre depuis: {{ user.createdAt | date:'medium' }}</p>
+                        <form class="form-group" [formGroup]="userUpdateForm" (ngSubmit)="onUserUpdate()">
+                            <div class="user">
+                                <img *ngIf="user.profilePicture == null"
+                                    src="../../../assets/images/default_pp.png1637522636718.png"
+                                    alt="default-profile-picture">
+                                <img *ngIf="user.profilePicture !== null" src="{{ user.profilePicture }}"
+                                    alt="profile-picture">
+                                <div class="user-name-date">
+                                    <div class="first-last-name">
+                                        <input class="form-control" type="text" placeholder="{{ user.firstName }}"
+                                            formControlName="firstName" id="firstName">
+                                        <input class="form-control" type="text" placeholder="{{ user.lastName }}"
+                                            formControlName="lastName" id="lastName">
+                                        <span *ngIf="user.isAdmin === 1" id="admin">ADMIN</span>
+                                    </div>
+                                    <p>Membre depuis: <span>{{ user.createdAt | date:'medium' }}</span> --- Dernière
+                                        connexion: <span>{{
+                                            user.lastConnexion | date:'medium' }}</span></p>
+                                </div>
                             </div>
-                        </div>
+                            <h4>Biography</h4>
+                            <input class="form-control" type="text" placeholder="{{ user.biography }}"
+                                formControlName="biography" id="biography">
+                            <br>
+                            <h4>Job Title</h4>
+                            <input class="form-control" type="text" placeholder="{{ user.jobTitle }}"
+                                formControlName="jobTitle" id="jobTitle">
+                            <br>
+                            <h4>Birthday</h4>
+                            <input class="form-control" type="date" value="{{ user.birthday }}"
+                                formControlName="birthday" id="birthday">
+                            <br><br>
+                            <label class="btn btn-info form-control" for="attachment">
+                                <span *ngIf="user.profilePicture !== null">Modifier la photo de profil</span>
+                                <span *ngIf="user.profilePicture === null">Ajouter une photo</span>
+                            </label>
+                            <input type="file" class="hidden" id="attachment" formControlName="attachment"
+                                (change)="onFileChange($event)">
+                            <br><br>
+                            <p>Dernière modification: <span id="updatedAt">{{ user.updatedAt | date:'medium' }}</span>
+                            </p>
+                            <br><br>
+                            <div class="buttons"
+                                *ngIf="(connectedUserInfo.isAdmin == 1) || (connectedUserInfo.id == user.id)">
+                                <button class="btn btn-primary" type="submit" [disabled]="">Sauvegarder les
+                                    modifications</button>
+                                <br><br>
+                                <button class="btn btn-danger" type="submit" [disabled]=""
+                                    (click)="onDeleteUser()">Supprimer
+                                    l'utilisateur</button>
+                            </div>
+                        </form>
                     </div>
                 </div>
-            </div>
-            <div class="buttons" *ngIf="(connectedUserInfo.isAdmin == 1) || (connectedUserInfo.id == user.id)">
-                <button class="btn btn-primary" type="submit" [disabled]="">Modifier les informations</button>
-                <br><br>
-                <button class="btn btn-danger" type="submit" [disabled]="" (click)="onDeleteUser()">Supprimer
-                    l'utilisateur</button>
             </div>
 
         </div>
     </div>
 </div>
+<br><br><br><br>

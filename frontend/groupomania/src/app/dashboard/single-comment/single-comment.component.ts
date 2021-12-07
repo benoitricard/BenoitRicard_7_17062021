@@ -11,17 +11,32 @@ export class SingleCommentComponent implements OnInit {
   comment: any = {};
   connectedUserInfo: any = {};
 
-  onDeleteComment() {
+  onCommentUpdate(form: any) {
     this.http
-      .delete(`http://localhost:3000/api/comment/${this.comment['id']}`)
+      .put(`http://localhost:3000/api/comment/${this.comment.id}`, form)
       .subscribe(
         () => {
-          this.router.navigate(['dashboard/posts']);
+          this.router.navigate([`dashboard/posts/${this.comment.post_id}`]);
         },
         (err) => {
           console.error(err);
         }
       );
+  }
+
+  onDeleteComment() {
+    if (confirm('Êtes-vous sûr de vouloir supprimer ce commentaire ?')) {
+      this.http
+        .delete(`http://localhost:3000/api/comment/${this.comment['id']}`)
+        .subscribe(
+          () => {
+            this.router.navigate([`dashboard/posts/${this.comment.post_id}`]);
+          },
+          (err) => {
+            console.error(err);
+          }
+        );
+    }
   }
 
   constructor(
@@ -59,6 +74,7 @@ export class SingleCommentComponent implements OnInit {
         console.log(this.comment);
       },
       (err) => {
+        this.router.navigate(['not-found']);
         console.error(err);
       }
     );

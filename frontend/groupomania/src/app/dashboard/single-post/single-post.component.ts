@@ -12,16 +12,18 @@ export class SinglePostComponent implements OnInit {
   connectedUserInfo: any = {};
 
   onDeletePost() {
-    this.http
-      .delete(`http://localhost:3000/api/post/${this.post['id']}`)
-      .subscribe(
-        () => {
-          this.router.navigate(['dashboard/posts']);
-        },
-        (err) => {
-          console.error(err);
-        }
-      );
+    if (confirm('Êtes-vous sûr de vouloir supprimer ce post ?')) {
+      this.http
+        .delete(`http://localhost:3000/api/post/${this.post['id']}`)
+        .subscribe(
+          () => {
+            this.router.navigate(['dashboard/posts']);
+          },
+          (err) => {
+            console.error(err);
+          }
+        );
+    }
   }
 
   constructor(
@@ -59,6 +61,7 @@ export class SinglePostComponent implements OnInit {
         console.log(this.post);
       },
       (err) => {
+        this.router.navigate(['not-found']);
         console.error(err);
       }
     );

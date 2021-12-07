@@ -20,19 +20,24 @@
                             </div>
                         </div>
                     </div>
-                    <input class="form-control text-input" type="text" value="{{ post.content }}" id="content">
-                    <div *ngIf="post.attachment !== null" id="attachment">
-                        <img src="{{ post.attachment }}" alt="post-file">
-                    </div>
-                    <label for="attachment" class="btn btn-primary" id="file"><span
-                            *ngIf="post.attachment !== null">Modifier la photo</span><span
-                            *ngIf="post.attachment === null">Ajouter une photo</span></label>
-                    <input class="hidden" id="attachment" name="attachment" type="file">
-                    <br><br>
+                    <form class="form-group" [formGroup]="postUpdateForm" (ngSubmit)="onPostUpdate()">
+                        <input class="form-control text-input" type="text" placeholder="{{ post.content }}"
+                            formControlName="content" id="content">
+                        <div *ngIf="post.attachment !== null" id="attachment">
+                            <img src="{{ post.attachment }}" alt="post-file">
+                        </div>
+                        <button class="btn btn-danger" *ngIf="post.attachment !== null">Supprimer la photo</button>
+                        <br><br>
+                        <label for="attachmentInput" class="btn btn-primary" id="file"><span
+                                *ngIf="post.attachment !== null">Modifier la photo</span><span
+                                *ngIf="post.attachment === null">Ajouter une photo</span></label>
+                        <input class="hidden" formControlName="attachment" id="attachmentInput" name="attachment"
+                            type="file" (change)="onFileChange($event)">
+                        <br><br>
+                        <button class="btn btn-primary" type="submit">Sauvegarder les modifications</button>
+                    </form>
                 </div>
             </div>
-            <button *ngIf="(connectedUserInfo.isAdmin == 1) || (connectedUserInfo.id == post.user_id)"
-                class="btn btn-primary" type="submit" routerLink="modify">Sauvegarder les modifications</button>
 
         </div>
     </div>
