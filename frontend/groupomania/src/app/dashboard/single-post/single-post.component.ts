@@ -58,7 +58,6 @@ export class SinglePostComponent implements OnInit {
     this.http.get(`http://localhost:3000/api/post/${postId}`).subscribe(
       (res) => {
         this.post = res;
-        console.log(this.post);
       },
       (err) => {
         this.router.navigate(['not-found']);

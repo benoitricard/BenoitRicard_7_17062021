@@ -2,18 +2,25 @@
 <br>
 <div class="list-group" id="user-list">
     <div class="list-group-item router-link" *ngFor="let user of users;" routerLink="{{ user.id }}">
-        <div class="header-user">
-            <div class="user">
-                <img *ngIf="user.profilePicture == null" src="../../../assets/images/default_pp.png1637522636718.png"
-                    alt="default-profile-picture">
-                <img *ngIf="user.profilePicture !== null" src="{{ user.profilePicture }}" alt="profile-picture">
-                <div class="user-name-date">
-                    <h4>{{ user.firstName }} {{ user.lastName }}<span *ngIf="user.isAdmin === 1" id="admin">ADMIN</span>
-                    </h4>
-                    <p>Membre depuis: <span>{{ user.createdAt | date:'medium' }}</span> --- Dernière connexion: <span>{{
-                            user.lastConnexion | date:'medium' }}</span></p>
+
+        <div class="user">
+            <div class="pp-and-name">
+                <div class="pp">
+                    <img *ngIf="user.profilePicture === null"
+                        src="../../../assets/images/default_pp.png1637522636718.png" alt="default-profile-picture">
+                    <img *ngIf="user.profilePicture !== null" src="{{ user.profilePicture }}" alt="profile-picture">
+                </div>
+                <div class="informations">
+                    <p id="name"><span>{{ user.firstName + ' ' + user.lastName}}</span><span id="admin"
+                            *ngIf="user.isAdmin === 1">ADMIN</span></p>
+                    <p id="date">Membre depuis: <span>{{ user.createdAt | timeAgo }}</span> --- Dernière
+                        connexion:
+                        <span>il y a {{
+                            user.lastConnexion | timeAgo }}</span>
+                    </p>
                 </div>
             </div>
         </div>
+
     </div>
 </div>

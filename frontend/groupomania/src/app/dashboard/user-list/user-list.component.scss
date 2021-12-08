@@ -2,13 +2,19 @@
 
 $pp-height: 45px;
 
+.informations {
+  #date {
+    font-size: 14px;
+
+    span {
+      font-weight: 500;
+      color: black;
+    }
+  }
+}
+
 #admin {
   font-size: 14px;
-  margin-left: 6px;
-  background-color: $primary-color;
-  color: white;
-  padding: 3px 12px;
-  border-radius: 5px;
 }
 
 .list-group {
@@ -20,44 +26,6 @@ $pp-height: 45px;
   margin-bottom: 20px;
 }
 
-.header-user {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-
-  button {
-    padding: 10px;
-    font-size: 6px;
-    margin-top: -20px;
-
-    &:hover {
-      background-color: #e3e3e3;
-    }
-  }
-}
-
 .user {
-  display: flex;
-  width: 70%;
-  margin-bottom: 20px;
-
-  img {
-    height: $pp-height;
-    width: $pp-height;
-    border-radius: 100px;
-    margin-left: -140px;
-  }
-
-  .user-name-date {
-    text-align: left;
-    margin-left: -240px;
-
-    p {
-      margin-top: -6px;
-
-      span {
-        font-weight: 600;
-      }
-    }
-  }
+  margin-left: 8px;
 }

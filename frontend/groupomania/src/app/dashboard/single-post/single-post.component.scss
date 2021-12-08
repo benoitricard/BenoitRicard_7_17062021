@@ -36,36 +36,6 @@ $pp-height: 45px;
   }
 }
 
-.user {
-  display: flex;
-  width: 86%;
-  justify-content: space-between;
-  margin-bottom: 20px;
-  margin-left: 140px;
-
-  img {
-    height: $pp-height;
-    width: $pp-height;
-    border-radius: 100px;
-    margin-left: -140px;
-  }
-
-  .user-name-date {
-    margin-left: -720px;
-
-    p {
-      margin-top: -6px;
-    }
-  }
-
-  button {
-    font-size: 8px;
-    height: 40px;
-    width: 50px;
-    margin-top: 10px;
-  }
-}
-
 .buttons {
   display: flex;
   align-items: center;

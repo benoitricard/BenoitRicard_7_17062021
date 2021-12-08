@@ -271,7 +271,7 @@ exports.getAllUsers = (req, res) => {
           'isAdmin',
           'lastConnexion',
         ],
-        order: [['createdAt', 'ASC']],
+        order: [['createdAt', 'DESC']],
       })
         .then((users) => {
           res.status(200).send(users);

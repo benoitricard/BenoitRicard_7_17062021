@@ -15,19 +15,21 @@
 <br>
 <div class="list-group" id="post-list">
     <div class="list-group-item" *ngFor="let post of posts;">
-        <div class="header-post">
-            <div class="user" routerLink="../users/{{ post.user_id }}">
-                <img *ngIf="post.User.profilePicture == null"
-                    src="../../../assets/images/default_pp.png1637522636718.png" alt="default-profile-picture">
-                <img *ngIf="post.User.profilePicture !== null" src="{{ post.User.profilePicture }}"
-                    alt="profile-picture">
-                <div class="user-name-date">
-                    <h4>{{ post.User.firstName }} {{ post.User.lastName }}<span *ngIf="post.User.isAdmin === 1"
-                            id="admin">ADMIN</span></h4>
-                    <p>{{ post.createdAt | date:'medium' }}</p>
+
+        <div class="user router-link" routerLink="../users/{{ post.user_id }}">
+            <div class="pp-and-name">
+                <div class="pp">
+                    <img *ngIf="post.User.profilePicture === null"
+                        src="../../../assets/images/default_pp.png1637522636718.png" alt="default-profile-picture">
+                    <img *ngIf="post.User.profilePicture !== null" src="{{ post.User.profilePicture }}"
+                        alt="profile-picture">
                 </div>
+                <p><span>{{ post.User.firstName + ' ' + post.User.lastName}}</span><span id="admin"
+                        *ngIf="post.User.isAdmin === 1">ADMIN</span></p>
             </div>
+            <p id="date">il y a {{ post.createdAt | timeAgo }}</p>
         </div>
+
         <p id="content" routerLink="{{ post.id }}" class="router-link">{{ post.content }}</p>
         <div *ngIf="post.attachment !== null" id="attachment" routerLink="{{ post.id }}" class="router-link">
             <img src="{{ post.attachment }}" alt="post-file">

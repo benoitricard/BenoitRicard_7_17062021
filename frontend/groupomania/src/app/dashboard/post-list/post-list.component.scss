@@ -1,6 +1,6 @@
 @import "../../../sass/styles.scss";
 
-$pp-height: 45px;
+$pp-height: 50px;
 
 .header-title {
   display: flex;
@@ -16,6 +16,7 @@ $pp-height: 45px;
 
     select {
       margin-right: 15px;
+      cursor: pointer;
     }
   }
 }
@@ -37,7 +38,7 @@ $pp-height: 45px;
 
     p {
       margin-top: 10px;
-      margin-left: 20px;
+      margin-left: 15px;
     }
   }
 
@@ -96,42 +97,5 @@ $pp-height: 45px;
   img {
     width: 100vw;
     height: 100vh;
-  }
-}
-
-.header-post {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-
-  button {
-    padding: 10px;
-    font-size: 6px;
-    margin-top: -20px;
-
-    &:hover {
-      background-color: #e3e3e3;
-    }
-  }
-}
-
-.user {
-  display: flex;
-  width: 70%;
-  margin-bottom: 20px;
-
-  img {
-    height: $pp-height;
-    width: $pp-height;
-    border-radius: 100px;
-    margin-left: -140px;
-  }
-
-  .user-name-date {
-    margin-left: -640px;
-
-    p {
-      margin-top: -6px;
-    }
   }
 }

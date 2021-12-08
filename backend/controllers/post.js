@@ -135,8 +135,8 @@ exports.deletePost = (req, res) => {
     .catch((error) => res.status(500).json({ error: 'E - ' + error }));
 };
 
-// Obtention de tous les posts
-exports.getAllPosts = (req, res) => {
+// Obtention de tous les posts (récents)
+exports.getAllPostsRecents = (req, res) => {
   const token = req.headers.authorization.split(' ')[1];
   const decodedToken = jwt.verify(token, secretToken);
 
@@ -186,6 +186,192 @@ exports.getAllPosts = (req, res) => {
               },
             ],
             order: [['createdAt', 'DESC']],
+          })
+            .then((posts) => {
+              res.status(200).send(posts);
+            })
+            .catch((error) => res.status(500).json({ error: 'A - ' + error }));
+        })
+        .catch((error) => res.status(500).json({ error: 'B - ' + error }));
+    })
+    .catch((error) => res.status(500).json({ error: 'C - ' + error }));
+};
+
+// Obtention de tous les posts (vieux)
+exports.getAllPostsOlds = (req, res) => {
+  const token = req.headers.authorization.split(' ')[1];
+  const decodedToken = jwt.verify(token, secretToken);
+
+  // vérifier que l'user est connecté
+  models.User.findOne({ where: { id: decodedToken.userId } })
+    .then((user) => {
+      if (!user) {
+        return res.status(404).json({ error: 'TOKEN' });
+      }
+      // vérifier que des posts ont déjà été publiés
+      models.Post.count()
+        .then((nbOfPosts) => {
+          if (nbOfPosts === 0) {
+            return res.status(404).json({ error: 'POST NOT FOUND' });
+          }
+          // trouver tous les posts
+          models.Post.findAll({
+            include: [
+              {
+                model: models.User,
+                attributes: [
+                  'firstName',
+                  'lastName',
+                  'profilePicture',
+                  'isAdmin',
+                  'createdAt',
+                  'updatedAt',
+                ],
+                where: { id: { [Op.col]: 'Post.user_id' } },
+              },
+              {
+                model: models.Comment,
+                attributes: [
+                  'id',
+                  'content',
+                  'user_id',
+                  'post_id',
+                  'createdAt',
+                  'updatedAt',
+                ],
+                where: { post_id: { [Op.col]: 'Post.id' } },
+                include: {
+                  model: models.User,
+                  attributes: ['firstName', 'lastName', 'profilePicture'],
+                },
+                required: false,
+              },
+            ],
+            order: [['createdAt', 'ASC']],
+          })
+            .then((posts) => {
+              res.status(200).send(posts);
+            })
+            .catch((error) => res.status(500).json({ error: 'A - ' + error }));
+        })
+        .catch((error) => res.status(500).json({ error: 'B - ' + error }));
+    })
+    .catch((error) => res.status(500).json({ error: 'C - ' + error }));
+};
+
+// Obtention de tous les posts (likés)
+exports.getAllPostsLiked = (req, res) => {
+  const token = req.headers.authorization.split(' ')[1];
+  const decodedToken = jwt.verify(token, secretToken);
+
+  // vérifier que l'user est connecté
+  models.User.findOne({ where: { id: decodedToken.userId } })
+    .then((user) => {
+      if (!user) {
+        return res.status(404).json({ error: 'TOKEN' });
+      }
+      // vérifier que des posts ont déjà été publiés
+      models.Post.count()
+        .then((nbOfPosts) => {
+          if (nbOfPosts === 0) {
+            return res.status(404).json({ error: 'POST NOT FOUND' });
+          }
+          // trouver tous les posts
+          models.Post.findAll({
+            include: [
+              {
+                model: models.User,
+                attributes: [
+                  'firstName',
+                  'lastName',
+                  'profilePicture',
+                  'isAdmin',
+                  'createdAt',
+                  'updatedAt',
+                ],
+                where: { id: { [Op.col]: 'Post.user_id' } },
+              },
+              {
+                model: models.Comment,
+                attributes: [
+                  'id',
+                  'content',
+                  'user_id',
+                  'post_id',
+                  'createdAt',
+                  'updatedAt',
+                ],
+                where: { post_id: { [Op.col]: 'Post.id' } },
+                include: {
+                  model: models.User,
+                  attributes: ['firstName', 'lastName', 'profilePicture'],
+                },
+                required: false,
+              },
+            ],
+            order: [['nbOfLikes', 'DESC']],
+          })
+            .then((posts) => {
+              res.status(200).send(posts);
+            })
+            .catch((error) => res.status(500).json({ error: 'A - ' + error }));
+        })
+        .catch((error) => res.status(500).json({ error: 'B - ' + error }));
+    })
+    .catch((error) => res.status(500).json({ error: 'C - ' + error }));
+};
+
+// Obtention de tous les posts (unlikés)
+exports.getAllPostsUnliked = (req, res) => {
+  const token = req.headers.authorization.split(' ')[1];
+  const decodedToken = jwt.verify(token, secretToken);
+
+  // vérifier que l'user est connecté
+  models.User.findOne({ where: { id: decodedToken.userId } })
+    .then((user) => {
+      if (!user) {
+        return res.status(404).json({ error: 'TOKEN' });
+      }
+      // vérifier que des posts ont déjà été publiés
+      models.Post.count()
+        .then((nbOfPosts) => {
+          if (nbOfPosts === 0) {
+            return res.status(404).json({ error: 'POST NOT FOUND' });
+          }
+          // trouver tous les posts
+          models.Post.findAll({
+            include: [
+              {
+                model: models.User,
+                attributes: [
+                  'firstName',
+                  'lastName',
+                  'profilePicture',
+                  'isAdmin',
+                  'createdAt',
+                  'updatedAt',
+                ],
+                where: { id: { [Op.col]: 'Post.user_id' } },
+              },
+              {
+                model: models.Comment,
+                attributes: [
+                  'id',
+                  'content',
+                  'user_id',
+                  'post_id',
+                  'createdAt',
+                  'updatedAt',
+                ],
+                where: { post_id: { [Op.col]: 'Post.id' } },
+                include: {
+                  model: models.User,
+                  attributes: ['firstName', 'lastName', 'profilePicture'],
+                },
+                required: false,
+              },
+            ],
+            order: [['nbOfLikes', 'ASC']],
           })
             .then((posts) => {
               res.status(200).send(posts);

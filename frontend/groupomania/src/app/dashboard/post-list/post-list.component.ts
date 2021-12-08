@@ -8,9 +8,39 @@ import { FormBuilder, Validators } from '@angular/forms';
   styleUrls: ['./post-list.component.scss'],
 })
 export class PostListComponent implements OnInit {
+  constructor(private http: HttpClient, private fb: FormBuilder) {}
+
   posts: any[] = [];
   connectedUserInfo: any = {};
   likesFromUser: any = [];
+  orderList: any;
+
+  getPosts() {
+    this.http
+      .get<any[]>(`http://localhost:3000/api/post${this.getOrder()}`)
+      .subscribe(
+        (res) => {
+          this.posts = res;
+        },
+        (err) => {
+          console.error(err);
+        }
+      );
+  }
+
+  getOrder() {
+    if (this.orderList.order == 'recents') {
+      return '';
+    } else if (this.orderList.order == 'olds') {
+      return '/olds';
+    } else if (this.orderList.order == 'liked') {
+      return '/liked';
+    } else if (this.orderList.order == 'unliked') {
+      return '/unliked';
+    } else {
+      return '';
+    }
+  }
 
   orderForm = this.fb.group({
     order: ['', [Validators.required]],
@@ -30,7 +60,8 @@ export class PostListComponent implements OnInit {
     if (!this.orderForm.valid) {
       return false;
     } else {
-      alert(JSON.stringify(this.orderForm.value));
+      this.orderList = this.orderForm.value;
+      this.getPosts();
     }
     return false;
   }
@@ -68,7 +99,7 @@ export class PostListComponent implements OnInit {
     );
   }
 
-  constructor(private http: HttpClient, private fb: FormBuilder) {
+  ngOnInit(): void {
     this.http.get<any[]>('http://localhost:3000/api/post').subscribe(
       (res) => {
         this.posts = res;
@@ -77,9 +108,7 @@ export class PostListComponent implements OnInit {
         console.error(err);
       }
     );
-  }
 
-  ngOnInit(): void {
     let connectedUserId: any;
 
     if (localStorage.getItem('userId')) {

@@ -1,5 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
   selector: 'app-my-profile',
@@ -9,7 +11,27 @@ import { Component, OnInit } from '@angular/core';
 export class MyProfileComponent implements OnInit {
   user: any = {};
 
-  constructor(private http: HttpClient) {}
+  onDeleteUser() {
+    if (confirm('Êtes-vous sûr de vouloir supprimer votre profil ?')) {
+      this.http
+        .delete(`http://localhost:3000/api/user/${this.user['id']}`)
+        .subscribe(
+          () => {
+            this.router.navigate(['login']);
+            this.authService.logOut();
+          },
+          (err) => {
+            console.error(err);
+          }
+        );
+    }
+  }
+
+  constructor(
+    private http: HttpClient,
+    private router: Router,
+    private authService: AuthService
+  ) {}
 
   ngOnInit(): void {
     let connectedUserId: any;

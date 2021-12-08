@@ -25,6 +25,7 @@ import { MyProfileComponent } from './dashboard/my-profile/my-profile.component'
 import { UserListComponent } from './dashboard/user-list/user-list.component';
 import { ModifyPostComponent } from './dashboard/modify-post/modify-post.component';
 import { SingleCommentComponent } from './dashboard/single-comment/single-comment.component';
+import { TimeAgoPipe } from './pipes/time-ago.pipe';
 
 @NgModule({
   declarations: [
@@ -44,6 +45,7 @@ import { SingleCommentComponent } from './dashboard/single-comment/single-commen
     MyProfileComponent,
     ModifyPostComponent,
     SingleCommentComponent,
+    TimeAgoPipe,
   ],
   imports: [
     BrowserModule,

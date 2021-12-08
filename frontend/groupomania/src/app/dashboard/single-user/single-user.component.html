@@ -22,9 +22,9 @@
                                             formControlName="lastName" id="lastName">
                                         <span *ngIf="user.isAdmin === 1" id="admin">ADMIN</span>
                                     </div>
-                                    <p>Membre depuis: <span>{{ user.createdAt | date:'medium' }}</span> --- Dernière
-                                        connexion: <span>{{
-                                            user.lastConnexion | date:'medium' }}</span></p>
+                                    <p>Membre depuis: <span>{{ user.createdAt | timeAgo }}</span> --- Dernière
+                                        connexion: <span>il y a {{
+                                            user.lastConnexion | timeAgo }}</span></p>
                                 </div>
                             </div>
                             <h4>Biography</h4>
@@ -46,7 +46,7 @@
                             <input type="file" class="hidden" id="attachment" formControlName="attachment"
                                 (change)="onFileChange($event)">
                             <br><br>
-                            <p>Dernière modification: <span id="updatedAt">{{ user.updatedAt | date:'medium' }}</span>
+                            <p>Dernière modification: <span id="updatedAt">il y a {{ user.updatedAt | timeAgo }}</span>
                             </p>
                             <br><br>
                             <div class="buttons"

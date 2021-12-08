@@ -9,8 +9,8 @@
                 <img *ngIf="user.profilePicture !== null" src="{{ user.profilePicture }}" alt="profile-picture">
             </div>
             <h3>{{ user.firstName + ' ' + user.lastName }}<span *ngIf="user.isAdmin === 1" id="admin">ADMIN</span></h3>
-            <p>Membre depuis: <span>{{ user.createdAt | date:'medium' }}</span> --- Dernière connexion: <span>{{
-                    user.lastConnexion | date:'medium' }}</span></p>
+            <p>Membre depuis: <span>{{ user.createdAt | timeAgo }}</span> --- Dernière connexion: <span>il y a {{
+                    user.lastConnexion | timeAgo }}</span></p>
             <br>
             <div class="bio">
                 <h4>Biography</h4>
@@ -32,7 +32,7 @@
             <br>
             <div class="buttons">
                 <button class="btn btn-primary" routerLink="../users/{{ user.id }}">Modifier le profil</button>
-                <button class="btn btn-danger">Supprimer le profil</button>
+                <button class="btn btn-danger" (click)="onDeleteUser()">Supprimer le profil</button>
             </div>
 
         </div>
