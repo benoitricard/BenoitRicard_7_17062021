@@ -2,6 +2,19 @@
 
 $pp-height: 45px;
 
+.posts-user {
+  display: flex;
+  justify-content: space-between;
+
+  :nth-child(1) {
+    margin-right: 15px;
+  }
+
+  button {
+    width: 49.5%;
+  }
+}
+
 .buttons {
   button {
     margin-right: 10px;

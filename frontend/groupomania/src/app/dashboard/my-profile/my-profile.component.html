@@ -30,10 +30,21 @@
                 <p *ngIf="user.birthday === null">-</p>
             </div>
             <br>
-            <div class="buttons">
-                <button class="btn btn-primary" routerLink="../users/{{ user.id }}">Modifier le profil</button>
+            <div class="buttons" *ngIf="connectedUserId.isAdmin || connectedUserId == user.id">
+                <button class="btn btn-primary" routerLink="../../users/{{ user.id }}">Modifier le profil</button>
                 <button class="btn btn-danger" (click)="onDeleteUser()">Supprimer le profil</button>
             </div>
+
+            <br><br><br>
+            <div class="posts-user">
+                <button [ngClass]="{'btn': true, 'btn-info': whichOne == 'posts'}"
+                    (click)="postsOrLikes('posts')">Publications</button>
+                <button [ngClass]="{'btn': true, 'btn-info': whichOne == 'likes'}"
+                    (click)="postsOrLikes('likes')">Likes</button>
+            </div>
+            <br>
+            <app-posts-from-user *ngIf="whichOne == 'posts'"></app-posts-from-user>
+            <app-likes-from-user *ngIf="whichOne == 'likes'"></app-likes-from-user>
 
         </div>
     </div>

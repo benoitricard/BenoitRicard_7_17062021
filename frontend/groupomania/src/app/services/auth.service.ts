@@ -59,4 +59,12 @@ export class AuthService {
       return sessionStorage.getItem('token');
     }
   }
+
+  getUserIdConnected() {
+    if (localStorage.getItem('userId')) {
+      return localStorage.getItem('userId');
+    } else {
+      return sessionStorage.getItem('userId');
+    }
+  }
 }

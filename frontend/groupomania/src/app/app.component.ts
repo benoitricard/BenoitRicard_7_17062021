@@ -15,6 +15,8 @@ export class AppComponent implements OnInit {
     public http: HttpClient
   ) {}
 
+  userIdConnected: any = 0;
+
   navbarUser() {
     if (this.router.url == '/signup' || this.router.url == '/login') {
       return true;
@@ -40,5 +42,9 @@ export class AppComponent implements OnInit {
     this.authService.logOut();
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    setInterval(() => {
+      this.userIdConnected = this.authService.getUserIdConnected();
+    }, 1000);
+  }
 }

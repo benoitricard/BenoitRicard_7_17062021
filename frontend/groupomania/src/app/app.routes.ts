@@ -27,7 +27,7 @@ export const appRoutes: Routes = [
     ],
   },
   {
-    path: 'dashboard/my-profile',
+    path: 'dashboard/my-profile/:id',
     canActivate: [AuthGuard],
     component: MyProfileComponent,
   },

@@ -1,0 +1,49 @@
+<h4>Publications aimées par l'utilisateur ({{ likesFromUser.length }})</h4>
+<br>
+<div class="list-group" id="post-list">
+    <div class="list-group-item" *ngFor="let postLiked of likesFromUser;">
+
+        <div class="user router-link" routerLink="../../my-profile/{{ postLiked.Post.user_id }}">
+            <div class="pp-and-name">
+                <div class="pp">
+                    <img *ngIf="!postLiked.Post.User.profilePicture"
+                        src="../../../assets/images/default_pp.png1637522636718.png" alt="default-profile-picture">
+                    <img *ngIf="postLiked.Post.User.profilePicture" src="{{ postLiked.Post.User.profilePicture }}"
+                        alt="profile-picture">
+                </div>
+                <p><span>{{ postLiked.Post.User.firstName + ' ' + postLiked.Post.User.lastName}}</span><span id="admin"
+                        *ngIf="postLiked.Post.User.isAdmin === 1">ADMIN</span></p>
+            </div>
+            <p id="date">il y a {{ postLiked.Post.createdAt | timeAgo }}</p>
+        </div>
+
+        <p id="content" routerLink="../../posts/{{ postLiked.Post.id }}" class="router-link">{{ postLiked.Post.content
+            }}</p>
+        <div *ngIf="postLiked.Post.attachment" id="attachment" routerLink="../../posts/{{ postLiked.Post.id }}"
+            class="router-link">
+            <img src="{{ postLiked.Post.attachment }}" alt="post-file">
+        </div>
+        <br>
+        <p class="router-link" routerLink="../../posts/{{ postLiked.Post.id }}">Commentaires ({{
+            postLiked.Post.Comments.length
+            }})</p>
+        <br>
+        <div class="like-comment">
+            <div class="like">
+                <button
+                    [ngClass]="{'btn': true, 'btn-danger': !isThisPostLiked(postLiked.Post.id), 'btn-warning': isThisPostLiked(postLiked.Post.id)}"
+                    (click)="onLikePost(postLiked.Post.id)"><span
+                        *ngIf="isThisPostLiked(postLiked.Post.id)">Disliker</span><span
+                        *ngIf="!isThisPostLiked(postLiked.Post.id)">Liker</span></button>
+                <p id="likes">Likes: {{ postLiked.Post.nbOfLikes }}</p>
+            </div>
+            <form class="form-group" id="comments-form" #createCommentForm="ngForm"
+                (ngSubmit)="onCreateComment(createCommentForm.value, postLiked.Post.id)">
+                <input type="text" class="form-control" placeholder="Commenter la publication..." minlength="5"
+                    name="content" #content="ngModel" required ngModel>
+                <button type="submit" class="btn btn-primary" [disabled]="content.invalid">Publier</button>
+            </form>
+        </div>
+        <br>
+    </div>
+</div>

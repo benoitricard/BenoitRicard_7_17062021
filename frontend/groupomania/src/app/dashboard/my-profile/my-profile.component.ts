@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
@@ -10,6 +10,18 @@ import { AuthService } from 'src/app/services/auth.service';
 })
 export class MyProfileComponent implements OnInit {
   user: any = {};
+  whichOne: any = 'posts';
+  connectedUserId: any;
+
+  postsOrLikes(value: any) {
+    if (value == 'posts') {
+      this.whichOne = 'posts';
+      return 'posts';
+    } else {
+      this.whichOne = 'likes';
+      return 'likes';
+    }
+  }
 
   onDeleteUser() {
     if (confirm('Êtes-vous sûr de vouloir supprimer votre profil ?')) {
@@ -30,28 +42,27 @@ export class MyProfileComponent implements OnInit {
   constructor(
     private http: HttpClient,
     private router: Router,
-    private authService: AuthService
+    private authService: AuthService,
+    private route: ActivatedRoute
   ) {}
 
   ngOnInit(): void {
-    let connectedUserId: any;
+    let userId: number = this.route.snapshot.params.id;
 
     if (localStorage.getItem('userId')) {
-      connectedUserId = localStorage.getItem('userId');
+      this.connectedUserId = localStorage.getItem('userId');
     } else {
-      connectedUserId = sessionStorage.getItem('userId');
+      this.connectedUserId = sessionStorage.getItem('userId');
     }
 
-    this.http
-      .get(`http://localhost:3000/api/user/${connectedUserId}`)
-      .subscribe(
-        (res: any) => {
-          this.user = res;
-          return res;
-        },
-        (err) => {
-          console.error(err);
-        }
-      );
+    this.http.get(`http://localhost:3000/api/user/${userId}`).subscribe(
+      (res: any) => {
+        this.user = res;
+        return res;
+      },
+      (err) => {
+        console.error(err);
+      }
+    );
   }
 }

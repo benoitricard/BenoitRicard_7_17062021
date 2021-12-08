@@ -1,22 +1,9 @@
-<app-file-upload></app-file-upload>
-<br>
-<div class="header-title">
-    <h3>Publications ({{ posts.length }})</h3>
-    <form class="buttons-order" [formGroup]="orderForm" (ngSubmit)="onChangeOrder()">
-        <select class="form-control" formControlName="order" (change)="changeOrder($event)">
-            <option value="recents">Les plus récents</option>
-            <option value="olds">Les plus anciens</option>
-            <option value="liked">Les plus likés</option>
-            <option value="unliked">Les moins aimés</option>
-        </select>
-        <button class="btn btn-info" type="submit">Actualiser</button>
-    </form>
-</div>
+<h4>Publications de l'utilisateur ({{ posts.length }})</h4>
 <br>
 <div class="list-group" id="post-list">
     <div class="list-group-item" *ngFor="let post of posts;">
 
-        <div class="user router-link" routerLink="../my-profile/{{ post.user_id }}">
+        <div class="user">
             <div class="pp-and-name">
                 <div class="pp">
                     <img *ngIf="post.User.profilePicture === null"
@@ -30,12 +17,13 @@
             <p id="date">il y a {{ post.createdAt | timeAgo }}</p>
         </div>
 
-        <p id="content" routerLink="{{ post.id }}" class="router-link">{{ post.content }}</p>
-        <div *ngIf="post.attachment !== null" id="attachment" routerLink="{{ post.id }}" class="router-link">
+        <p id="content" routerLink="../../posts/{{ post.id }}" class=" router-link">{{ post.content }}</p>
+        <div *ngIf="post.attachment !== null" id="attachment" routerLink="../../posts/{{ post.id }}"
+            class="router-link">
             <img src="{{ post.attachment }}" alt="post-file">
         </div>
         <br>
-        <p class="router-link" routerLink="{{ post.id }}">Commentaires ({{ post.Comments.length }})</p>
+        <p class="router-link" routerLink="../../posts/{{ post.id }}">Commentaires ({{ post.Comments.length }})</p>
         <br>
         <div class="like-comment">
             <div class="like">
@@ -52,6 +40,5 @@
                 <button type="submit" class="btn btn-primary" [disabled]="content.invalid">Publier</button>
             </form>
         </div>
-        <br>
     </div>
 </div>

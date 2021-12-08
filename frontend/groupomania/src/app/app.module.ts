@@ -26,6 +26,8 @@ import { UserListComponent } from './dashboard/user-list/user-list.component';
 import { ModifyPostComponent } from './dashboard/modify-post/modify-post.component';
 import { SingleCommentComponent } from './dashboard/single-comment/single-comment.component';
 import { TimeAgoPipe } from './pipes/time-ago.pipe';
+import { PostsFromUserComponent } from './dashboard/my-profile/posts-from-user/posts-from-user.component';
+import { LikesFromUserComponent } from './dashboard/my-profile/likes-from-user/likes-from-user.component';
 
 @NgModule({
   declarations: [
@@ -46,6 +48,8 @@ import { TimeAgoPipe } from './pipes/time-ago.pipe';
     ModifyPostComponent,
     SingleCommentComponent,
     TimeAgoPipe,
+    PostsFromUserComponent,
+    LikesFromUserComponent,
   ],
   imports: [
     BrowserModule,

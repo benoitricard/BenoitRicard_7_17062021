@@ -1,7 +1,7 @@
 <h3>Utilisateurs ({{ users.length }})</h3>
 <br>
 <div class="list-group" id="user-list">
-    <div class="list-group-item router-link" *ngFor="let user of users;" routerLink="{{ user.id }}">
+    <div class="list-group-item router-link" *ngFor="let user of users;" routerLink="../my-profile/{{ user.id }}">
 
         <div class="user">
             <div class="pp-and-name">

@@ -315,7 +315,6 @@ exports.getAllPostsFromUser = (req, res) => {
                   'user_id',
                   'createdAt',
                   'updatedAt',
-                  'lastConnexion',
                 ],
                 include: [
                   {
@@ -361,7 +360,7 @@ exports.getAllPostsFromUser = (req, res) => {
                     required: false,
                   },
                 ],
-                order: [['createdAt', 'ASC']],
+                order: [['createdAt', 'DESC']],
               })
                 .then((posts) => {
                   res.status(200).send(posts);
@@ -434,22 +433,28 @@ exports.getAllLikesFromUser = (req, res) => {
                     where: {
                       id: { [Op.col]: 'Like.post_id' },
                     },
-                    include: {
-                      model: models.User,
-                      attributes: [
-                        'firstName',
-                        'lastName',
-                        'profilePicture',
-                        'isAdmin',
-                        'createdAt',
-                        'updatedAt',
-                        'lastConnexion',
-                      ],
-                    },
+                    include: [
+                      {
+                        model: models.User,
+                        attributes: [
+                          'firstName',
+                          'lastName',
+                          'profilePicture',
+                          'isAdmin',
+                          'createdAt',
+                          'updatedAt',
+                          'lastConnexion',
+                        ],
+                      },
+                      {
+                        model: models.Comment,
+                        attributes: ['content', 'createdAt', 'updatedAt'],
+                      },
+                    ],
                     required: false,
                   },
                 ],
-                order: [['createdAt', 'ASC']],
+                order: [['createdAt', 'DESC']],
               })
                 .then((likes) => {
                   res.status(200).send(likes);

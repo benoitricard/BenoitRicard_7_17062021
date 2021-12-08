@@ -9,7 +9,8 @@
             <ul *ngIf="navbarDashboard()" class="nav navbar-nav navbar-right">
                 <li routerLinkActive="active"><a routerLink="dashboard/posts">Publications</a></li>
                 <li routerLinkActive="active"><a routerLink="dashboard/users">Utilisateurs</a></li>
-                <li id="user" routerLinkActive="active"><a routerLink="dashboard/my-profile">Mon profil</a></li>
+                <li id="user" routerLinkActive="active"><a routerLink="dashboard/my-profile/{{ userIdConnected }}">Mon
+                        profil</a></li>
                 <li routerLinkActive="active"><a routerLink="login" (click)="onLogOut()">Se déconnecter</a></li>
             </ul>
         </div>
