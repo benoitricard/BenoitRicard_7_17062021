@@ -7,7 +7,7 @@
             <div class="list-group" id="post-list">
                 <div class="list-group-item">
                     <div class="header-post">
-                        <div class="user">
+                        <div class="user router-link" routerLink="../../users/{{ comment.user_id }}">
                             <img *ngIf="comment.User.profilePicture == null"
                                 src="../../../assets/images/default_pp.png1637522636718.png"
                                 alt="default-profile-picture">

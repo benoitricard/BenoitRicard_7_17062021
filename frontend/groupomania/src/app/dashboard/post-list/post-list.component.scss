@@ -2,6 +2,24 @@
 
 $pp-height: 45px;
 
+.header-title {
+  display: flex;
+
+  h3 {
+    margin-top: 10px;
+  }
+
+  .buttons-order {
+    display: flex;
+    width: 25%;
+    margin-right: 0;
+
+    select {
+      margin-right: 15px;
+    }
+  }
+}
+
 .like-comment {
   display: flex;
   justify-content: space-between;

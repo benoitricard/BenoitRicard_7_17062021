@@ -1,7 +1,7 @@
 <h3>Utilisateurs ({{ users.length }})</h3>
 <br>
 <div class="list-group" id="user-list">
-    <div class="list-group-item" *ngFor="let user of users;">
+    <div class="list-group-item router-link" *ngFor="let user of users;" routerLink="{{ user.id }}">
         <div class="header-user">
             <div class="user">
                 <img *ngIf="user.profilePicture == null" src="../../../assets/images/default_pp.png1637522636718.png"
@@ -14,7 +14,6 @@
                             user.lastConnexion | date:'medium' }}</span></p>
                 </div>
             </div>
-            <button type="button" class="btn btn-secondary" routerLink="{{ user.id }}">● ● ●</button>
         </div>
     </div>
 </div>

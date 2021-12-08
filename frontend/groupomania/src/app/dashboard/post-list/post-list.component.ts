@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { FormBuilder, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-post-list',
@@ -10,6 +11,29 @@ export class PostListComponent implements OnInit {
   posts: any[] = [];
   connectedUserInfo: any = {};
   likesFromUser: any = [];
+
+  orderForm = this.fb.group({
+    order: ['', [Validators.required]],
+  });
+
+  changeOrder(e: any) {
+    this.order!.setValue(e.target.value, {
+      onlySelf: true,
+    });
+  }
+
+  get order() {
+    return this.orderForm.get('order');
+  }
+
+  onChangeOrder() {
+    if (!this.orderForm.valid) {
+      return false;
+    } else {
+      alert(JSON.stringify(this.orderForm.value));
+    }
+    return false;
+  }
 
   isThisPostLiked(postId: any) {
     for (let i = 0; i < this.likesFromUser.length; i++) {
@@ -44,7 +68,7 @@ export class PostListComponent implements OnInit {
     );
   }
 
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpClient, private fb: FormBuilder) {
     this.http.get<any[]>('http://localhost:3000/api/post').subscribe(
       (res) => {
         this.posts = res;

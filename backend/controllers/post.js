@@ -185,7 +185,7 @@ exports.getAllPosts = (req, res) => {
                 required: false,
               },
             ],
-            order: [['createdAt', 'ASC']],
+            order: [['createdAt', 'DESC']],
           })
             .then((posts) => {
               res.status(200).send(posts);

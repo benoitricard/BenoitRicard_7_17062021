@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from './services/auth.service';
 
@@ -7,8 +8,12 @@ import { AuthService } from './services/auth.service';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
 })
-export class AppComponent {
-  constructor(public router: Router, public authService: AuthService) {}
+export class AppComponent implements OnInit {
+  constructor(
+    public router: Router,
+    public authService: AuthService,
+    public http: HttpClient
+  ) {}
 
   navbarUser() {
     if (this.router.url == '/signup' || this.router.url == '/login') {
@@ -34,4 +39,6 @@ export class AppComponent {
   onLogOut() {
     this.authService.logOut();
   }
+
+  ngOnInit(): void {}
 }

@@ -7,7 +7,7 @@
             <div class="list-group" id="post-list">
                 <div class="list-group-item">
                     <div class="header-post">
-                        <div class="user">
+                        <div class="user router-link" routerLink="../../users/{{ post.user_id }}">
                             <img *ngIf="post.User.profilePicture == null"
                                 src="../../../assets/images/default_pp.png1637522636718.png"
                                 alt="default-profile-picture">
@@ -30,8 +30,9 @@
                     <div *ngIf="post.Comments.length > 0" class="list-group" id="comments-list">
                         <h3 class="comments-title">Commentaires ({{ post.Comments.length }})</h3>
                         <br>
-                        <div class="list-group-item" *ngFor="let comment of post.Comments;">
-                            <div class="user">
+                        <div class="list-group-item router-link" *ngFor="let comment of post.Comments;"
+                            routerLink="../../comment/{{ comment.id }}">
+                            <div class="user router-link" routerLink="../../users/{{ comment.user_id }}">
                                 <img *ngIf="comment.User.profilePicture == null"
                                     src="../../../assets/images/default_pp.png1637522636718.png"
                                     alt="default-profile-picture">
@@ -42,10 +43,6 @@
                                             *ngIf="comment.User.isAdmin === 1" id="admin">ADMIN</span></h4>
                                     <p>{{ comment.createdAt | date:'medium' }}</p>
                                 </div>
-                                <button type="button" class="btn btn-secondary"
-                                    routerLink="../../comment/{{ comment.id }}">●
-                                    ●
-                                    ●</button>
                             </div>
                             <p id="contentComment">{{ comment.content }}</p>
                         </div>
