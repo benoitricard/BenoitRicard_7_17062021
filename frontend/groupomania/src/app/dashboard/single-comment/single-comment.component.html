@@ -6,20 +6,22 @@
             <br>
             <div class="list-group" id="post-list">
                 <div class="list-group-item">
-                    <div class="header-post">
-                        <div class="user router-link" routerLink="../../my-profile/{{ comment.user_id }}">
-                            <img *ngIf="comment.User.profilePicture == null"
-                                src="../../../assets/images/default_pp.png1637522636718.png"
-                                alt="default-profile-picture">
-                            <img *ngIf="comment.User.profilePicture !== null" src="{{ comment.User.profilePicture }}"
-                                alt="profile-picture">
-                            <div class="user-name-date">
-                                <h4>{{ comment.User.firstName + ' ' + comment.User.lastName }}<span
-                                        *ngIf="comment.User.isAdmin === 1" id="admin">ADMIN</span></h4>
-                                <p>{{ comment.createdAt | date:'medium' }}</p>
+
+                    <div class="user router-link" routerLink="../../my-profile/{{ comment.user_id }}">
+                        <div class="pp-and-name">
+                            <div class="pp">
+                                <img *ngIf="!comment.User.profilePicture"
+                                    src="../../../assets/images/default_pp.png1637522636718.png"
+                                    alt="default-profile-picture">
+                                <img *ngIf="comment.User.profilePicture" src="{{ comment.User.profilePicture }}"
+                                    alt="profile-picture">
                             </div>
+                            <p><span>{{ comment.User.firstName + ' ' + comment.User.lastName}}</span><span id="admin"
+                                    *ngIf="comment.User.isAdmin === 1">ADMIN</span></p>
                         </div>
+                        <p id="date">il y a {{ comment.createdAt | timeAgo }}</p>
                     </div>
+
                     <form class="form-group" #commentForm="ngForm" (ngSubmit)="onCommentUpdate(commentForm.value)">
                         <input class="form-control" id="content" placeholder="{{ comment.content }}" name="content"
                             minlength="5" #content="ngModel" required ngModel>

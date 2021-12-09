@@ -30,7 +30,7 @@
                 <p *ngIf="user.birthday === null">-</p>
             </div>
             <br>
-            <div class="buttons" *ngIf="connectedUserId.isAdmin || connectedUserId == user.id">
+            <div class="buttons" *ngIf="connectedUserId.isAdmin || connectedUserId.id == user.id">
                 <button class="btn btn-primary" routerLink="../../users/{{ user.id }}">Modifier le profil</button>
                 <button class="btn btn-danger" (click)="onDeleteUser()">Supprimer le profil</button>
             </div>

@@ -28,6 +28,8 @@ import { SingleCommentComponent } from './dashboard/single-comment/single-commen
 import { TimeAgoPipe } from './pipes/time-ago.pipe';
 import { PostsFromUserComponent } from './dashboard/my-profile/posts-from-user/posts-from-user.component';
 import { LikesFromUserComponent } from './dashboard/my-profile/likes-from-user/likes-from-user.component';
+import { UserService } from './services/user.service';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 @NgModule({
   declarations: [
@@ -56,12 +58,14 @@ import { LikesFromUserComponent } from './dashboard/my-profile/likes-from-user/l
     FormsModule,
     ReactiveFormsModule,
     HttpClientModule,
+    FontAwesomeModule,
     RouterModule.forRoot(appRoutes),
   ],
   providers: [
     AuthService,
     AuthGuard,
     FileUploadService,
+    UserService,
     {
       provide: HTTP_INTERCEPTORS,
       useClass: TokenInterceptorService,

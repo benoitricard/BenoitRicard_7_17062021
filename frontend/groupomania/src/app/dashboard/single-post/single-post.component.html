@@ -23,7 +23,7 @@
                     </div>
 
                     <p id="content">{{ post.content }}</p>
-                    <div *ngIf="post.attachment !== null" id="attachment">
+                    <div *ngIf="post.attachment !== (null || '')" id="attachment">
                         <img src="{{ post.attachment }}" alt="post-file">
                     </div>
                     <p id="likes">Likes: {{ post.nbOfLikes }}</p>

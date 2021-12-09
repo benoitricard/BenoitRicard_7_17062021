@@ -1,57 +1,168 @@
 @import "../../sass/styles.scss";
 
-$checkbox-size: 18px;
-
 .container {
   display: flex;
   justify-content: center;
-  margin-top: 110px;
+  align-items: center;
+  margin-top: $user-margin-top;
 
-  .form-check {
+  .row {
     display: flex;
-    justify-content: center;
-
-    input {
-      cursor: pointer;
-      width: $checkbox-size;
-      height: $checkbox-size;
-    }
-
-    label {
-      line-height: $checkbox-size/2;
-      font-weight: 500;
-      margin-left: 8px;
-    }
-  }
-
-  .alert {
-    p {
-      text-align: center;
-      word-wrap: wrap;
-    }
-  }
-
-  button,
-  form,
-  .alert {
-    min-width: 250px;
-    max-width: 250px;
-  }
-
-  .col-xs-12 {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
     align-items: center;
 
-    form {
+    #login-container {
       display: flex;
       flex-direction: column;
-      justify-content: center;
-    }
-  }
+      align-items: center;
 
-  h3 {
-    font-weight: 600;
+      h2 {
+        margin-bottom: 30px;
+        font-weight: 700;
+        color: $primary-color;
+      }
+
+      form {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        width: $user-form-width;
+
+        .input {
+          width: 100%;
+          position: relative;
+          display: flex;
+          align-items: center;
+          font-size: 16px;
+          margin-bottom: 20px;
+
+          .fa-icon-input {
+            color: $primary-color;
+            position: absolute;
+            margin-left: $fa-icon-margin-left-input;
+          }
+
+          input {
+            width: 100%;
+            height: 50px;
+            padding: 15px $fa-icon-margin-left-input*2.5;
+            border: none;
+            border-radius: 100px;
+            color: $primary-color;
+            font-weight: 500;
+            font-size: 16px;
+
+            &:valid,
+            &:valid+fa-icon {
+              color: white;
+              background-color: $primary-color;
+            }
+
+            &:not(:placeholder-shown):invalid,
+            &:not(:placeholder-shown):invalid+fa-icon,
+            &:not(:placeholder-shown):invalid::placeholder {
+              color: white;
+              background-color: $danger-color;
+            }
+          }
+
+          #show-password {
+            border: none;
+            background-color: $primary-color;
+            color: white;
+            border-radius: 100px;
+            margin-left: 15px;
+            min-height: 50px;
+            min-width: 50px;
+            padding: 15px;
+            font-size: 16px;
+            transition: all 400ms;
+            position: absolute;
+            right: 0;
+
+            &:hover {
+              transform: scale(1.05);
+            }
+
+            &:active {
+              background-color: darken($primary-color, 10%);
+              transform: scale(1);
+            }
+          }
+
+          ::placeholder {
+            color: $primary-color;
+            opacity: 50%;
+          }
+        }
+
+        .form-check {
+          width: 100%;
+          background-color: white;
+          padding: 15px 20px;
+          border-radius: 100px;
+          height: 50px;
+          display: flex;
+          align-items: center;
+          padding-left: 25px;
+
+          label {
+            color: $primary-color;
+            cursor: pointer;
+          }
+
+          input {
+            transform: scale(1.5);
+            cursor: pointer;
+          }
+        }
+
+        .submit-and-error {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          width: 100%;
+          margin: 40px 0;
+
+          .unauthorized {
+            font-weight: 500;
+            color: $danger-color;
+            font-size: 15px;
+          }
+
+          #login-btn {
+            width: 100%;
+            height: 50px;
+            background-color: $primary-color;
+            padding: 15px $fa-icon-margin-left-input*2.5;
+            border: none;
+            border-radius: 100px;
+            color: white;
+            font-weight: 500;
+            margin-top: 15px;
+            transition: all 400ms;
+
+            &:hover:enabled {
+              transform: scale(1.05);
+            }
+
+            &:active:enabled {
+              transform: scale(1);
+              background-color: darken($primary-color, 10%);
+            }
+
+            &:disabled {
+              opacity: 40%;
+            }
+          }
+        }
+
+        #forgot-informations {
+          margin-bottom: 150px;
+          font-weight: 500;
+          color: $primary-color;
+          font-size: 15px;
+        }
+      }
+    }
   }
 }

@@ -2,37 +2,63 @@
 
     <div class="row">
 
-        <div class="col-xs-12">
-            <h3>Inscription</h3>
-            <br>
+        <div class="col-xs-12" id="signup-container">
+            <h2>Inscription</h2>
 
             <form class="form-group" #signupForm="ngForm" (ngSubmit)="onSignup(signupForm.value)">
 
-                <input type="text" class="form-control" placeholder="Prénom" #firstName="ngModel" minlength="2"
-                    name="firstName" required ngModel>
-                <br>
-                <input type="text" class="form-control" placeholder="Nom" #lastName="ngModel" minlength="2"
-                    name="lastName" required ngModel>
-                <br>
-                <input type="email" class="form-control" placeholder="Adresse e-mail" minlength="5" #email="ngModel"
-                    name="email" required ngModel>
-                <br>
-                <input type="password" class="form-control" placeholder="Mot de passe" #password="ngModel"
-                    name="password" minlength="8" maxlength="24" required ngModel>
-                <br>
-                <button class="btn btn-primary" type="submit"
-                    [disabled]="password.invalid || firstName.invalid || lastName.invalid || email.invalid">Créer un
-                    compte</button>
-                <br><br>
-                <div class="alert alert-danger"
-                    *ngIf="(firstName.invalid && (firstName.dirty || firstName.touched)) || (lastName.invalid && (lastName.dirty || lastName.touched)) || (email.invalid && (email.dirty || email.touched)) || (password.invalid && (password.dirty || password.touched))">
-                    <p *ngIf="!password.errors?.['minlength'] && !password.errors?.['maxlength']">Tous les champs sont
-                        requis.</p>
-                    <p class="text-wrap" *ngIf="password.errors?.['minlength'] || password.errors?.['maxlength']">Le mot
-                        de passe doit contenir entre 8 et 24 caractères.</p>
+                <div class="input">
+                    <input type="text" placeholder="Prénom" pattern="^[a-zA-Z]+$" #firstName="ngModel" minlength="2"
+                        name="firstName" required ngModel>
+                    <fa-icon class="fa-icon-input" [icon]="faUser"></fa-icon>
+                </div>
+                <div class="error">
+                    <p class="invalid-alert" *ngIf="firstName.dirty && firstName.invalid">Seulement des lettres (2
+                        caractères min.)</p>
+                </div>
+
+                <div class="input">
+                    <input type="text" placeholder="Nom" pattern="^[a-zA-Z]+$" #lastName="ngModel" minlength="2"
+                        name="lastName" required ngModel>
+                    <fa-icon class="fa-icon-input" [icon]="faSignature"></fa-icon>
+                </div>
+                <div class="error">
+                    <p class="invalid-alert" *ngIf="lastName.dirty && lastName.invalid">Seulement des lettres (2
+                        caractères min.)</p>
+                </div>
+
+                <div class="input">
+                    <input type="email" placeholder="Adresse e-mail"
+                        pattern="^[A-Za-z0-9_.+-]+\@[A-Za-z0-9_.+-]+\.[A-Za-z]+$" minlength="5" #email="ngModel"
+                        name="email" required ngModel>
+                    <fa-icon class="fa-icon-input" [icon]="faEnvelope"></fa-icon>
+                </div>
+                <div class="error">
+                    <p class="invalid-alert" *ngIf="email.dirty && email.invalid">Syntaxe incorrecte:
+                        exemple@exemple.com</p>
+                </div>
+
+                <div class="input">
+                    <input type="password" placeholder="Mot de passe" id="password" #password="ngModel" name="password"
+                        minlength="8" maxlength="24" required ngModel>
+                    <fa-icon class="fa-icon-input" [icon]="faLock"></fa-icon>
+                    <button type="button" id="show-password" (click)="onToggleVisibility()">
+                        <fa-icon [icon]="faEye"></fa-icon>
+                    </button>
+                </div>
+                <div class="error">
+                    <p class="invalid-alert" *ngIf="password.dirty && password.invalid">8 caractères min. (24 max.)</p>
+                </div>
+
+                <div class="submit-and-error">
+                    <p id="unauthorized" *ngIf="statusError == 401">Cette adresse e-mail est déjà utilisée</p>
+                    <button id="signup-btn" type="submit"
+                        [disabled]="password.invalid || firstName.invalid || lastName.invalid || email.invalid">Créer un
+                        compte</button>
                 </div>
 
             </form>
+
         </div>
 
     </div>

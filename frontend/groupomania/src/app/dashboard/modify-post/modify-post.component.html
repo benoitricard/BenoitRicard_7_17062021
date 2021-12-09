@@ -21,16 +21,17 @@
                         </div>
                     </div>
                     <form class="form-group" [formGroup]="postUpdateForm" (ngSubmit)="onPostUpdate()">
-                        <input class="form-control text-input" type="text" placeholder="{{ post.content }}"
+                        <input class="form-control text-input" type="text" ngModel="{{ post.content }}"
                             formControlName="content" id="content">
-                        <div *ngIf="post.attachment !== null" id="attachment">
+                        <div *ngIf="post.attachment !== (null || '')" id="attachment">
                             <img src="{{ post.attachment }}" alt="post-file">
                         </div>
-                        <button class="btn btn-danger" *ngIf="post.attachment !== null">Supprimer la photo</button>
+                        <button class="btn btn-danger" *ngIf="post.attachment !== (null || '')"
+                            (click)="onDeleteAttachment()">Supprimer la photo</button>
                         <br><br>
                         <label for="attachmentInput" class="btn btn-primary" id="file"><span
-                                *ngIf="post.attachment !== null">Modifier la photo</span><span
-                                *ngIf="post.attachment === null">Ajouter une photo</span></label>
+                                *ngIf="post.attachment !== (null || '')">Modifier la photo</span><span
+                                *ngIf="post.attachment === (null || '')">Ajouter une photo</span></label>
                         <input class="hidden" formControlName="attachment" id="attachmentInput" name="attachment"
                             type="file" (change)="onFileChange($event)">
                         <br><br>

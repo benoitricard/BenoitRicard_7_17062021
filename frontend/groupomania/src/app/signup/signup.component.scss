@@ -1,136 +1,149 @@
 @import "../../sass/styles.scss";
 
-// Variables
-$signup-width: 570px;
-$signup-height: 530px;
-
-// Mixins
-@mixin flexbox {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-@mixin button {
-  background-color: $primary-color;
-  color: white;
-  border: none;
-  border-radius: $border-radius/1.5;
-  height: 60px;
-  font-size: 18px;
-  font-weight: 600;
-}
-
 .container {
   display: flex;
   justify-content: center;
-  margin-top: 110px;
+  align-items: center;
+  margin-top: $user-margin-top;
 
-  .alert {
-    p {
-      text-align: center;
-      word-wrap: wrap;
-    }
-  }
-
-  button,
-  form,
-  #file {
-    min-width: 250px;
-    max-width: 250px;
-  }
-
-  .col-xs-12 {
+  .row {
     display: flex;
-    flex-direction: column;
     align-items: center;
-    justify-content: center;
-  }
 
-  h3 {
-    font-weight: 600;
-  }
+    #signup-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
 
-  .signup-slogan {
-    h2 {
-      font-size: 50px;
-      font-weight: 700;
-
-      span {
+      h2 {
+        margin-bottom: 30px;
+        font-weight: 700;
         color: $primary-color;
       }
-    }
-
-    :nth-child(2) {
-      margin-top: 40px;
-    }
-
-    margin-right: 200px;
-  }
-
-  .signup-box {
-    background-color: white;
-    border-radius: $border-radius;
-    box-shadow: 0px 0px 8px 0px rgba(0, 0, 0, 0.3);
-    width: $signup-width;
-    height: $signup-height;
-    padding: 0 10px;
-    @include flexbox;
-
-    h2 {
-      color: $primary-color;
-      font-weight: 700;
-      margin-top: 10px;
-      margin-bottom: -30px;
-    }
-
-    .col-form {
-      margin-bottom: 30px;
 
       form {
-        @include flexbox;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        width: $user-form-width;
 
-        .first-last-name {
+        .input {
+          width: 100%;
+          position: relative;
           display: flex;
+          align-items: center;
+          font-size: 16px;
 
-          #firstName,
-          #lastName {
-            width: $signup-width/2.3;
-            margin: 20px 12px;
+          .fa-icon-input {
+            color: $primary-color;
+            position: absolute;
+            margin-left: $fa-icon-margin-left-input;
+          }
+
+          input {
+            width: 100%;
+            height: 50px;
+            padding: 15px $fa-icon-margin-left-input*2.5;
+            border: none;
+            border-radius: 100px;
+            color: $primary-color;
+            font-weight: 500;
+
+            &:valid,
+            &:valid+fa-icon {
+              color: white;
+              background-color: $primary-color;
+            }
+
+            &:not(:placeholder-shown):invalid,
+            &:not(:placeholder-shown):invalid+fa-icon,
+            &:not(:placeholder-shown):invalid::placeholder {
+              color: white;
+              background-color: $danger-color;
+            }
+          }
+
+          #show-password {
+            border: none;
+            background-color: $primary-color;
+            color: white;
+            border-radius: 100px;
+            margin-left: 15px;
+            min-height: 50px;
+            min-width: 50px;
+            padding: 15px;
+            font-size: 16px;
+            transition: all 400ms;
+            position: absolute;
+            right: 0;
+
+            &:hover {
+              transform: scale(1.05);
+            }
+
+            &:active {
+              background-color: darken($primary-color, 10%);
+              transform: scale(1);
+            }
+          }
+
+          ::placeholder {
+            color: $primary-color;
+            opacity: 50%;
           }
         }
 
-        input {
-          color: $primary-color;
-          font-size: 15px;
-          font-weight: 600;
-          padding-left: 12px;
-          width: $signup-width/1.095;
-          border-radius: $border-radius/1.5;
-          border: solid 4px $primary-color;
-          height: 60px;
-          margin-bottom: 15px;
+        .error {
+          margin-bottom: 20px;
+
+          .invalid-alert {
+            font-weight: 500;
+            color: $danger-color;
+            font-size: 15px;
+            text-align: center;
+            margin-top: 15px;
+          }
         }
 
-        ::placeholder {
-          color: $primary-color;
-          opacity: 50%;
+        .submit-and-error {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          width: 100%;
+          margin: 20px 0 150px 0;
+
+          #unauthorized {
+            font-weight: 500;
+            color: $danger-color;
+            font-size: 15px;
+          }
+
+          #signup-btn {
+            width: 100%;
+            height: 50px;
+            background-color: $primary-color;
+            padding: 15px $fa-icon-margin-left-input*2.5;
+            border: none;
+            border-radius: 100px;
+            color: white;
+            font-weight: 500;
+            margin-top: 15px;
+            transition: all 400ms;
+
+            &:hover:enabled {
+              transform: scale(1.05);
+            }
+
+            &:active:enabled {
+              transform: scale(1);
+              background-color: darken($primary-color, 10%);
+            }
+
+            &:disabled {
+              opacity: 40%;
+            }
+          }
         }
-      }
-
-      p {
-        font-size: 15px;
-        color: $primary-color;
-        font-weight: 600;
-        margin: 10px 0 0 12px;
-      }
-    }
-
-    .col {
-
-      button {
-        @include button;
-        width: $signup-width/1.095;
       }
     }
   }

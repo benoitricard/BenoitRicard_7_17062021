@@ -48,26 +48,3 @@ $pp-height: 45px;
     height: 100vh;
   }
 }
-
-.user {
-  display: flex;
-  width: 86%;
-  justify-content: space-between;
-  margin-bottom: 20px;
-  margin-left: 140px;
-
-  img {
-    height: $pp-height;
-    width: $pp-height;
-    border-radius: 100px;
-    margin-left: -140px;
-  }
-
-  .user-name-date {
-    margin-left: -800px;
-
-    p {
-      margin-top: -6px;
-    }
-  }
-}

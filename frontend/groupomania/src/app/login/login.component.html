@@ -2,33 +2,41 @@
 
     <div class="row">
 
-        <div class="col-xs-12">
-            <h3>Connexion</h3>
-            <br>
+        <div class="col-xs-12" id="login-container">
+            <h2>Connexion</h2>
 
             <form class="form-group" #loginForm="ngForm" (ngSubmit)="onLogin(loginForm.value)">
 
-                <input type="text" class="form-control" placeholder="Adresse e-mail" name="email" minlength="5"
-                    #email="ngModel" required ngModel>
-                <br>
-                <input type="password" class="form-control" placeholder="Mot de passe" minlength="8" maxlength="24"
-                    name="password" #password="ngModel" required ngModel>
-                <br>
-                <button class="btn btn-primary" type="submit" [disabled]="password.invalid || email.invalid">Se
-                    connecter</button>
-                <br>
+                <div class="input">
+                    <input type="email" class="form-control" placeholder="Adresse e-mail"
+                        pattern="^[A-Za-z0-9_.+-]+\@[A-Za-z0-9_.+-]+\.[A-Za-z]+$" name="email" minlength="5"
+                        #email="ngModel" required ngModel>
+                    <fa-icon class="fa-icon-input" [icon]="faEnvelope"></fa-icon>
+                </div>
+
+                <div class="input">
+                    <input type="password" placeholder="Mot de passe" id="password" #password="ngModel" name="password"
+                        minlength="8" maxlength="24" required ngModel>
+                    <fa-icon class="fa-icon-input" [icon]="faLock"></fa-icon>
+                    <button type="button" id="show-password" (click)="onToggleVisibility()">
+                        <fa-icon [icon]="faEye"></fa-icon>
+                    </button>
+                </div>
+
                 <div class="form-check">
                     <input class="form-check-input" type="checkbox" id="checkbox" name="checkbox" #checkbox="ngModel"
                         ngModel>
                     <label class="form-check-label" for="checkbox">Se souvenir de moi</label>
                 </div>
-                <br>
-                <div class="alert alert-danger"
-                    *ngIf="(email.invalid && (email.dirty || email.touched)) || (password.invalid && (password.dirty || password.touched))">
-                    <p>Tous les champs sont requis.</p>
+
+                <div class="submit-and-error">
+                    <p class="unauthorized" *ngIf="statusError == 401">Mot de passe incorrect</p>
+                    <p class="unauthorized" *ngIf="statusError == 404">Adresse e-mail incorrecte</p>
+                    <button id="login-btn" type="submit" [disabled]="password.invalid || email.invalid">Se
+                        connecter</button>
                 </div>
-                <br><br><br>
-                <a routerLink="/signup">Informations de compte oubliées ?</a>
+
+                <a id="forgot-informations" routerLink="/signup">Informations de compte oubliées ?</a>
 
             </form>
         </div>

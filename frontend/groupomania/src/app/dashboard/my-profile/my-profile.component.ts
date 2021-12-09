@@ -55,6 +55,18 @@ export class MyProfileComponent implements OnInit {
       this.connectedUserId = sessionStorage.getItem('userId');
     }
 
+    this.http
+      .get(`http://localhost:3000/api/user/${this.connectedUserId}`)
+      .subscribe(
+        (res: any) => {
+          this.connectedUserId = res;
+          return res;
+        },
+        (err) => {
+          console.error(err);
+        }
+      );
+
     this.http.get(`http://localhost:3000/api/user/${userId}`).subscribe(
       (res: any) => {
         this.user = res;

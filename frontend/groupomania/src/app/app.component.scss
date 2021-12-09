@@ -1,31 +1,77 @@
 @import "../sass/styles.scss";
 
-// Variables
-$header-height: 120px;
+#navbar {
+  height: $navbar-height;
+  background: linear-gradient(90deg, $primary-color, lighten($primary-color, 20%));
+  padding: 0 180px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 
-$footer-margin-top: 100px;
-$footer-height: 300px;
+  // Logo Groupomania
+  img {
+    width: $navbar-height*2;
+    margin: 0;
+    cursor: pointer;
+    transition: all 400ms;
 
-.navbar {
-  .container-fluid {
-    .navbar-collapse {
-      .navbar-brand {
-        a {
-          text-decoration: none;
-          font-weight: 600;
-          padding: 7px 15px;
-          border-radius: 100px;
-          transition: all 300ms;
+    &:hover {
+      transform: scale(1.05);
+    }
+  }
 
-          &:hover {
-            color: $primary-color;
-          }
-        }
+  // Barre de navigation droite
+  .nav-buttons {
+    height: $nav-buttons-height*1.1;
+    margin: 0;
+
+    .nav-btn {
+      margin-left: 20px;
+      border: none;
+      background-color: $primary-color;
+      color: white;
+      font-weight: 500;
+      padding: 10px;
+      height: $nav-buttons-height;
+      width: $button-nav-width;
+      border-radius: 100px;
+      transition: all 400ms;
+
+      &:hover {
+        transform: scale(1.05);
+      }
+
+      &:active {
+        background-color: darken($primary-color, 10%);
+        transform: scale(1);
+      }
+    }
+
+    .nav-btn-active {
+      background-color: white;
+      color: $primary-color;
+    }
+
+    // Bouton de déconnexion
+    .nav-btn-signout {
+      background-color: $danger-color;
+      border-radius: 100px;
+      border: none;
+      color: white;
+      padding: 10px;
+      margin-left: 20px;
+      height: $nav-buttons-height;
+      width: $nav-buttons-height;
+      transition: all 400ms;
+
+      &:hover {
+        transform: scale(1.05);
+      }
+
+      &:active {
+        background-color: darken($danger-color, 10%);
+        transform: scale(1);
       }
     }
   }
-}
-
-#user {
-  font-weight: 600;
 }

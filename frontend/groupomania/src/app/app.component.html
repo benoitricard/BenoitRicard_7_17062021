@@ -1,19 +1,23 @@
-<nav class="navbar navbar-default">
-    <div class="container-fluid">
-        <div class="navbar-collapse">
-            <div class="navbar-brand"><a routerLink="dashboard/posts">Groupomania</a></div>
-            <ul *ngIf="navbarUser()" class="nav navbar-nav navbar-right">
-                <li routerLinkActive="active"><a routerLink="signup">S'inscrire</a></li>
-                <li routerLinkActive="active"><a routerLink="login">Se connecter</a></li>
-            </ul>
-            <ul *ngIf="navbarDashboard()" class="nav navbar-nav navbar-right">
-                <li routerLinkActive="active"><a routerLink="dashboard/posts">Publications</a></li>
-                <li routerLinkActive="active"><a routerLink="dashboard/users">Utilisateurs</a></li>
-                <li id="user" routerLinkActive="active"><a routerLink="dashboard/my-profile/{{ userIdConnected }}">Mon
-                        profil</a></li>
-                <li routerLinkActive="active"><a routerLink="login" (click)="onLogOut()">Se déconnecter</a></li>
-            </ul>
-        </div>
+<div id="navbar">
+    <img src="../assets/images/icon-left-font-monochrome-white.png" alt="logo-groupomania" routerLink="dashboard/posts">
+    <div id="nav-users" class="nav-buttons" *ngIf="navbarUser()">
+        <button [ngClass]="{'nav-btn': true, 'nav-btn-active': whichPath() == 'signup'}"
+            routerLink="signup">S'inscrire</button>
+        <button [ngClass]="{'nav-btn': true, 'nav-btn-active': whichPath() == 'login'}" routerLink="login">Se
+            connecter</button>
     </div>
-</nav>
+    <div id="nav-dashboard" class="nav-buttons" *ngIf="navbarDashboard()">
+        <button [ngClass]="{'nav-btn': true, 'nav-btn-active': whichPath() == 'posts'}"
+            routerLink="dashboard/posts">Publications</button>
+        <button [ngClass]="{'nav-btn': true, 'nav-btn-active': whichPath() == 'users'}"
+            routerLink="dashboard/users">Utilisateurs</button>
+        <button [ngClass]="{'nav-btn': true, 'nav-btn-active': whichPath() == 'profile'}"
+            routerLink="dashboard/my-profile/{{userIdConnected}}">Mon
+            profil</button>
+        <button [ngClass]="{'nav-btn-signout': true}" (click)="onLogOut()">
+            <fa-icon [icon]="faSignOutAlt"></fa-icon>
+        </button>
+    </div>
+</div>
+
 <router-outlet></router-outlet>

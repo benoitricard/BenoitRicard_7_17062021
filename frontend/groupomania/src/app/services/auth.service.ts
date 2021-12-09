@@ -6,17 +6,6 @@ import { Router } from '@angular/router';
 export class AuthService {
   constructor(private http: HttpClient, private router: Router) {}
 
-  signUser(form: any) {
-    this.http.post('http://localhost:3000/api/user/signup', form).subscribe(
-      () => {
-        this.router.navigate(['login']);
-      },
-      (err) => {
-        console.error(err);
-      }
-    );
-  }
-
   logUser(form: any) {
     this.http.post('http://localhost:3000/api/user/login', form).subscribe(
       (res: any) => {
@@ -50,6 +39,7 @@ export class AuthService {
     sessionStorage.removeItem('auth');
     localStorage.removeItem('userId');
     sessionStorage.removeItem('userId');
+    this.router.navigate(['login']);
   }
 
   getToken() {

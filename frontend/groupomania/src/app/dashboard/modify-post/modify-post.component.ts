@@ -34,6 +34,10 @@ export class ModifyPostComponent implements OnInit {
     }
   }
 
+  onDeleteAttachment() {
+    this.post.attachment = '';
+  }
+
   onPostUpdate() {
     const formData = new FormData();
     formData.append(

@@ -55,9 +55,14 @@ exports.modifyPost = (req, res) => {
           }
 
           let content = req.body.content ? req.body.content : post.content;
-          let attachment = req.file
-            ? `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
-            : post.attachment;
+          let attachment =
+            req.file != null
+              ? `${req.protocol}://${req.get('host')}/images/${
+                  req.file.filename
+                }`
+              : req.body.attachment;
+          console.log(attachment);
+          console.log(req.file != null);
 
           // vérifier que l'user est l'auteur du post OU est admin
           if (user.id == post.user_id || user.isAdmin == 1) {
