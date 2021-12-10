@@ -1,5 +1,7 @@
+<h3 id="welcome">Bonjour, <span>{{connectedUserInfo.firstName}} 😁</span></h3>
+
 <app-file-upload></app-file-upload>
-<br>
+
 <div class="header-title">
     <h3>Publications ({{ posts.length }})</h3>
     <form class="buttons-order" [formGroup]="orderForm" (ngSubmit)="onChangeOrder()">

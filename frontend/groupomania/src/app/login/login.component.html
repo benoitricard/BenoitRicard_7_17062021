@@ -31,7 +31,7 @@
 
                 <div class="submit-and-error">
                     <p class="unauthorized" *ngIf="statusError == 401">Mot de passe incorrect</p>
-                    <p class="unauthorized" *ngIf="statusError == 404">Adresse e-mail incorrecte</p>
+                    <p class="unauthorized" *ngIf="statusError == 404">Cette adresse e-mail n'existe pas</p>
                     <button id="login-btn" type="submit" [disabled]="password.invalid || email.invalid">Se
                         connecter</button>
                 </div>

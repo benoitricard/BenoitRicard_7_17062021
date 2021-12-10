@@ -11,7 +11,8 @@ import { AuthService } from 'src/app/services/auth.service';
 export class MyProfileComponent implements OnInit {
   user: any = {};
   whichOne: any = 'posts';
-  connectedUserId: any;
+  connectedUserId: number | any;
+  userConnected: any = {};
 
   postsOrLikes(value: any) {
     if (value == 'posts') {
@@ -59,8 +60,7 @@ export class MyProfileComponent implements OnInit {
       .get(`http://localhost:3000/api/user/${this.connectedUserId}`)
       .subscribe(
         (res: any) => {
-          this.connectedUserId = res;
-          return res;
+          this.userConnected = res;
         },
         (err) => {
           console.error(err);
@@ -70,7 +70,6 @@ export class MyProfileComponent implements OnInit {
     this.http.get(`http://localhost:3000/api/user/${userId}`).subscribe(
       (res: any) => {
         this.user = res;
-        return res;
       },
       (err) => {
         console.error(err);

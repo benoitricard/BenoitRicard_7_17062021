@@ -157,10 +157,20 @@
         }
 
         #forgot-informations {
-          margin-bottom: 150px;
+          text-decoration: none;
           font-weight: 500;
           color: $primary-color;
           font-size: 15px;
+          transition: all 400ms;
+
+          &:hover {
+            transform: scale(1.05);
+          }
+
+          &:active {
+            color: darken($primary-color, 10%);
+            transform: scale(1);
+          }
         }
       }
     }

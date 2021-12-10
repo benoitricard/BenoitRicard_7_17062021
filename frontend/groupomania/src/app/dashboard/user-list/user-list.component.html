@@ -1,25 +1,36 @@
-<h3>Utilisateurs ({{ users.length }})</h3>
-<br>
+<div id="users-title">
+    <h3>Utilisateurs</h3>
+    <h3>{{users.length}}</h3>
+</div>
+
 <div class="list-group" id="user-list">
-    <div class="list-group-item router-link" *ngFor="let user of users;" routerLink="../my-profile/{{ user.id }}">
+    <div class="user-item-card" *ngFor="let user of users;">
 
         <div class="user">
-            <div class="pp-and-name">
+
+            <div class="pp-and-name router-link" routerLink="../my-profile/{{ user.id }}">
                 <div class="pp">
-                    <img *ngIf="user.profilePicture === null"
-                        src="../../../assets/images/default_pp.png1637522636718.png" alt="default-profile-picture">
+                    <img *ngIf="user.profilePicture === null" src="../../../assets/images/default_pp/default1.png"
+                        alt="default-profile-picture">
                     <img *ngIf="user.profilePicture !== null" src="{{ user.profilePicture }}" alt="profile-picture">
                 </div>
                 <div class="informations">
-                    <p id="name"><span>{{ user.firstName + ' ' + user.lastName}}</span><span id="admin"
-                            *ngIf="user.isAdmin === 1">ADMIN</span></p>
-                    <p id="date">Membre depuis: <span>{{ user.createdAt | timeAgo }}</span> --- Dernière
-                        connexion:
-                        <span>il y a {{
-                            user.lastConnexion | timeAgo }}</span>
-                    </p>
+                    <p id="name">{{ user.firstName}} <span>{{user.lastName}}</span></p>
+                    <p id="date">Membre depuis <span>{{ user.createdAt | timeAgo }}</span><span id="connexion"> ⏤
+                            Dernière
+                            connexion il y a <span>{{ user.lastConnexion | timeAgo }}</span></span></p>
                 </div>
             </div>
+
+            <div class="buttons">
+                <button id="edit">
+                    <fa-icon [icon]="faEdit"></fa-icon>
+                </button>
+                <button id="edit" (click)="onDeleteUser(user.id)">
+                    <fa-icon [icon]="faTrash"></fa-icon>
+                </button>
+            </div>
+
         </div>
 
     </div>

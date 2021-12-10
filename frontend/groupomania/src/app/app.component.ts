@@ -25,7 +25,6 @@ export class AppComponent implements OnInit {
   // ID de l'user actuellement connecté
   userIdConnected: number | any = 0;
 
-  // Fonctions //
   // Bouton 'se déconnecter' de la navbar
   onLogOut() {
     this.authService.logOut();
