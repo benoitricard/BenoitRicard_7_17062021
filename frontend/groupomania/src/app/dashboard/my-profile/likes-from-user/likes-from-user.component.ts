@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import {
   faComment,
   faCrown,
@@ -16,7 +16,11 @@ import {
   styleUrls: ['./likes-from-user.component.scss'],
 })
 export class LikesFromUserComponent implements OnInit {
-  constructor(private http: HttpClient, private route: ActivatedRoute) {}
+  constructor(
+    private http: HttpClient,
+    private route: ActivatedRoute,
+    public router: Router
+  ) {}
 
   // Icônes FontAwesome
   faEdit = faEdit;
@@ -92,15 +96,27 @@ export class LikesFromUserComponent implements OnInit {
 
     this.userConnectedId = connectedUserId;
 
-    this.http.get(`http://localhost:3000/api/user/${userId}/like`).subscribe(
-      (res: any) => {
-        this.likesFromUser = res;
-        return res;
-      },
-      (err) => {
-        console.error(err);
-      }
-    );
+    if (this.router.url == '/dashboard/my-profile') {
+      this.http
+        .get(`http://localhost:3000/api/user/${connectedUserId}/like`)
+        .subscribe(
+          (res: any) => {
+            this.likesFromUser = res;
+          },
+          (err) => {
+            console.error(err);
+          }
+        );
+    } else {
+      this.http.get(`http://localhost:3000/api/user/${userId}/like`).subscribe(
+        (res: any) => {
+          this.likesFromUser = res;
+        },
+        (err) => {
+          console.error(err);
+        }
+      );
+    }
 
     this.http
       .get(`http://localhost:3000/api/user/${connectedUserId}/like`)

@@ -61,10 +61,8 @@ export class AppComponent implements OnInit {
       return 'posts';
     } else if (this.router.url == '/dashboard/users') {
       return 'users';
-    } else if (
-      this.router.url == `/dashboard/my-profile/${this.userIdConnected}`
-    ) {
-      return 'profile';
+    } else if (this.router.url == `/dashboard/my-profile`) {
+      return 'my-profile';
     } else {
       return null;
     }

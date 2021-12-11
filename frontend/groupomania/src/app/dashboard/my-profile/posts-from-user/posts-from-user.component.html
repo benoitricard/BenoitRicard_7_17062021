@@ -95,7 +95,7 @@
 
     </div>
 
-    <div id="godiv" *ngIf="userReqId !== userConnectedId">
+    <div id="godiv" *ngIf="router.url !== 'my-profile' && posts.length > 0">
         <h3 id="and-you">Et si vous aussi<br> vous écriviez vos <br>propres
             publications ?<br>
         </h3>
