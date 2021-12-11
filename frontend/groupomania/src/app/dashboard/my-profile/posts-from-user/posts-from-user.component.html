@@ -10,19 +10,10 @@
 
             <div class="pp-name">
 
-                <div class="admin-and-pp">
-
-                    <div class="admin-badge" *ngIf="post.User.isAdmin">
-                        <fa-icon [icon]="faCrown"></fa-icon>
-                    </div>
-
-                    <div class="pp">
-                        <img *ngIf="!post.User.profilePicture" src="../../../assets/images/default_pp/default1.png"
-                            alt="default-profile-picture">
-                        <img *ngIf="post.User.profilePicture" src="{{ post.User.profilePicture }}"
-                            alt="profile-picture">
-                    </div>
-
+                <div [ngClass]="{'pp': true, 'admin-pp': post.User.isAdmin}">
+                    <img *ngIf="!post.User.profilePicture" src="../../../assets/images/default_pp/default1.png"
+                        alt="default-profile-picture">
+                    <img *ngIf="post.User.profilePicture" src="{{ post.User.profilePicture }}" alt="profile-picture">
                 </div>
 
                 <div class="name">
@@ -94,7 +85,7 @@
                 <input type="text" placeholder="Commenter la publication..." minlength="5" name="content"
                     #content="ngModel" required ngModel>
 
-                <button type="submit" class="comment-submit">
+                <button type="submit" class="comment-submit" [disabled]="content.invalid">
                     <fa-icon [icon]="faPaperPlane"></fa-icon>
                 </button>
 
@@ -103,4 +94,12 @@
         </div>
 
     </div>
+
+    <div id="godiv" *ngIf="userReqId !== userConnectedId">
+        <h3 id="and-you">Et si vous aussi<br> vous écriviez vos <br>propres
+            publications ?<br>
+        </h3>
+        <button id="go" routerLink="../../posts">Go</button>
+    </div>
+
 </div>

@@ -29,9 +29,19 @@ export class PostsFromUserComponent implements OnInit {
   // Variables
   posts: any = [];
   likesFromUser: any = [];
+  userReqId: any;
   userConnected: any = {};
+  userConnectedId: any;
 
   // Fonctions
+  pairOuImpair(postId: any) {
+    if (postId % 2 == 0) {
+      return 'pair';
+    } else {
+      return 'impair';
+    }
+  }
+
   isThisPostLiked(postId: any) {
     for (let i = 0; i < this.likesFromUser.length; i++) {
       if (this.likesFromUser[i].post_id === postId) {
@@ -80,6 +90,7 @@ export class PostsFromUserComponent implements OnInit {
 
   ngOnInit(): void {
     let userId: number = this.route.snapshot.params.id;
+    this.userReqId = userId;
     let connectedUserId: any;
 
     if (localStorage.getItem('userId')) {
@@ -88,9 +99,13 @@ export class PostsFromUserComponent implements OnInit {
       connectedUserId = sessionStorage.getItem('userId');
     }
 
+    this.userConnectedId = connectedUserId;
+
     this.http.get(`http://localhost:3000/api/user/${userId}/post`).subscribe(
       (res: any) => {
         this.posts = res;
+        console.log(this.userReqId);
+        console.log(this.userConnectedId);
         return res;
       },
       (err) => {

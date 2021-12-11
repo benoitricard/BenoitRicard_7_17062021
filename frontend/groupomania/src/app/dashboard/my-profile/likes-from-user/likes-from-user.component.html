@@ -1,4 +1,4 @@
-<div id="posts-from-user-title">
+<div id="likes-from-user-title">
     <h3>Publications aimées par l'utilisateur</h3>
     <h3>{{likesFromUser.length}}</h3>
 </div>
@@ -8,21 +8,13 @@
 
         <div class="post-header">
 
-            <div class="pp-name" routerLink="../{{like.Post.user_id}}">
+            <div class="pp-name">
 
-                <div class="admin-and-pp">
-
-                    <div class="admin-badge" *ngIf="like.Post.User.isAdmin">
-                        <fa-icon [icon]="faCrown"></fa-icon>
-                    </div>
-
-                    <div class="pp">
-                        <img *ngIf="!like.Post.User.profilePicture" src="../../../assets/images/default_pp/default1.png"
-                            alt="default-profile-picture">
-                        <img *ngIf="like.Post.User.profilePicture" src="{{ like.Post.User.profilePicture }}"
-                            alt="profile-picture">
-                    </div>
-
+                <div [ngClass]="{'pp': true, 'admin-pp': like.Post.User.isAdmin}">
+                    <img *ngIf="!like.Post.User.profilePicture" src="../../../assets/images/default_pp/default1.png"
+                        alt="default-profile-picture">
+                    <img *ngIf="like.Post.User.profilePicture" src="{{ like.Post.User.profilePicture }}"
+                        alt="profile-picture">
                 </div>
 
                 <div class="name">
@@ -95,7 +87,7 @@
                 <input type="text" placeholder="Commenter la publication..." minlength="5" name="content"
                     #content="ngModel" required ngModel>
 
-                <button type="submit" class="comment-submit">
+                <button type="submit" class="comment-submit" [disabled]="content.invalid">
                     <fa-icon [icon]="faPaperPlane"></fa-icon>
                 </button>
 
@@ -104,4 +96,12 @@
         </div>
 
     </div>
+
+    <div id="godiv" *ngIf="userReqId !== userConnectedId">
+        <h3 id="and-you">Et si vous aussi<br> vous écriviez vos <br>propres
+            publications ?<br>
+        </h3>
+        <button id="go" routerLink="../../posts">Go</button>
+    </div>
+
 </div>

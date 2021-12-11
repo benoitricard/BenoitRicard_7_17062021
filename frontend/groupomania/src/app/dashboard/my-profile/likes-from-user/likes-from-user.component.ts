@@ -29,7 +29,9 @@ export class LikesFromUserComponent implements OnInit {
   // Variables
   likesFromConnected: any = [];
   likesFromUser: any = [];
+  userReqId: any;
   userConnected: any = {};
+  userConnectedId: any;
 
   isThisPostLiked(postId: any) {
     for (let i = 0; i < this.likesFromConnected['length']; i++) {
@@ -79,6 +81,7 @@ export class LikesFromUserComponent implements OnInit {
 
   ngOnInit(): void {
     let userId: number = this.route.snapshot.params.id;
+    this.userReqId = userId;
     let connectedUserId: any;
 
     if (localStorage.getItem('userId')) {
@@ -86,6 +89,8 @@ export class LikesFromUserComponent implements OnInit {
     } else {
       connectedUserId = sessionStorage.getItem('userId');
     }
+
+    this.userConnectedId = connectedUserId;
 
     this.http.get(`http://localhost:3000/api/user/${userId}/like`).subscribe(
       (res: any) => {

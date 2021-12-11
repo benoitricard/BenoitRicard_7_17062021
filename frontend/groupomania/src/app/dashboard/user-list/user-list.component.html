@@ -27,7 +27,7 @@
                         <fa-icon [icon]="faCrown"></fa-icon>
                     </div>
 
-                    <div class="pp">
+                    <div [ngClass]="{'pp': true, 'admin-pp': user.isAdmin}">
                         <img *ngIf="user.profilePicture === null" src="../../../assets/images/default_pp/default1.png"
                             alt="default-profile-picture">
                         <img *ngIf="user.profilePicture !== null" src="{{ user.profilePicture }}" alt="profile-picture">

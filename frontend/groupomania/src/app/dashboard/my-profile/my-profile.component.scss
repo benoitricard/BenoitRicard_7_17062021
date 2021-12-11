@@ -51,6 +51,11 @@ $pp-profile-size: 300px;
           width: 100%;
         }
       }
+
+      .admin-pp {
+        border: solid 8px $primary-color;
+        background-color: black;
+      }
     }
 
     #member-connexion {
