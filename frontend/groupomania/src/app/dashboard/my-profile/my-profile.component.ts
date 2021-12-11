@@ -1,6 +1,14 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import {
+  faBirthdayCake,
+  faPencilAlt,
+  faBriefcase,
+  faEdit,
+  faTrash,
+  faCrown,
+} from '@fortawesome/free-solid-svg-icons';
 import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
@@ -9,11 +17,21 @@ import { AuthService } from 'src/app/services/auth.service';
   styleUrls: ['./my-profile.component.scss'],
 })
 export class MyProfileComponent implements OnInit {
+  // Icônes FontAwesome
+  faPencilAlt = faPencilAlt;
+  faBirthdayCake = faBirthdayCake;
+  faBriefcase = faBriefcase;
+  faEdit = faEdit;
+  faTrash = faTrash;
+  faCrown = faCrown;
+
+  // Variables
   user: any = {};
   whichOne: any = 'posts';
   connectedUserId: number | any;
   userConnected: any = {};
 
+  // Fonctions
   postsOrLikes(value: any) {
     if (value == 'posts') {
       this.whichOne = 'posts';

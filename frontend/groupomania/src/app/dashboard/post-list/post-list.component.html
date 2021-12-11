@@ -2,19 +2,22 @@
 
 <app-file-upload></app-file-upload>
 
-<div class="header-title">
-    <h3>Publications ({{ posts.length }})</h3>
-    <form class="buttons-order" [formGroup]="orderForm" (ngSubmit)="onChangeOrder()">
-        <select class="form-control" formControlName="order" (change)="changeOrder($event)">
-            <option value="recents">Les plus récents</option>
-            <option value="olds">Les plus anciens</option>
-            <option value="liked">Les plus likés</option>
-            <option value="unliked">Les moins aimés</option>
-        </select>
-        <button class="btn btn-info" type="submit">Actualiser</button>
-    </form>
+<div id="users-title">
+    <h3>Publications</h3>
+    <h3>{{posts.length}}</h3>
 </div>
-<br>
+
+<div class="order-btns">
+    <button [ngClass]="{'order-btn': true, 'order-btn-active': whichOrder() == ''}"
+        (click)="onChangeOrder('recents')">Récents</button>
+    <button [ngClass]="{'order-btn': true, 'order-btn-active': whichOrder() == '/olds'}"
+        (click)="onChangeOrder('olds')">Anciens</button>
+    <button [ngClass]="{'order-btn': true, 'order-btn-active': whichOrder() == '/liked'}"
+        (click)="onChangeOrder('liked')">Les plus aimés</button>
+    <button [ngClass]="{'order-btn': true, 'order-btn-active': whichOrder() == '/unliked'}"
+        (click)="onChangeOrder('unliked')">Les moins aimés</button>
+</div>
+
 <div class="list-group" id="post-list">
     <div class="list-group-item" *ngFor="let post of posts;">
 

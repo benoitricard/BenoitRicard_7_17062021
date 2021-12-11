@@ -1,6 +1,14 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import {
+  faComment,
+  faCrown,
+  faEdit,
+  faHeart,
+  faPaperPlane,
+  faTrash,
+} from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-likes-from-user',
@@ -10,8 +18,18 @@ import { ActivatedRoute } from '@angular/router';
 export class LikesFromUserComponent implements OnInit {
   constructor(private http: HttpClient, private route: ActivatedRoute) {}
 
+  // Icônes FontAwesome
+  faEdit = faEdit;
+  faTrash = faTrash;
+  faHeart = faHeart;
+  faComment = faComment;
+  faPaperPlane = faPaperPlane;
+  faCrown = faCrown;
+
+  // Variables
   likesFromConnected: any = [];
   likesFromUser: any = [];
+  userConnected: any = {};
 
   isThisPostLiked(postId: any) {
     for (let i = 0; i < this.likesFromConnected['length']; i++) {
@@ -33,6 +51,19 @@ export class LikesFromUserComponent implements OnInit {
           console.error(err);
         }
       );
+  }
+
+  onDeletePost(postId: any) {
+    if (confirm('Êtes-vous sûr de vouloir supprimer cette publication ?')) {
+      this.http.delete(`http://localhost:3000/api/post/${postId}`).subscribe(
+        () => {
+          window.location.reload();
+        },
+        (err) => {
+          console.error(err);
+        }
+      );
+    }
   }
 
   onLikePost(postId: any) {
@@ -71,6 +102,18 @@ export class LikesFromUserComponent implements OnInit {
       .subscribe(
         (res: any) => {
           this.likesFromConnected = res;
+          return res;
+        },
+        (err) => {
+          console.error(err);
+        }
+      );
+
+    this.http
+      .get(`http://localhost:3000/api/user/${connectedUserId}`)
+      .subscribe(
+        (res: any) => {
+          this.userConnected = res;
           return res;
         },
         (err) => {

@@ -1,49 +1,107 @@
-<h4>Publications aimées par l'utilisateur ({{ likesFromUser.length }})</h4>
-<br>
-<div class="list-group" id="post-list">
-    <div class="list-group-item" *ngFor="let postLiked of likesFromUser;">
+<div id="posts-from-user-title">
+    <h3>Publications aimées par l'utilisateur</h3>
+    <h3>{{likesFromUser.length}}</h3>
+</div>
 
-        <div class="user router-link" routerLink="../../my-profile/{{ postLiked.Post.user_id }}">
-            <div class="pp-and-name">
-                <div class="pp">
-                    <img *ngIf="!postLiked.Post.User.profilePicture"
-                        src="../../../assets/images/default_pp.png1637522636718.png" alt="default-profile-picture">
-                    <img *ngIf="postLiked.Post.User.profilePicture" src="{{ postLiked.Post.User.profilePicture }}"
-                        alt="profile-picture">
+<div class="list-group" id="like-list">
+    <div class="post-item" *ngFor="let like of likesFromUser;">
+
+        <div class="post-header">
+
+            <div class="pp-name" routerLink="../{{like.Post.user_id}}">
+
+                <div class="admin-and-pp">
+
+                    <div class="admin-badge" *ngIf="like.Post.User.isAdmin">
+                        <fa-icon [icon]="faCrown"></fa-icon>
+                    </div>
+
+                    <div class="pp">
+                        <img *ngIf="!like.Post.User.profilePicture" src="../../../assets/images/default_pp/default1.png"
+                            alt="default-profile-picture">
+                        <img *ngIf="like.Post.User.profilePicture" src="{{ like.Post.User.profilePicture }}"
+                            alt="profile-picture">
+                    </div>
+
                 </div>
-                <p><span>{{ postLiked.Post.User.firstName + ' ' + postLiked.Post.User.lastName}}</span><span id="admin"
-                        *ngIf="postLiked.Post.User.isAdmin === 1">ADMIN</span></p>
+
+                <div class="name">
+                    <p>{{like.Post.User.firstName}}<br><span>{{like.Post.User.lastName}}</span></p>
+                </div>
+
             </div>
-            <p id="date">il y a {{ postLiked.Post.createdAt | timeAgo }}</p>
+
+            <div class="buttons" *ngIf="userConnected.isAdmin || userConnected.id == like.Post.user_id">
+                <button id="edit">
+                    <fa-icon [icon]="faEdit"></fa-icon>
+                </button>
+                <button id="delete" (click)="onDeletePost(like.Post.id)">
+                    <fa-icon [icon]="faTrash"></fa-icon>
+                </button>
+            </div>
+
         </div>
 
-        <p id="content" routerLink="../../posts/{{ postLiked.Post.id }}" class="router-link">{{ postLiked.Post.content
-            }}</p>
-        <div *ngIf="postLiked.Post.attachment" id="attachment" routerLink="../../posts/{{ postLiked.Post.id }}"
-            class="router-link">
-            <img src="{{ postLiked.Post.attachment }}" alt="post-file">
-        </div>
-        <br>
-        <p class="router-link" routerLink="../../posts/{{ postLiked.Post.id }}">Commentaires ({{
-            postLiked.Post.Comments.length
-            }})</p>
-        <br>
-        <div class="like-comment">
-            <div class="like">
-                <button
-                    [ngClass]="{'btn': true, 'btn-danger': !isThisPostLiked(postLiked.Post.id), 'btn-warning': isThisPostLiked(postLiked.Post.id)}"
-                    (click)="onLikePost(postLiked.Post.id)"><span
-                        *ngIf="isThisPostLiked(postLiked.Post.id)">Disliker</span><span
-                        *ngIf="!isThisPostLiked(postLiked.Post.id)">Liker</span></button>
-                <p id="likes">Likes: {{ postLiked.Post.nbOfLikes }}</p>
+        <div class="post-body">
+
+            <div class="content">
+                <p>{{like.Post.content}}</p>
             </div>
-            <form class="form-group" id="comments-form" #createCommentForm="ngForm"
-                (ngSubmit)="onCreateComment(createCommentForm.value, postLiked.Post.id)">
-                <input type="text" class="form-control" placeholder="Commenter la publication..." minlength="5"
-                    name="content" #content="ngModel" required ngModel>
-                <button type="submit" class="btn btn-primary" [disabled]="content.invalid">Publier</button>
-            </form>
+
+            <div *ngIf="like.Post.attachment" class="attachment">
+                <img src="{{like.Post.attachment}}" alt="post-attachment">
+            </div>
+
         </div>
-        <br>
+
+        <div class="post-comment">
+
+            <div class="comment-header">
+
+                <div class="buttons">
+
+                    <div class="likes">
+
+                        <button [ngClass]="{'liked-btn': isThisPostLiked(like.Post.id)}"
+                            (click)="onLikePost(like.Post.id)">
+                            <fa-icon [icon]="faHeart"></fa-icon>
+                        </button>
+
+                        <p>{{like.Post.nbOfLikes}}</p>
+
+                    </div>
+
+                    <div class="comments">
+
+                        <button class="comment-btn" routerLink="../../posts/{{like.Post.id}}">
+                            <fa-icon [icon]="faComment"></fa-icon>
+                        </button>
+
+                        <p>{{like.Post.Comments.length}}</p>
+
+                    </div>
+
+                </div>
+
+                <div class="post-date">
+                    <p>Il y a {{like.Post.createdAt | timeAgo}}</p>
+                </div>
+
+            </div>
+
+            <form class="comment-form" id="comment-form" #createCommentForm="ngForm"
+                (ngSubmit)="onCreateComment(createCommentForm.value, like.Post.id)">
+
+                <input type="text" placeholder="Commenter la publication..." minlength="5" name="content"
+                    #content="ngModel" required ngModel>
+
+                <button type="submit" class="comment-submit">
+                    <fa-icon [icon]="faPaperPlane"></fa-icon>
+                </button>
+
+            </form>
+
+        </div>
+
     </div>
 </div>

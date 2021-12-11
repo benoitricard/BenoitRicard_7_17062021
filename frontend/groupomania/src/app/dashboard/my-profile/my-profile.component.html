@@ -3,46 +3,81 @@
     <div class="row">
         <div class="col-xs-12">
 
-            <div class="pp">
-                <img *ngIf="user.profilePicture === null" src="../../../assets/images/default_pp.png1637522636718.png"
-                    alt="profile-picture">
-                <img *ngIf="user.profilePicture !== null" src="{{ user.profilePicture }}" alt="profile-picture">
-            </div>
-            <h3>{{ user.firstName + ' ' + user.lastName }}<span *ngIf="user.isAdmin === 1" id="admin">ADMIN</span></h3>
-            <p>Membre depuis: <span>{{ user.createdAt | timeAgo }}</span> --- Dernière connexion: <span>il y a {{
-                    user.lastConnexion | timeAgo }}</span></p>
-            <br>
-            <div class="bio">
-                <h4>Biography</h4>
-                <p *ngIf="user.biography !== null">{{ user.biography }}</p>
-                <p *ngIf="user.biography === null">-</p>
-            </div>
-            <br>
-            <div class="job">
-                <h4>Job Title</h4>
-                <p *ngIf="user.jobTitle !== null">{{ user.jobTitle }}</p>
-                <p *ngIf="user.jobTitle === null">-</p>
-            </div>
-            <br>
-            <div class="birthday">
-                <h4>Birthday</h4>
-                <p *ngIf="user.birthday !== null">{{ user.birthday }}</p>
-                <p *ngIf="user.birthday === null">-</p>
-            </div>
-            <br>
-            <div class="buttons" *ngIf="connectedUserId.isAdmin || connectedUserId.id == user.id">
-                <button class="btn btn-primary" routerLink="../../users/{{ user.id }}">Modifier le profil</button>
-                <button class="btn btn-danger" (click)="onDeleteUser()">Supprimer le profil</button>
+            <div id="user">
+
+                <div id="left-column">
+
+                    <div class="admin-and-pp">
+
+                        <div class="admin-badge" *ngIf="user.isAdmin">
+                            <fa-icon [icon]="faCrown"></fa-icon>
+                        </div>
+
+                        <div class="pp">
+                            <img *ngIf="!user.profilePicture" src="../../../assets/images/default_pp/default1.png"
+                                alt="default-profile-picture">
+                            <img *ngIf="user.profilePicture" src="{{ user.profilePicture }}" alt="profile-picture">
+                        </div>
+
+                    </div>
+
+                    <div id="member-connexion">
+                        <h4>Membre depuis <br><span>{{user.createdAt | timeAgo}}</span></h4>
+                        <h4>Dernière connexion <br><span>il y a {{user.lastConnexion | timeAgo}}</span></h4>
+                    </div>
+
+                </div>
+
+                <div id="right-column">
+
+                    <div id="name">
+                        <h2>{{user.firstName}}<br><span>{{user.lastName}}</span></h2>
+                    </div>
+
+                    <div id="biography">
+                        <h3>Biographie</h3>
+                        <p *ngIf="!user.biography" class="empty-bio">{{user.firstName}} ne s'est pas encore présenté(e)
+                            !
+                        </p>
+                        <p *ngIf="user.biography" class="bio">{{user.biography}}</p>
+                    </div>
+
+                    <div id="birthday-job">
+
+                        <div id="birthday">
+                            <fa-icon [icon]="faBirthdayCake"></fa-icon>
+                            <p *ngIf="!user.birthday" class="empty-birthday">⏤</p>
+                            <p *ngIf="user.birthday" class="birthday">{{user.birthday}}</p>
+                        </div>
+
+                        <div id="job">
+                            <fa-icon [icon]="faBriefcase"></fa-icon>
+                            <p *ngIf="!user.jobTitle" class="empty-job">⏤</p>
+                            <p *ngIf="user.jobTitle" class="job">{{user.jobTitle}}</p>
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <div class="buttons" *ngIf="userConnected.isAdmin || userConnected.id == user.id">
+                    <button id="edit">
+                        <fa-icon [icon]="faEdit"></fa-icon>
+                    </button>
+                    <button id="edit" (click)="onDeleteUser()">
+                        <fa-icon [icon]="faTrash"></fa-icon>
+                    </button>
+                </div>
+
             </div>
 
-            <br><br><br>
-            <div class="posts-user">
-                <button [ngClass]="{'btn': true, 'btn-info': whichOne == 'posts'}"
-                    (click)="postsOrLikes('posts')">Publications</button>
-                <button [ngClass]="{'btn': true, 'btn-info': whichOne == 'likes'}"
-                    (click)="postsOrLikes('likes')">Likes</button>
+            <div class="profile-btns">
+                <button [ngClass]="{'profile-btn': true, 'profile-btn-active': whichOne == 'posts'}"
+                    (click)="whichOne = 'posts'">Publications</button>
+                <button [ngClass]="{'profile-btn': true, 'profile-btn-active': whichOne == 'likes'}"
+                    (click)="whichOne = 'likes'">Likes</button>
             </div>
-            <br>
+
             <app-posts-from-user *ngIf="whichOne == 'posts'"></app-posts-from-user>
             <app-likes-from-user *ngIf="whichOne == 'likes'"></app-likes-from-user>
 

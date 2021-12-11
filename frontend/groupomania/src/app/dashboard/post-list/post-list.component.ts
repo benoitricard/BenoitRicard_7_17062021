@@ -18,11 +18,11 @@ export class PostListComponent implements OnInit {
   posts: any[] = [];
   connectedUserInfo: any = {};
   likesFromUser: any = [];
-  orderList: any;
+  order: any;
 
   getPosts() {
     this.http
-      .get<any[]>(`http://localhost:3000/api/post${this.getOrder()}`)
+      .get<any[]>(`http://localhost:3000/api/post${this.whichOrder()}`)
       .subscribe(
         (res) => {
           this.posts = res;
@@ -33,42 +33,24 @@ export class PostListComponent implements OnInit {
       );
   }
 
-  getOrder() {
-    if (this.orderList.order == 'recents') {
+  whichOrder() {
+    if (this.order == 'recents') {
       return '';
-    } else if (this.orderList.order == 'olds') {
+    } else if (this.order == 'olds') {
       return '/olds';
-    } else if (this.orderList.order == 'liked') {
+    } else if (this.order == 'liked') {
       return '/liked';
-    } else if (this.orderList.order == 'unliked') {
+    } else if (this.order == 'unliked') {
       return '/unliked';
     } else {
       return '';
     }
   }
 
-  orderForm = this.fb.group({
-    order: ['', [Validators.required]],
-  });
-
-  changeOrder(e: any) {
-    this.order!.setValue(e.target.value, {
-      onlySelf: true,
-    });
-  }
-
-  get order() {
-    return this.orderForm.get('order');
-  }
-
-  onChangeOrder() {
-    if (!this.orderForm.valid) {
-      return false;
-    } else {
-      this.orderList = this.orderForm.value;
-      this.getPosts();
-    }
-    return false;
+  // Clic du bouton de tri
+  onChangeOrder(orderChanged: any) {
+    this.order = orderChanged;
+    this.getPosts();
   }
 
   isThisPostLiked(postId: any) {

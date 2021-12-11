@@ -1,53 +1,241 @@
 @import "../../../sass/styles.scss";
 
-$pp-height: 45px;
+$pp-profile-size: 300px;
 
-.posts-user {
+#user {
   display: flex;
   justify-content: space-between;
+  margin-bottom: 100px;
 
-  :nth-child(1) {
+  #left-column {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 0 80px 0 0;
+
+    .admin-and-pp {
+      display: flex;
+      align-items: center;
+
+      .admin-badge {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: $primary-color;
+        padding: 15px;
+        height: 50px;
+        width: 50px;
+        border-radius: 100px;
+        position: absolute;
+        box-shadow: 0px 0px 15px 0px rgba(0, 0, 0, 0.15);
+        left: -5px;
+
+        fa-icon {
+          color: white;
+          font-size: 20px;
+          margin: 0;
+        }
+      }
+
+      .pp {
+        overflow: hidden;
+        border-radius: 1000px;
+        height: $pp-profile-size;
+        width: $pp-profile-size;
+        box-shadow: 0px 0px 15px 0px rgba(0, 0, 0, 0.3);
+        margin-bottom: 20px;
+
+        img {
+          object-fit: cover;
+          height: 100%;
+          width: 100%;
+        }
+      }
+    }
+
+    #member-connexion {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+
+      h4 {
+        font-size: 18px;
+        font-weight: 500;
+        color: grey;
+        margin-bottom: 8px;
+        text-align: center;
+        line-height: 25px;
+
+        span {
+          color: black;
+          font-weight: 700;
+        }
+      }
+    }
+  }
+
+  #right-column {
+    display: flex;
+    flex-direction: column;
+    margin-left: 0;
+    margin-top: 10px;
+
+    #name {
+      margin-bottom: 50px;
+      margin-left: 0;
+
+      h2 {
+        font-size: 50px;
+        margin: 0;
+
+        span {
+          font-weight: 700;
+        }
+      }
+    }
+
+    #biography {
+      display: flex;
+      flex-direction: column;
+      margin-left: 0;
+      margin-bottom: 30px;
+
+      h3 {
+        font-weight: 600;
+        margin-top: 0;
+      }
+
+      p {
+        font-size: 20px;
+        font-weight: 500;
+        color: grey;
+        font-style: italic;
+        margin: 0;
+      }
+    }
+
+    #birthday-job {
+      display: flex;
+      margin-left: 0;
+
+      #birthday {
+        display: flex;
+        align-items: center;
+        margin-left: 0;
+        margin-right: 20px;
+        background-color: $primary-color;
+        padding: 15px 30px;
+        border-radius: 100px;
+
+        fa-icon {
+          font-size: 20px;
+          margin-right: 15px;
+          margin-top: 0;
+          color: white;
+        }
+
+        p {
+          font-size: 20px;
+          font-weight: 500;
+          color: white;
+          margin: 0;
+        }
+      }
+
+      #job {
+        display: flex;
+        align-items: center;
+        margin-left: 0;
+        background-color: $primary-color;
+        padding: 15px 30px;
+        border-radius: 100px;
+
+        fa-icon {
+          font-size: 20px;
+          margin-right: 15px;
+          margin-top: 0;
+          color: white;
+        }
+
+        p {
+          font-size: 20px;
+          font-weight: 500;
+          color: white;
+          margin: 0;
+        }
+      }
+
+    }
+  }
+
+  .buttons {
+    display: flex;
+    flex-direction: column;
+    margin-top: 10px;
+
+    button:nth-child(1) {
+      margin-bottom: 10px;
+      background-color: $primary-color;
+
+      &:active {
+        background-color: darken($primary-color, 10%);
+      }
+    }
+
+    button:nth-child(2) {
+      background-color: $danger-color;
+
+      &:active {
+        background-color: darken($danger-color, 10%);
+      }
+    }
+
+    button {
+      border-radius: 100px;
+      border: none;
+      width: 35px;
+      height: 35px;
+      padding: 8px;
+      color: white;
+      transition: all 400ms;
+
+      &:hover {
+        transform: scale(1.1);
+      }
+
+      &:active {
+        transform: scale(1);
+      }
+    }
+  }
+}
+
+.profile-btns {
+  margin-bottom: 30px;
+
+  button {
     margin-right: 15px;
-  }
-
-  button {
-    width: 49.5%;
-  }
-}
-
-.buttons {
-  button {
-    margin-right: 10px;
-  }
-}
-
-#admin {
-  font-size: 20px;
-  margin-left: 12px;
-  background-color: $primary-color;
-  color: white;
-  padding: 3px 12px;
-  border-radius: 5px;
-}
-
-p {
-  font-size: 16px;
-}
-
-span {
-  font-weight: 700;
-}
-
-.pp {
-  display: flex;
-  width: 70%;
-  margin-bottom: 20px;
-  margin-left: 150px;
-
-  img {
-    height: $pp-height*2;
-    width: $pp-height*2;
+    width: 230px;
+    height: $nav-buttons-height;
     border-radius: 100px;
-    margin-left: -150px;
+    background-color: $primary-color;
+    color: white;
+    border: none;
+    font-weight: 500;
+    transition: all 400ms;
+
+    &:hover {
+      transform: scale(1.05);
+    }
+
+    &:active {
+      background-color: darken($primary-color, 10%);
+      transform: scale(1);
+    }
+  }
+
+  .profile-btn-active {
+    background-color: white;
+    color: $primary-color;
   }
 }

@@ -3,32 +3,57 @@
     <h3>{{users.length}}</h3>
 </div>
 
+<div class="order-btns">
+    <button [ngClass]="{'order-btn': true, 'order-btn-active': whichOrder() == ''}"
+        (click)="onChangeOrder('recentscreation')">Nouveaux membres</button>
+    <button [ngClass]="{'order-btn': true, 'order-btn-active': whichOrder() == '/oldscreation'}"
+        (click)="onChangeOrder('oldscreation')">Anciens membres</button>
+    <button [ngClass]="{'order-btn': true, 'order-btn-active': whichOrder() == '/recentsconnexion'}"
+        (click)="onChangeOrder('recentsconnexion')">Connectés récemment</button>
+    <button [ngClass]="{'order-btn': true, 'order-btn-active': whichOrder() == '/oldsconnexion'}"
+        (click)="onChangeOrder('oldsconnexion')">Connectés anciennement</button>
+</div>
+
 <div class="list-group" id="user-list">
-    <div class="user-item-card" *ngFor="let user of users;">
+    <div [ngClass]="{'user-item-card': true, 'user-item-admin': user.isAdmin}" *ngFor="let user of users;">
 
         <div class="user">
 
             <div class="pp-and-name router-link" routerLink="../my-profile/{{ user.id }}">
-                <div class="pp">
-                    <img *ngIf="user.profilePicture === null" src="../../../assets/images/default_pp/default1.png"
-                        alt="default-profile-picture">
-                    <img *ngIf="user.profilePicture !== null" src="{{ user.profilePicture }}" alt="profile-picture">
+
+                <div class="admin-and-pp">
+
+                    <div class="admin-badge" *ngIf="user.isAdmin">
+                        <fa-icon [icon]="faCrown"></fa-icon>
+                    </div>
+
+                    <div class="pp">
+                        <img *ngIf="user.profilePicture === null" src="../../../assets/images/default_pp/default1.png"
+                            alt="default-profile-picture">
+                        <img *ngIf="user.profilePicture !== null" src="{{ user.profilePicture }}" alt="profile-picture">
+                    </div>
+
                 </div>
+
                 <div class="informations">
                     <p id="name">{{ user.firstName}} <span>{{user.lastName}}</span></p>
                     <p id="date">Membre depuis <span>{{ user.createdAt | timeAgo }}</span><span id="connexion"> ⏤
                             Dernière
-                            connexion il y a <span>{{ user.lastConnexion | timeAgo }}</span></span></p>
+                            connexion <span>il y a {{ user.lastConnexion | timeAgo }}</span></span></p>
                 </div>
+
             </div>
 
-            <div class="buttons">
+            <div class="buttons" *ngIf="connectedUser.isAdmin">
+
                 <button id="edit">
                     <fa-icon [icon]="faEdit"></fa-icon>
                 </button>
+
                 <button id="edit" (click)="onDeleteUser(user.id)">
                     <fa-icon [icon]="faTrash"></fa-icon>
                 </button>
+
             </div>
 
         </div>
