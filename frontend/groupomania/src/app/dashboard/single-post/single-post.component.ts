@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Renderer2, ɵwhenRendered } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import {
   faComment,
@@ -8,6 +8,7 @@ import {
   faPaperPlane,
   faTrash,
 } from '@fortawesome/free-solid-svg-icons';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-single-post',
@@ -18,7 +19,8 @@ export class SinglePostComponent implements OnInit {
   constructor(
     private http: HttpClient,
     private route: ActivatedRoute,
-    public router: Router
+    public router: Router,
+    private location: Location
   ) {}
 
   // Icônes FontAwesome
@@ -31,7 +33,10 @@ export class SinglePostComponent implements OnInit {
   // Variables
   post: any = {};
   connectedUserInfo: any = {};
+  userConnectedId: any;
   likesFromUser: any = [];
+  commentedWithSuccess: boolean = false;
+  commentInput: any;
 
   onDeletePost() {
     if (confirm('Êtes-vous sûr de vouloir supprimer ce post ?')) {
@@ -39,7 +44,7 @@ export class SinglePostComponent implements OnInit {
         .delete(`http://localhost:3000/api/post/${this.post['id']}`)
         .subscribe(
           () => {
-            this.router.navigate(['dashboard/posts']);
+            this.location.back();
           },
           (err) => {
             console.error(err);
@@ -54,7 +59,7 @@ export class SinglePostComponent implements OnInit {
         .delete(`http://localhost:3000/api/comment/${commentId}`)
         .subscribe(
           () => {
-            this.router.navigate(['dashboard/posts']);
+            this.getPost();
           },
           (err) => {
             console.error(err);
@@ -75,7 +80,8 @@ export class SinglePostComponent implements OnInit {
   onLikePost(postId: any) {
     this.http.post(`http://localhost:3000/api/like/${postId}`, null).subscribe(
       () => {
-        window.location.reload();
+        this.getPost();
+        this.getLikes();
       },
       (err) => {
         console.error(err);
@@ -83,12 +89,43 @@ export class SinglePostComponent implements OnInit {
     );
   }
 
+  getPost() {
+    let postId: number = this.route.snapshot.params.id;
+    this.http.get(`http://localhost:3000/api/post/${postId}`).subscribe(
+      (res) => {
+        this.post = res;
+      },
+      (err) => {
+        this.router.navigate(['not-found']);
+        console.error(err);
+      }
+    );
+  }
+
+  getLikes() {
+    this.http
+      .get(`http://localhost:3000/api/user/${this.userConnectedId}/like`)
+      .subscribe(
+        (res: any) => {
+          this.likesFromUser = res;
+        },
+        (err) => {
+          console.error(err);
+        }
+      );
+  }
+
   onCreateComment(form: any, postId: any) {
     this.http
       .post(`http://localhost:3000/api/comment/${postId}`, form)
       .subscribe(
         () => {
-          window.location.reload();
+          this.commentedWithSuccess = true;
+          setTimeout(() => {
+            this.commentedWithSuccess = false;
+          }, 600);
+          this.getPost();
+          this.commentInput = '';
         },
         (err) => {
           console.error(err);
@@ -105,36 +142,16 @@ export class SinglePostComponent implements OnInit {
       connectedUserId = sessionStorage.getItem('userId');
     }
 
+    this.userConnectedId = connectedUserId;
+
+    this.getPost();
+    this.getLikes();
+
     this.http
       .get(`http://localhost:3000/api/user/${connectedUserId}`)
       .subscribe(
         (res: any) => {
           this.connectedUserInfo = res;
-          return res;
-        },
-        (err) => {
-          console.error(err);
-        }
-      );
-
-    let postId: number = this.route.snapshot.params.id;
-
-    this.http.get(`http://localhost:3000/api/post/${postId}`).subscribe(
-      (res) => {
-        this.post = res;
-      },
-      (err) => {
-        this.router.navigate(['not-found']);
-        console.error(err);
-      }
-    );
-
-    this.http
-      .get(`http://localhost:3000/api/user/${connectedUserId}/like`)
-      .subscribe(
-        (res: any) => {
-          this.likesFromUser = res;
-          return res;
         },
         (err) => {
           console.error(err);

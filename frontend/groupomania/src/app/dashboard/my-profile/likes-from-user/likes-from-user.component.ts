@@ -36,6 +36,7 @@ export class LikesFromUserComponent implements OnInit {
   userReqId: any;
   userConnected: any = {};
   userConnectedId: any;
+  commentedWithSuccess: boolean = false;
 
   isThisPostLiked(postId: any) {
     for (let i = 0; i < this.likesFromConnected['length']; i++) {
@@ -51,7 +52,11 @@ export class LikesFromUserComponent implements OnInit {
       .post(`http://localhost:3000/api/comment/${postId}`, form)
       .subscribe(
         () => {
-          window.location.reload();
+          this.commentedWithSuccess = true;
+          setTimeout(() => {
+            this.commentedWithSuccess = false;
+          }, 600);
+          this.getPosts();
         },
         (err) => {
           console.error(err);
@@ -63,7 +68,7 @@ export class LikesFromUserComponent implements OnInit {
     if (confirm('Êtes-vous sûr de vouloir supprimer cette publication ?')) {
       this.http.delete(`http://localhost:3000/api/post/${postId}`).subscribe(
         () => {
-          window.location.reload();
+          this.getPosts();
         },
         (err) => {
           console.error(err);
@@ -75,7 +80,8 @@ export class LikesFromUserComponent implements OnInit {
   onLikePost(postId: any) {
     this.http.post(`http://localhost:3000/api/like/${postId}`, null).subscribe(
       () => {
-        window.location.reload();
+        this.getPosts();
+        this.getLikes();
       },
       (err) => {
         console.error(err);
@@ -83,22 +89,11 @@ export class LikesFromUserComponent implements OnInit {
     );
   }
 
-  ngOnInit(): void {
+  getPosts() {
     let userId: number = this.route.snapshot.params.id;
-    this.userReqId = userId;
-    let connectedUserId: any;
-
-    if (localStorage.getItem('userId')) {
-      connectedUserId = localStorage.getItem('userId');
-    } else {
-      connectedUserId = sessionStorage.getItem('userId');
-    }
-
-    this.userConnectedId = connectedUserId;
-
     if (this.router.url == '/dashboard/my-profile/user') {
       this.http
-        .get(`http://localhost:3000/api/user/${connectedUserId}/like`)
+        .get(`http://localhost:3000/api/user/${this.userConnectedId}/like`)
         .subscribe(
           (res: any) => {
             this.likesFromUser = res;
@@ -117,18 +112,34 @@ export class LikesFromUserComponent implements OnInit {
         }
       );
     }
+  }
 
+  getLikes() {
     this.http
-      .get(`http://localhost:3000/api/user/${connectedUserId}/like`)
+      .get(`http://localhost:3000/api/user/${this.userConnectedId}/like`)
       .subscribe(
         (res: any) => {
           this.likesFromConnected = res;
-          return res;
         },
         (err) => {
           console.error(err);
         }
       );
+  }
+
+  ngOnInit(): void {
+    let connectedUserId: any;
+
+    if (localStorage.getItem('userId')) {
+      connectedUserId = localStorage.getItem('userId');
+    } else {
+      connectedUserId = sessionStorage.getItem('userId');
+    }
+
+    this.userConnectedId = connectedUserId;
+
+    this.getPosts();
+    this.getLikes();
 
     this.http
       .get(`http://localhost:3000/api/user/${connectedUserId}`)

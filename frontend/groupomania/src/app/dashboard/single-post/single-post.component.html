@@ -73,7 +73,7 @@
 
                                 <div class="comments">
 
-                                    <button class="comment-btn" routerLink="../../posts/{{post.id}}">
+                                    <button class="comment-btn" [disabled]>
                                         <fa-icon [icon]="faComment"></fa-icon>
                                     </button>
 
@@ -92,10 +92,12 @@
                         <form class="comment-form" id="comment-form" #createCommentForm="ngForm"
                             (ngSubmit)="onCreateComment(createCommentForm.value, post.id)">
 
-                            <input type="text" placeholder="Commenter la publication..." minlength="5" name="content"
-                                #content="ngModel" required ngModel>
+                            <input type="text" placeholder="Commenter la publication..." id="comment-input"
+                                minlength="5" name="content" #content="ngModel" required [(ngModel)]="commentInput">
 
-                            <button type="submit" class="comment-submit" [disabled]="content.invalid">
+                            <button type="submit"
+                                [ngClass]="{'comment-submit': true, 'comment-success': commentedWithSuccess}"
+                                [disabled]="content.invalid">
                                 <fa-icon [icon]="faPaperPlane"></fa-icon>
                             </button>
 
@@ -105,7 +107,7 @@
 
                     <div class="comment-section" *ngIf="post.Comments.length > 0">
 
-                        <div class="comment-item" *ngFor="let comment of post.Comments">
+                        <div class="comment-item" *ngFor="let comment of post.Comments.slice().reverse()">
 
                             <div class="comment-header">
 

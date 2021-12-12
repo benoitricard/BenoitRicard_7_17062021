@@ -1,6 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { FormBuilder, Validators } from '@angular/forms';
+import {
+  FormBuilder,
+  FormGroup,
+  FormControl,
+  Validators,
+} from '@angular/forms';
 import { UserService } from 'src/app/services/user.service';
 import {
   faComment,
@@ -40,6 +45,49 @@ export class PostListComponent implements OnInit {
   userConnected: any = {};
   userConnectedId: any;
   order: any;
+  emptyContent: string = '';
+  postedWithSuccess: boolean = false;
+  commentedWithSuccess: boolean = false;
+
+  postCreationForm = new FormGroup({
+    content: new FormControl('', [
+      Validators.required,
+      Validators.minLength(5),
+    ]),
+    attachment: new FormControl(''),
+    attachmentSource: new FormControl(''),
+  });
+
+  get f() {
+    return this.postCreationForm.controls;
+  }
+
+  onFileChange(event: any) {
+    if (event.target.files.length > 0) {
+      const attachment = event.target.files[0];
+      this.postCreationForm.patchValue({
+        attachmentSource: attachment,
+      });
+    }
+  }
+
+  onPostCreation() {
+    const formData = new FormData();
+    formData.append(
+      'attachment',
+      this.postCreationForm.get('attachmentSource')?.value
+    );
+    formData.append('content', this.postCreationForm.get('content')?.value);
+
+    this.http.post('http://localhost:3000/api/post', formData).subscribe(() => {
+      this.postedWithSuccess = true;
+      setTimeout(() => {
+        this.postedWithSuccess = false;
+      }, 600);
+      this.getPosts();
+      this.postCreationForm.reset();
+    });
+  }
 
   getPosts() {
     this.http
@@ -47,6 +95,20 @@ export class PostListComponent implements OnInit {
       .subscribe(
         (res) => {
           this.posts = res;
+        },
+        (err) => {
+          console.error(err);
+        }
+      );
+  }
+
+  getLikes() {
+    this.http
+      .get(`http://localhost:3000/api/user/${this.userConnectedId}/like`)
+      .subscribe(
+        (res: any) => {
+          this.likesFromUser = res;
+          return res;
         },
         (err) => {
           console.error(err);
@@ -88,7 +150,11 @@ export class PostListComponent implements OnInit {
       .post(`http://localhost:3000/api/comment/${postId}`, form)
       .subscribe(
         () => {
-          window.location.reload();
+          this.commentedWithSuccess = true;
+          setTimeout(() => {
+            this.commentedWithSuccess = false;
+          }, 600);
+          this.getPosts();
         },
         (err) => {
           console.error(err);
@@ -100,7 +166,7 @@ export class PostListComponent implements OnInit {
     if (confirm('Êtes-vous sûr de vouloir supprimer cette publication ?')) {
       this.http.delete(`http://localhost:3000/api/post/${postId}`).subscribe(
         () => {
-          window.location.reload();
+          this.getPosts();
         },
         (err) => {
           console.error(err);
@@ -112,7 +178,8 @@ export class PostListComponent implements OnInit {
   onLikePost(postId: any) {
     this.http.post(`http://localhost:3000/api/like/${postId}`, null).subscribe(
       () => {
-        window.location.reload();
+        this.getPosts();
+        this.getLikes();
       },
       (err) => {
         console.error(err);
@@ -121,7 +188,6 @@ export class PostListComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    let userId: number = this.route.snapshot.params.id;
     let connectedUserId: any;
 
     if (localStorage.getItem('userId')) {
@@ -133,18 +199,7 @@ export class PostListComponent implements OnInit {
     this.userConnectedId = connectedUserId;
 
     this.getPosts();
-
-    this.http
-      .get(`http://localhost:3000/api/user/${connectedUserId}/like`)
-      .subscribe(
-        (res: any) => {
-          this.likesFromUser = res;
-          return res;
-        },
-        (err) => {
-          console.error(err);
-        }
-      );
+    this.getLikes();
 
     this.http
       .get(`http://localhost:3000/api/user/${connectedUserId}`)

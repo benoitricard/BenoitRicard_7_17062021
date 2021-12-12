@@ -26,6 +26,17 @@ export class AppComponent implements OnInit {
   userIdConnected: number | any = 0;
 
   // Bouton 'se déconnecter' de la navbar
+  onActivate(event: any) {
+    let scrollToTop = window.setInterval(() => {
+      let pos = window.pageYOffset;
+      if (pos > 0) {
+        window.scrollTo(0, pos - 20); // how far to scroll on each step
+      } else {
+        window.clearInterval(scrollToTop);
+      }
+    }, 5);
+  }
+
   onLogOut() {
     this.authService.logOut();
   }

@@ -87,7 +87,8 @@
                 <input type="text" placeholder="Commenter la publication..." minlength="5" name="content"
                     #content="ngModel" required ngModel>
 
-                <button type="submit" class="comment-submit" [disabled]="content.invalid">
+                <button type="submit" [ngClass]="{'comment-submit': true, 'comment-success': commentedWithSuccess}"
+                    [disabled]="content.invalid">
                     <fa-icon [icon]="faPaperPlane"></fa-icon>
                 </button>
 

@@ -1,4 +1,4 @@
-import { Component, Injectable, OnInit } from '@angular/core';
+import { Component, Injectable, Input, OnInit, Output } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 
@@ -41,9 +41,7 @@ export class FileUploadComponent implements OnInit {
 
     this.httpClient
       .post('http://localhost:3000/api/post', formData)
-      .subscribe(() => {
-        window.location.reload();
-      });
+      .subscribe(() => {});
   }
 
   constructor(private httpClient: HttpClient) {}

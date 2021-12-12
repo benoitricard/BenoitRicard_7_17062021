@@ -22,7 +22,7 @@ export class UserListComponent implements OnInit {
   order: any = '';
 
   // Récupérer les posts triés
-  getPosts() {
+  getUsers() {
     this.http
       .get<any[]>(`http://localhost:3000/api/user${this.whichOrder()}`)
       .subscribe(
@@ -53,7 +53,7 @@ export class UserListComponent implements OnInit {
   // Clic du bouton de tri
   onChangeOrder(orderChanged: any) {
     this.order = orderChanged;
-    this.getPosts();
+    this.getUsers();
   }
 
   // Supprimer un utilisateur
@@ -61,7 +61,7 @@ export class UserListComponent implements OnInit {
     if (confirm('Êtes-vous sûr de vouloir supprimer cet utilisateur ?')) {
       this.http.delete(`http://localhost:3000/api/user/${userId}`).subscribe(
         () => {
-          window.location.reload();
+          this.getUsers();
         },
         (err) => {
           console.error(err);
@@ -71,7 +71,7 @@ export class UserListComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.getPosts();
+    this.getUsers();
 
     let connectedUserId: any;
 

@@ -1,5 +1,11 @@
 @import "../../../../sass/styles.scss";
 
+.comment-success {
+  background-color: #33c13f !important;
+  transform: scale(1.1);
+  transition: all 400ms;
+}
+
 #likes-from-user-title {
   display: flex;
   justify-content: space-between;

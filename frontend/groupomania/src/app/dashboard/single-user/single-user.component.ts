@@ -34,6 +34,7 @@ export class SingleUserComponent implements OnInit {
   whichOne: any = 'posts';
   connectedUserId: number | any;
   userConnected: any = {};
+  userUpdatedWithSuccess: boolean = false;
 
   // Fonctions
   userUpdateForm = new FormGroup({
@@ -80,47 +81,16 @@ export class SingleUserComponent implements OnInit {
     this.http
       .put(`http://localhost:3000/api/user/${this.user.id}`, formData)
       .subscribe(() => {
-        window.location.reload();
+        if (this.router.url == 'dashboard/my-profile/user/modify') {
+          this.router.navigate(['dashboard/my-profile/user']);
+        } else {
+          this.router.navigate([`dashboard/profile/${this.user.id}`]);
+        }
       });
   }
 
-  onDeleteUser() {
-    if (confirm('Êtes-vous sûr de vouloir supprimer cet utilisateur ?')) {
-      this.http
-        .delete(`http://localhost:3000/api/user/${this.user['id']}`)
-        .subscribe(
-          () => {
-            this.router.navigate(['dashboard/users']);
-          },
-          (err) => {
-            console.error(err);
-          }
-        );
-    }
-  }
-
-  ngOnInit(): void {
+  getUser() {
     let userId: number = this.route.snapshot.params.id;
-
-    if (localStorage.getItem('userId')) {
-      this.connectedUserId = localStorage.getItem('userId');
-    } else {
-      this.connectedUserId = sessionStorage.getItem('userId');
-    }
-
-    // Récupération des infos sur l'user connecté
-    this.http
-      .get(`http://localhost:3000/api/user/${this.connectedUserId}`)
-      .subscribe(
-        (res: any) => {
-          this.userConnected = res;
-        },
-        (err) => {
-          console.error(err);
-        }
-      );
-
-    // Récupération du profil affiché
     if (this.router.url == '/dashboard/my-profile/user/modify') {
       this.http
         .get(`http://localhost:3000/api/user/${this.connectedUserId}`)
@@ -142,5 +112,27 @@ export class SingleUserComponent implements OnInit {
         }
       );
     }
+  }
+
+  ngOnInit(): void {
+    if (localStorage.getItem('userId')) {
+      this.connectedUserId = localStorage.getItem('userId');
+    } else {
+      this.connectedUserId = sessionStorage.getItem('userId');
+    }
+
+    this.getUser();
+
+    // Récupération des infos sur l'user connecté
+    this.http
+      .get(`http://localhost:3000/api/user/${this.connectedUserId}`)
+      .subscribe(
+        (res: any) => {
+          this.userConnected = res;
+        },
+        (err) => {
+          console.error(err);
+        }
+      );
   }
 }
