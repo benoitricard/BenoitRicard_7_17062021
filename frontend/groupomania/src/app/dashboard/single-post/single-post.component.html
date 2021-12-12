@@ -2,67 +2,158 @@
     <div class="row">
         <div class="col-xs-12">
 
-            <h3>Post (n°{{ post.id }})</h3>
-            <br>
-            <div class="list-group" id="post-list">
-                <div class="list-group-item">
+            <div id="posts-from-user-title">
+                <h3>Publication du <span>{{post.createdAt | date:'d-M-y'}}, à {{post.createdAt |
+                        date:'shortTime'}}</span><span *ngIf="post.createdAt !== post.updatedAt"> (modifié le
+                        {{post.updatedAt | date: 'd-M-y'}}, à
+                        {{post.updatedAt | date:'shortTime'}})</span>
+                </h3>
+                <h3>#{{post.id}}</h3>
+            </div>
 
-                    <div class="user router-link" routerLink="../../my-profile/{{ post.user_id }}">
-                        <div class="pp-and-name">
-                            <div class="pp">
+            <div class="list-group" id="post-list">
+                <div class="post-item">
+
+                    <div class="post-header">
+
+                        <div class="pp-name">
+
+                            <div [ngClass]="{'pp': true, 'admin-pp': post.User.isAdmin}">
                                 <img *ngIf="!post.User.profilePicture"
-                                    src="../../../assets/images/default_pp.png1637522636718.png"
-                                    alt="default-profile-picture">
+                                    src="../../../assets/images/default_pp/default1.png" alt="default-profile-picture">
                                 <img *ngIf="post.User.profilePicture" src="{{ post.User.profilePicture }}"
                                     alt="profile-picture">
                             </div>
-                            <p><span>{{ post.User.firstName + ' ' + post.User.lastName}}</span><span id="admin"
-                                    *ngIf="post.User.isAdmin === 1">ADMIN</span></p>
+
+                            <div class="name">
+                                <p>{{post.User.firstName}}<br><span>{{post.User.lastName}}</span></p>
+                            </div>
+
                         </div>
-                        <p id="date">il y a {{ post.createdAt | timeAgo }}</p>
+
+                        <div class="buttons" *ngIf="connectedUserInfo.isAdmin || connectedUserInfo.id == post.user_id">
+                            <button id="edit" routerLink="modify">
+                                <fa-icon [icon]="faEdit"></fa-icon>
+                            </button>
+                            <button id="delete" (click)="onDeletePost()">
+                                <fa-icon [icon]="faTrash"></fa-icon>
+                            </button>
+                        </div>
+
                     </div>
 
-                    <p id="content">{{ post.content }}</p>
-                    <div *ngIf="post.attachment !== (null || '')" id="attachment">
-                        <img src="{{ post.attachment }}" alt="post-file">
-                    </div>
-                    <p id="likes">Likes: {{ post.nbOfLikes }}</p>
-                    <br>
-                    <h3 *ngIf="post.Comments.length === 0" class="comments-title">Aucun commentaire</h3>
-                    <div *ngIf="post.Comments.length > 0" class="list-group" id="comments-list">
-                        <h3 class="comments-title">Commentaires ({{ post.Comments.length }})</h3>
-                        <br>
-                        <div class="list-group-item router-link" *ngFor="let comment of post.Comments;"
-                            routerLink="../../comment/{{ comment.id }}">
+                    <div class="post-body">
 
-                            <div class="user router-link" routerLink="../../my-profile/{{ comment.user_id }}">
-                                <div class="pp-and-name">
-                                    <div class="pp">
+                        <div class="content">
+                            <p>{{post.content}}</p>
+                        </div>
+
+                        <div *ngIf="post.attachment" class="attachment">
+                            <img src="{{post.attachment}}" alt="post-attachment">
+                        </div>
+
+                    </div>
+
+                    <div class="post-comment">
+
+                        <div class="comment-header">
+
+                            <div class="buttons">
+
+                                <div class="likes">
+
+                                    <button [ngClass]="{'liked-btn': isThisPostLiked(post.id)}"
+                                        (click)="onLikePost(post.id)">
+                                        <fa-icon [icon]="faHeart"></fa-icon>
+                                    </button>
+
+                                    <p>{{post.nbOfLikes}}</p>
+
+                                </div>
+
+                                <div class="comments">
+
+                                    <button class="comment-btn" routerLink="../../posts/{{post.id}}">
+                                        <fa-icon [icon]="faComment"></fa-icon>
+                                    </button>
+
+                                    <p>{{post.Comments.length}}</p>
+
+                                </div>
+
+                            </div>
+
+                            <div class="post-date">
+                                <p>Il y a {{post.createdAt | timeAgo}}</p>
+                            </div>
+
+                        </div>
+
+                        <form class="comment-form" id="comment-form" #createCommentForm="ngForm"
+                            (ngSubmit)="onCreateComment(createCommentForm.value, post.id)">
+
+                            <input type="text" placeholder="Commenter la publication..." minlength="5" name="content"
+                                #content="ngModel" required ngModel>
+
+                            <button type="submit" class="comment-submit" [disabled]="content.invalid">
+                                <fa-icon [icon]="faPaperPlane"></fa-icon>
+                            </button>
+
+                        </form>
+
+                    </div>
+
+                    <div class="comment-section" *ngIf="post.Comments.length > 0">
+
+                        <div class="comment-item" *ngFor="let comment of post.Comments">
+
+                            <div class="comment-header">
+
+                                <div class="pp-name">
+
+                                    <div [ngClass]="{'pp': true, 'admin-pp': comment.User.isAdmin}">
                                         <img *ngIf="!comment.User.profilePicture"
-                                            src="../../../assets/images/default_pp.png1637522636718.png"
+                                            src="../../../assets/images/default_pp/default1.png"
                                             alt="default-profile-picture">
                                         <img *ngIf="comment.User.profilePicture" src="{{ comment.User.profilePicture }}"
                                             alt="profile-picture">
                                     </div>
-                                    <p><span>{{ comment.User.firstName + ' ' + comment.User.lastName}}</span><span
-                                            id="admin" *ngIf="comment.User.isAdmin === 1">ADMIN</span></p>
+
+                                    <div class="name">
+                                        <p>{{comment.User.firstName}}<span> {{comment.User.lastName}}</span></p>
+                                        <p>Il y a {{comment.createdAt | timeAgo}}</p>
+                                    </div>
+
                                 </div>
-                                <p id="date">il y a {{ comment.createdAt | timeAgo }}</p>
+
+                                <div class="buttons"
+                                    *ngIf="connectedUserInfo.isAdmin || connectedUserInfo.id == post.user_id">
+                                    <button id="edit">
+                                        <fa-icon [icon]="faEdit"></fa-icon>
+                                    </button>
+                                    <button id="delete" (click)="onDeleteComment(comment.id)">
+                                        <fa-icon [icon]="faTrash"></fa-icon>
+                                    </button>
+                                </div>
+
                             </div>
 
-                            <p id="contentComment">{{ comment.content }}</p>
+                            <div class="comment-body">
+
+                                <div class="content">
+                                    <p>{{comment.content}}</p>
+                                </div>
+
+                            </div>
+
                         </div>
+
                     </div>
+
                 </div>
-            </div>
-            <div class="buttons" *ngIf="(connectedUserInfo.isAdmin == 1) || (connectedUserInfo.id == post.user_id)">
-                <button class="btn btn-primary" type="submit" routerLink="modify">Modifier la publication</button>
-                <br><br>
-                <button class="btn btn-danger" type="button" (click)="onDeletePost()">Supprimer la
-                    publication</button>
+
             </div>
 
         </div>
     </div>
 </div>
-<br><br><br><br><br><br>

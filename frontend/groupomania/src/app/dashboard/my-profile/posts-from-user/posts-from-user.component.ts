@@ -105,7 +105,7 @@ export class PostsFromUserComponent implements OnInit {
 
     this.userConnectedId = connectedUserId;
 
-    if (this.router.url == '/dashboard/my-profile') {
+    if (this.router.url == '/dashboard/my-profile/user') {
       this.http
         .get(`http://localhost:3000/api/user/${connectedUserId}/post`)
         .subscribe(

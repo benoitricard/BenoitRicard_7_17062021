@@ -12,10 +12,13 @@ import { MyProfileComponent } from './dashboard/my-profile/my-profile.component'
 import { UserListComponent } from './dashboard/user-list/user-list.component';
 import { ModifyPostComponent } from './dashboard/modify-post/modify-post.component';
 import { SingleCommentComponent } from './dashboard/single-comment/single-comment.component';
+import { SingleUserComponent } from './dashboard/single-user/single-user.component';
 
 export const appRoutes: Routes = [
+  // Routes Authentification
   { path: 'signup', component: SignupComponent },
   { path: 'login', component: LoginComponent },
+  // Routes Dashboard principales
   {
     path: 'dashboard',
     canActivate: [AuthGuard],
@@ -25,8 +28,9 @@ export const appRoutes: Routes = [
       { path: 'users', component: UserListComponent },
     ],
   },
+  // Routes User
   {
-    path: 'dashboard/my-profile',
+    path: 'dashboard/my-profile/user',
     canActivate: [AuthGuard],
     component: MyProfileComponent,
   },
@@ -35,6 +39,17 @@ export const appRoutes: Routes = [
     canActivate: [AuthGuard],
     component: MyProfileComponent,
   },
+  {
+    path: 'dashboard/my-profile/user/modify',
+    canActivate: [AuthGuard],
+    component: SingleUserComponent,
+  },
+  {
+    path: 'dashboard/profile/:id/modify',
+    canActivate: [AuthGuard],
+    component: SingleUserComponent,
+  },
+  // Routes Post
   {
     path: 'dashboard/posts/:id',
     canActivate: [AuthGuard],
@@ -45,11 +60,13 @@ export const appRoutes: Routes = [
     canActivate: [AuthGuard],
     component: ModifyPostComponent,
   },
+  // Routes Comment
   {
     path: 'dashboard/comment/:id',
     canActivate: [AuthGuard],
     component: SingleCommentComponent,
   },
+  // Redirections
   {
     path: '',
     redirectTo: 'login',

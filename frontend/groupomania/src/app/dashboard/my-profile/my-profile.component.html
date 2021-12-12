@@ -61,7 +61,7 @@
                 </div>
 
                 <div class="buttons" *ngIf="userConnected.isAdmin || userConnected.id == user.id">
-                    <button id="edit">
+                    <button id="edit" routerLink="modify">
                         <fa-icon [icon]="faEdit"></fa-icon>
                     </button>
                     <button id="edit" (click)="onDeleteUser()">

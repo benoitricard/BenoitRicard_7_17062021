@@ -2,6 +2,11 @@ import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
+import {
+  faBirthdayCake,
+  faBriefcase,
+  faCrown,
+} from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-single-user',
@@ -9,9 +14,22 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
   styleUrls: ['./single-user.component.scss'],
 })
 export class SingleUserComponent implements OnInit {
+  constructor(
+    private http: HttpClient,
+    private route: ActivatedRoute,
+    private router: Router
+  ) {}
+
+  // Icônes FontAwesome
+  faBirthdayCake = faBirthdayCake;
+  faBriefcase = faBriefcase;
+  faCrown = faCrown;
+
+  // Variables
   user: any = {};
   connectedUserInfo: any = {};
 
+  // Fonctions
   userUpdateForm = new FormGroup({
     firstName: new FormControl('', [
       Validators.required,
@@ -74,12 +92,6 @@ export class SingleUserComponent implements OnInit {
         );
     }
   }
-
-  constructor(
-    private http: HttpClient,
-    private route: ActivatedRoute,
-    private router: Router
-  ) {}
 
   ngOnInit(): void {
     let connectedUserId: any;

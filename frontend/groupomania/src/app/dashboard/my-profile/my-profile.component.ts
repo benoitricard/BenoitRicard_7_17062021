@@ -74,7 +74,20 @@ export class MyProfileComponent implements OnInit {
       this.connectedUserId = sessionStorage.getItem('userId');
     }
 
-    if (this.router.url == '/dashboard/my-profile') {
+    // Récupération des infos sur l'user connecté
+    this.http
+      .get(`http://localhost:3000/api/user/${this.connectedUserId}`)
+      .subscribe(
+        (res: any) => {
+          this.userConnected = res;
+        },
+        (err) => {
+          console.error(err);
+        }
+      );
+
+    // Récupération du profil affiché
+    if (this.router.url == '/dashboard/my-profile/user') {
       this.http
         .get(`http://localhost:3000/api/user/${this.connectedUserId}`)
         .subscribe(
