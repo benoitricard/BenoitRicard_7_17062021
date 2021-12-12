@@ -6,7 +6,9 @@ import {
   faBirthdayCake,
   faBriefcase,
   faCrown,
+  faPencilAlt,
 } from '@fortawesome/free-solid-svg-icons';
+import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
   selector: 'app-single-user',
@@ -16,18 +18,22 @@ import {
 export class SingleUserComponent implements OnInit {
   constructor(
     private http: HttpClient,
-    private route: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    private authService: AuthService,
+    private route: ActivatedRoute
   ) {}
 
   // Icônes FontAwesome
+  faPencilAlt = faPencilAlt;
   faBirthdayCake = faBirthdayCake;
   faBriefcase = faBriefcase;
   faCrown = faCrown;
 
   // Variables
   user: any = {};
-  connectedUserInfo: any = {};
+  whichOne: any = 'posts';
+  connectedUserId: number | any;
+  userConnected: any = {};
 
   // Fonctions
   userUpdateForm = new FormGroup({
@@ -94,36 +100,47 @@ export class SingleUserComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    let connectedUserId: any;
+    let userId: number = this.route.snapshot.params.id;
 
     if (localStorage.getItem('userId')) {
-      connectedUserId = localStorage.getItem('userId');
+      this.connectedUserId = localStorage.getItem('userId');
     } else {
-      connectedUserId = sessionStorage.getItem('userId');
+      this.connectedUserId = sessionStorage.getItem('userId');
     }
 
+    // Récupération des infos sur l'user connecté
     this.http
-      .get(`http://localhost:3000/api/user/${connectedUserId}`)
+      .get(`http://localhost:3000/api/user/${this.connectedUserId}`)
       .subscribe(
         (res: any) => {
-          this.connectedUserInfo = res;
-          return res;
+          this.userConnected = res;
         },
         (err) => {
           console.error(err);
         }
       );
 
-    let userId: number = this.route.snapshot.params.id;
-
-    this.http.get(`http://localhost:3000/api/user/${userId}`).subscribe(
-      (res) => {
-        this.user = res;
-      },
-      (err) => {
-        this.router.navigate(['not-found']);
-        console.error(err);
-      }
-    );
+    // Récupération du profil affiché
+    if (this.router.url == '/dashboard/my-profile/user/modify') {
+      this.http
+        .get(`http://localhost:3000/api/user/${this.connectedUserId}`)
+        .subscribe(
+          (res: any) => {
+            this.user = res;
+          },
+          (err) => {
+            console.error(err);
+          }
+        );
+    } else {
+      this.http.get(`http://localhost:3000/api/user/${userId}`).subscribe(
+        (res: any) => {
+          this.user = res;
+        },
+        (err) => {
+          console.error(err);
+        }
+      );
+    }
   }
 }

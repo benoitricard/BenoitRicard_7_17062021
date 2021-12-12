@@ -17,6 +17,13 @@ import { AuthService } from 'src/app/services/auth.service';
   styleUrls: ['./my-profile.component.scss'],
 })
 export class MyProfileComponent implements OnInit {
+  constructor(
+    private http: HttpClient,
+    private router: Router,
+    private authService: AuthService,
+    private route: ActivatedRoute
+  ) {}
+
   // Icônes FontAwesome
   faPencilAlt = faPencilAlt;
   faBirthdayCake = faBirthdayCake;
@@ -57,13 +64,6 @@ export class MyProfileComponent implements OnInit {
         );
     }
   }
-
-  constructor(
-    private http: HttpClient,
-    private router: Router,
-    private authService: AuthService,
-    private route: ActivatedRoute
-  ) {}
 
   ngOnInit(): void {
     let userId: number = this.route.snapshot.params.id;

@@ -61,8 +61,6 @@ exports.modifyPost = (req, res) => {
                   req.file.filename
                 }`
               : req.body.attachment;
-          console.log(attachment);
-          console.log(req.file != null);
 
           // vérifier que l'user est l'auteur du post OU est admin
           if (user.id == post.user_id || user.isAdmin == 1) {

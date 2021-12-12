@@ -3,15 +3,11 @@
     <div class="row">
         <div class="col-xs-12">
 
-            <div id="user">
+            <form id="user" [formGroup]="userUpdateForm" (ngSubmit)="onUserUpdate()">
 
                 <div id="left-column">
 
                     <div class="admin-and-pp">
-
-                        <div class="admin-badge" *ngIf="user.isAdmin">
-                            <fa-icon [icon]="faCrown"></fa-icon>
-                        </div>
 
                         <div [ngClass]="{'pp': true, 'admin-pp': user.isAdmin}">
                             <img *ngIf="!user.profilePicture" src="../../../assets/images/default_pp/default1.png"
@@ -19,48 +15,54 @@
                             <img *ngIf="user.profilePicture" src="{{ user.profilePicture }}" alt="profile-picture">
                         </div>
 
+                        <label for="attachment" class="attachment-btn" id="file">
+                            <fa-icon [icon]="faPencilAlt"></fa-icon>
+                        </label>
+                        <input class="hidden" id="attachment" formControlName="attachment"
+                            (change)="onFileChange($event)" type="file">
+
                     </div>
 
                     <div id="member-connexion">
-                        <h4>Membre depuis <br><span>{{user.createdAt | timeAgo}}</span></h4>
-                        <h4>Dernière connexion <br><span>il y a {{user.lastConnexion | timeAgo}}</span></h4>
+                        <h4>Dernière modification <br><span>Il y a {{user.updatedAt | timeAgo}}</span></h4>
                     </div>
 
                 </div>
 
                 <div id="right-column">
 
-                    <div id="name">
-                        <h2>{{user.firstName}}<br><span>{{user.lastName}}</span></h2>
+                    <div id="names">
+                        <input type="text" ngModel="{{user.firstName}}" formControlName="firstName" id="firstName">
+                        <input type="text" ngModel="{{user.lastName}}" formControlName="lastName" id="lastName">
                     </div>
 
                     <div id="biography">
                         <h3>Biographie</h3>
-                        <p *ngIf="!user.biography" class="empty-bio">{{user.firstName}} ne s'est pas encore présenté(e)
-                            !
-                        </p>
-                        <p *ngIf="user.biography" class="bio">{{user.biography}}</p>
+                        <input class="bio" type="text" maxlength="200" ngModel="{{user.biography}}"
+                            formControlName="biography" id="biography">
                     </div>
 
                     <div id="birthday-job">
 
-                        <div id="birthday">
+                        <div class="birthday">
+                            <input type="date" class="birthday-input" ngModel="{{user.birthday}}" max="2020-01-01"
+                                formControlName="birthday" id="birthday">
                             <fa-icon [icon]="faBirthdayCake"></fa-icon>
-                            <p *ngIf="!user.birthday" class="empty-birthday">⏤</p>
-                            <p *ngIf="user.birthday" class="birthday">{{user.birthday}}</p>
                         </div>
 
-                        <div id="job">
+                        <div class="job">
+                            <input class="job-input" ngModel="{{user.jobTitle}}" formControlName="jobTitle"
+                                id="jobTitle">
                             <fa-icon [icon]="faBriefcase"></fa-icon>
-                            <p *ngIf="!user.jobTitle" class="empty-job">⏤</p>
-                            <p *ngIf="user.jobTitle" class="job">{{user.jobTitle}}</p>
                         </div>
 
                     </div>
 
+                    <button id="submit" type="submit">Sauvegarder les modifications</button>
+
                 </div>
 
-            </div>
+            </form>
 
         </div>
     </div>

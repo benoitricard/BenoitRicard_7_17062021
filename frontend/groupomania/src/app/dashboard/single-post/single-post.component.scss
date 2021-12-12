@@ -113,7 +113,6 @@
     .buttons {
       display: flex;
       margin-right: $margin-laterals;
-      margin-top: $margin-laterals/1.5;
 
       button:nth-child(1) {
         background-color: $primary-color;
@@ -185,7 +184,7 @@
 
   .post-comment {
     background-color: #eeeeee;
-    height: 200px;
+    padding: 40px 0;
 
     .comment-header {
       display: flex;

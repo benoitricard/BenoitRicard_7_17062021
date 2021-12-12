@@ -47,7 +47,8 @@
                         <div id="birthday">
                             <fa-icon [icon]="faBirthdayCake"></fa-icon>
                             <p *ngIf="!user.birthday" class="empty-birthday">⏤</p>
-                            <p *ngIf="user.birthday" class="birthday">{{user.birthday | date:'dd-MM-y'}}</p>
+                            <p *ngIf="user.birthday" class="birthday">{{user.birthday | date:'d MMMM y'}}
+                                ({{user.birthday | timeAgo}})</p>
                         </div>
 
                         <div id="job">

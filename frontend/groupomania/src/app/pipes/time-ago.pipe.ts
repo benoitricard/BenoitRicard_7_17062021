@@ -35,31 +35,31 @@ export class TimeAgoPipe implements PipeTransform, OnDestroy {
     let hours = Math.round(Math.abs(minutes / 60));
     let days = Math.round(Math.abs(hours / 24));
     let months = Math.round(Math.abs(days / 30.416));
-    let years = Math.round(Math.abs(days / 365));
+    let years = Math.round(Math.abs(days / 370));
     if (Number.isNaN(seconds)) {
       return '';
-    } else if (seconds <= 45) {
+    } else if (seconds <= 59) {
       return 'quelques secondes';
-    } else if (seconds <= 90) {
+    } else if (seconds <= 119) {
       return '1 minute';
-    } else if (minutes <= 45) {
+    } else if (minutes <= 59) {
       return minutes + ' minutes';
-    } else if (minutes <= 90) {
+    } else if (minutes <= 119) {
       return '1 heure';
-    } else if (hours <= 22) {
+    } else if (hours <= 23) {
       return hours + ' heures';
-    } else if (hours <= 36) {
+    } else if (hours <= 47) {
       return '1 jour';
-    } else if (days <= 25) {
+    } else if (days <= 29) {
       return days + ' jours';
-    } else if (days <= 45) {
+    } else if (days <= 59) {
       return '1 mois';
-    } else if (days <= 345) {
+    } else if (days <= 364) {
       return months + ' mois';
-    } else if (days <= 545) {
+    } else if (days <= 727) {
       return '1 an';
     } else {
-      // (days > 545)
+      // (days > 727)
       return years + ' ans';
     }
   }
