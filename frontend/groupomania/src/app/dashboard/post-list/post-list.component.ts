@@ -2,6 +2,15 @@ import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { FormBuilder, Validators } from '@angular/forms';
 import { UserService } from 'src/app/services/user.service';
+import {
+  faComment,
+  faCrown,
+  faEdit,
+  faHeart,
+  faPaperPlane,
+  faTrash,
+} from '@fortawesome/free-solid-svg-icons';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-post-list',
@@ -12,12 +21,24 @@ export class PostListComponent implements OnInit {
   constructor(
     private http: HttpClient,
     private fb: FormBuilder,
-    private userService: UserService
+    private userService: UserService,
+    public router: Router,
+    private route: ActivatedRoute
   ) {}
 
-  posts: any[] = [];
-  connectedUserInfo: any = {};
+  // Icônes FontAwesome
+  faEdit = faEdit;
+  faTrash = faTrash;
+  faHeart = faHeart;
+  faComment = faComment;
+  faPaperPlane = faPaperPlane;
+  faCrown = faCrown;
+
+  // Variables
+  posts: any = [];
   likesFromUser: any = [];
+  userConnected: any = {};
+  userConnectedId: any;
   order: any;
 
   getPosts() {
@@ -75,6 +96,19 @@ export class PostListComponent implements OnInit {
       );
   }
 
+  onDeletePost(postId: any) {
+    if (confirm('Êtes-vous sûr de vouloir supprimer cette publication ?')) {
+      this.http.delete(`http://localhost:3000/api/post/${postId}`).subscribe(
+        () => {
+          window.location.reload();
+        },
+        (err) => {
+          console.error(err);
+        }
+      );
+    }
+  }
+
   onLikePost(postId: any) {
     this.http.post(`http://localhost:3000/api/like/${postId}`, null).subscribe(
       () => {
@@ -87,15 +121,7 @@ export class PostListComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.http.get<any[]>('http://localhost:3000/api/post').subscribe(
-      (res) => {
-        this.posts = res;
-      },
-      (err) => {
-        console.error(err);
-      }
-    );
-
+    let userId: number = this.route.snapshot.params.id;
     let connectedUserId: any;
 
     if (localStorage.getItem('userId')) {
@@ -104,11 +130,15 @@ export class PostListComponent implements OnInit {
       connectedUserId = sessionStorage.getItem('userId');
     }
 
+    this.userConnectedId = connectedUserId;
+
+    this.getPosts();
+
     this.http
-      .get(`http://localhost:3000/api/user/${connectedUserId}`)
+      .get(`http://localhost:3000/api/user/${connectedUserId}/like`)
       .subscribe(
         (res: any) => {
-          this.connectedUserInfo = res;
+          this.likesFromUser = res;
           return res;
         },
         (err) => {
@@ -117,10 +147,10 @@ export class PostListComponent implements OnInit {
       );
 
     this.http
-      .get(`http://localhost:3000/api/user/${connectedUserId}/like`)
+      .get(`http://localhost:3000/api/user/${connectedUserId}`)
       .subscribe(
         (res: any) => {
-          this.likesFromUser = res;
+          this.userConnected = res;
           return res;
         },
         (err) => {

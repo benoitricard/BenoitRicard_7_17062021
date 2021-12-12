@@ -3,9 +3,9 @@
         <div class="col-xs-12">
 
             <div id="posts-from-user-title">
-                <h3>Publication du <span>{{post.createdAt | date:'d-M-y'}}, à {{post.createdAt |
+                <h3>Publication du <span>{{post.createdAt | date:'dd-MM-y'}}, à {{post.createdAt |
                         date:'shortTime'}}</span><span *ngIf="post.createdAt !== post.updatedAt"> (modifié le
-                        {{post.updatedAt | date: 'd-M-y'}}, à
+                        {{post.updatedAt | date: 'dd-MM-y'}}, à
                         {{post.updatedAt | date:'shortTime'}})</span>
                 </h3>
                 <h3>#{{post.id}}</h3>
@@ -128,7 +128,7 @@
 
                                 <div class="buttons"
                                     *ngIf="connectedUserInfo.isAdmin || connectedUserInfo.id == post.user_id">
-                                    <button id="edit">
+                                    <button id="edit" routerLink="../../comment/{{comment.id}}">
                                         <fa-icon [icon]="faEdit"></fa-icon>
                                     </button>
                                     <button id="delete" (click)="onDeleteComment(comment.id)">

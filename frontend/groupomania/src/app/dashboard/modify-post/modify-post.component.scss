@@ -107,13 +107,82 @@
       height: 500px;
       width: 100%;
       box-shadow: 0px 0px 15px 0px rgba(0, 0, 0, 0.3);
-      margin-bottom: 20px;
+      margin-bottom: 30px;
       margin-right: 20px;
 
       img {
         object-fit: cover;
         height: 100%;
         width: 100%;
+      }
+    }
+
+    .attachment-btns {
+      height: $nav-buttons-height;
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 30px;
+
+      .attachment-btn-width {
+        width: 100%;
+      }
+
+      button,
+      label {
+        width: 48.5%;
+        border: none;
+        border-radius: 100px;
+        height: $nav-buttons-height;
+        font-weight: 500;
+        color: white;
+        margin: 0;
+        cursor: pointer;
+        text-align: center;
+        line-height: $nav-buttons-height;
+
+        &:hover {
+          transform: scale(1.03);
+        }
+      }
+
+      label {
+        background-color: $primary-color;
+        transition: all 400ms;
+
+        &:active {
+          transform: scale(1);
+          background-color: darken($primary-color, 5%);
+        }
+      }
+
+      button {
+        background-color: $danger-color;
+        transition: all 400ms;
+
+        &:active {
+          transform: scale(1);
+          background-color: darken($danger-color, 5%);
+        }
+      }
+    }
+
+    .save-modif {
+      border: none;
+      height: $nav-buttons-height;
+      background-color: $primary-color;
+      border-radius: 100px;
+      font-weight: 500;
+      color: white;
+      width: 100%;
+      transition: all 400ms;
+
+      &:hover {
+        transform: scale(1.03);
+      }
+
+      &:active {
+        transform: scale(1);
+        background-color: darken($primary-color, 5%);
       }
     }
   }

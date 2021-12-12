@@ -1,50 +1,124 @@
 @import "../../../sass/styles.scss";
 
-$pp-height: 45px;
-
-.buttons {
+#posts-from-user-title {
   display: flex;
-  align-items: center;
   justify-content: space-between;
-  width: 100%;
-  padding: 0;
+  margin-bottom: 20px;
+  margin-top: 60px;
 
-  button {
-    min-height: 35px;
-    min-width: 49%;
+  h3 {
+    font-weight: 700;
+    color: $primary-color;
+
+    span:nth-child(1) {
+      font-weight: 800;
+    }
+
+    span:nth-child(2) {
+      font-style: italic;
+      font-weight: 600;
+      color: grey;
+    }
   }
 }
 
-#admin {
-  font-size: 14px;
-  margin-left: 6px;
-  background-color: $primary-color;
-  color: white;
-  padding: 3px 12px;
-  border-radius: 5px;
-}
-
-#content,
-#contentComment {
-  margin-bottom: 20px;
-  font-size: 18px;
-}
-
-.list-group-item {
-  margin-bottom: 20px;
-  padding: 15px 25px;
-}
-
-#attachment {
-  display: flex;
-  border-radius: 10px;
-  height: 500px;
-  width: 100%;
+.comment-item {
+  background-color: white;
   overflow: hidden;
-  margin-bottom: 40px;
+  border-radius: 20px;
+  box-shadow: 0px 0px 15px 0px rgba(0, 0, 0, 0.15);
 
-  img {
-    width: 100vw;
-    height: 100vh;
+  .comment-header {
+    display: flex;
+
+    .pp-name {
+      display: flex;
+      align-items: center;
+      margin-left: $margin-laterals;
+      margin-top: $margin-laterals/1.5;
+      margin-bottom: 20px;
+      cursor: pointer;
+
+      &:hover>.pp {
+        transform: scale(1.05);
+        box-shadow: 0px 0px 15px 0px rgba(0, 0, 0, 0.3);
+      }
+
+      &:active>.pp {
+        transform: scale(1);
+        box-shadow: 0px 0px 15px 0px rgba(0, 0, 0, 0.5);
+      }
+
+      .pp {
+        overflow: hidden;
+        border-radius: 1000px;
+        height: $pp-height;
+        width: $pp-height;
+        margin-right: 20px;
+        box-shadow: 0px 0px 15px 0px rgba(0, 0, 0, 0.3);
+        transition: all 400ms;
+
+        img {
+          object-fit: cover;
+          height: 100%;
+          width: 100%;
+        }
+      }
+
+      .admin-pp {
+        border: solid 5px $primary-color;
+        background-color: black;
+      }
+
+      .name {
+        margin-left: 0;
+
+        p {
+          font-size: 23px;
+          font-weight: 500;
+          margin: 0;
+          line-height: 28px;
+
+          span {
+            font-weight: 700;
+          }
+        }
+      }
+    }
+  }
+
+  .comment-body {
+    margin: 20px $margin-laterals 60px $margin-laterals;
+
+    .content {
+      margin-bottom: 40px;
+      width: 100%;
+      border: none;
+      background-color: #eeeeee;
+      border-radius: 100px;
+      height: $nav-buttons-height;
+      padding: 30px 20px;
+      font-size: 20px;
+    }
+
+    .save-modif {
+      border: none;
+      height: $nav-buttons-height;
+      background-color: $primary-color;
+      border-radius: 100px;
+      font-weight: 500;
+      color: white;
+      width: 100%;
+      transition: all 400ms;
+
+      &:hover {
+        transform: scale(1.03);
+      }
+
+      &:active {
+        transform: scale(1);
+        background-color: darken($primary-color, 5%);
+      }
+    }
   }
 }

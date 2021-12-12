@@ -2,41 +2,50 @@
     <div class="row">
         <div class="col-xs-12">
 
-            <h3>Commentaire (n°{{ comment.id }})</h3>
-            <br>
-            <div class="list-group" id="post-list">
-                <div class="list-group-item">
+            <div id="posts-from-user-title">
+                <h3>Commentaire du <span>{{comment.createdAt | date:'dd-MM-y'}}, à {{comment.createdAt |
+                        date:'shortTime'}}</span><span *ngIf="comment.createdAt !== comment.updatedAt"> (modifié le
+                        {{comment.updatedAt | date: 'dd-MM-y'}}, à
+                        {{comment.updatedAt | date:'shortTime'}})</span>
+                </h3>
+                <h3>#{{comment.id}}</h3>
+            </div>
 
-                    <div class="user router-link" routerLink="../../my-profile/{{ comment.user_id }}">
-                        <div class="pp-and-name">
-                            <div class="pp">
+            <div class="list-group" id="comment-list">
+                <div class="comment-item">
+
+                    <div class="comment-header">
+
+                        <div class="pp-name">
+
+                            <div [ngClass]="{'pp': true, 'admin-pp': comment.User.isAdmin}">
                                 <img *ngIf="!comment.User.profilePicture"
-                                    src="../../../assets/images/default_pp.png1637522636718.png"
-                                    alt="default-profile-picture">
+                                    src="../../../assets/images/default_pp/default1.png" alt="default-profile-picture">
                                 <img *ngIf="comment.User.profilePicture" src="{{ comment.User.profilePicture }}"
                                     alt="profile-picture">
                             </div>
-                            <p><span>{{ comment.User.firstName + ' ' + comment.User.lastName}}</span><span id="admin"
-                                    *ngIf="comment.User.isAdmin === 1">ADMIN</span></p>
+
+                            <div class="name">
+                                <p>{{comment.User.firstName}}<br><span>{{comment.User.lastName}}</span></p>
+                            </div>
+
                         </div>
-                        <p id="date">il y a {{ comment.createdAt | timeAgo }}</p>
+
                     </div>
 
-                    <form class="form-group" #commentForm="ngForm" (ngSubmit)="onCommentUpdate(commentForm.value)">
-                        <input class="form-control" id="content" placeholder="{{ comment.content }}" name="content"
+                    <form class="comment-body" #commentForm="ngForm" (ngSubmit)="onCommentUpdate(commentForm.value)">
+
+                        <input class="content" type="text" ngModel="{{comment.content}}" name="content" id="content"
                             minlength="5" #content="ngModel" required ngModel>
-                        <div class="buttons"
-                            *ngIf="(connectedUserInfo.isAdmin == 1) || (connectedUserInfo.id == comment.user_id)">
-                            <button class="btn btn-primary" type="submit">Sauvegarder les modifications</button>
-                            <br><br>
-                            <button class="btn btn-danger" type="submit" (click)="onDeleteComment()">Supprimer le
-                                commentaire</button>
-                        </div>
+
+                        <button type="submit" class="save-modif">Sauvegarder les modifications</button>
+
                     </form>
+
                 </div>
+
             </div>
 
         </div>
     </div>
 </div>
-<br><br><br><br><br><br>

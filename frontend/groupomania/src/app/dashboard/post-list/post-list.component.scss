@@ -1,107 +1,430 @@
 @import "../../../sass/styles.scss";
 
-$pp-height: 50px;
-
 #welcome {
+  margin-bottom: 20px;
+
   span {
     font-weight: 700;
   }
 }
 
-.header-title {
-  display: flex;
+.order-btns {
+  margin-bottom: 30px;
 
-  h3 {
-    margin-top: 10px;
+  button {
+    margin-right: 15px;
+    width: 230px;
+    height: $nav-buttons-height;
+    border-radius: 100px;
+    background-color: $primary-color;
+    color: white;
+    border: none;
+    font-weight: 500;
+    transition: all 400ms;
+
+    &:hover {
+      transform: scale(1.05);
+    }
+
+    &:active {
+      background-color: darken($primary-color, 10%);
+      transform: scale(1);
+    }
   }
 
-  .buttons-order {
-    display: flex;
-    width: 25%;
-    margin-right: 0;
-
-    select {
-      margin-right: 15px;
-      cursor: pointer;
-    }
+  .order-btn-active {
+    background-color: white;
+    color: $primary-color;
   }
 }
 
-.like-comment {
+#posts-from-user-title {
   display: flex;
   justify-content: space-between;
-  align-items: center;
-  width: 100%;
-  height: 40px;
+  margin-bottom: 20px;
+  margin-top: 30px;
 
-  .like {
-    display: flex;
-    width: 15%;
-
-    button {
-      height: 40px;
-    }
-
-    p {
-      margin-top: 10px;
-      margin-left: 15px;
-    }
+  h3 {
+    font-weight: 700;
+    color: $primary-color;
   }
-
-  #comments-form {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    width: 85%;
-
-    p {
-      margin-top: 10px;
-    }
-
-    input {
-      height: 40px;
-      width: 90%;
-    }
-
-    button {
-      height: 40px;
-    }
-  }
-}
-
-#admin {
-  font-size: 14px;
-  margin-left: 6px;
-  background-color: $primary-color;
-  color: white;
-  padding: 3px 12px;
-  border-radius: 5px;
 }
 
 #post-list {
-  margin-bottom: 200px;
-}
-
-#content {
-  margin-bottom: 20px;
-  font-size: 18px;
-}
-
-.list-group-item {
-  margin-bottom: 20px;
-  padding: 15px 25px;
-}
-
-#attachment {
-  display: flex;
-  border-radius: 10px;
-  height: 500px;
   width: 100%;
-  overflow: hidden;
-  margin-bottom: 40px;
+  column-count: 2;
+  column-gap: 40px;
+  column-width: 50%;
+}
 
-  img {
-    width: 100vw;
-    height: 100vh;
+.post-item {
+  background-color: white;
+  border-radius: 20px;
+  -webkit-column-break-inside: avoid;
+  page-break-inside: avoid;
+  break-inside: avoid;
+  margin: 0 0 50px 0;
+  box-shadow: 0px 0px 15px 0px rgba(0, 0, 0, 0.15);
+
+  .post-header {
+    display: flex;
+
+    .pp-name {
+      display: flex;
+      align-items: center;
+      margin-left: $margin-laterals;
+      margin-top: $margin-laterals/1.5;
+      margin-bottom: 20px;
+      cursor: pointer;
+
+      &:hover>.pp {
+        transform: scale(1.05);
+        box-shadow: 0px 0px 15px 0px rgba(0, 0, 0, 0.3);
+      }
+
+      &:active>.pp {
+        transform: scale(1);
+        box-shadow: 0px 0px 15px 0px rgba(0, 0, 0, 0.5);
+      }
+
+      .pp {
+        overflow: hidden;
+        border-radius: 1000px;
+        height: $pp-height;
+        width: $pp-height;
+        margin-right: 20px;
+        box-shadow: 0px 0px 15px 0px rgba(0, 0, 0, 0.3);
+        transition: all 400ms;
+
+        img {
+          object-fit: cover;
+          height: 100%;
+          width: 100%;
+        }
+      }
+
+      .admin-pp {
+        border: solid 5px $primary-color;
+        background-color: black;
+      }
+
+      .name {
+        margin-left: 0;
+
+        p {
+          font-size: 23px;
+          font-weight: 500;
+          margin: 0;
+          line-height: 28px;
+
+          span {
+            font-weight: 700;
+          }
+        }
+      }
+    }
+
+    .buttons {
+      display: flex;
+      margin-right: $margin-laterals;
+      margin-top: $margin-laterals/1.5;
+
+      button:nth-child(1) {
+        background-color: $primary-color;
+
+        &:active {
+          background-color: darken($primary-color, 10%);
+        }
+      }
+
+      button:nth-child(2) {
+        margin-left: 10px;
+        background-color: $danger-color;
+
+        &:active {
+          background-color: darken($danger-color, 10%);
+        }
+      }
+
+      button {
+        border-radius: 100px;
+        border: none;
+        width: 35px;
+        height: 35px;
+        padding: 8px;
+        color: white;
+        transition: all 400ms;
+
+        &:hover {
+          transform: scale(1.1);
+        }
+
+        &:active {
+          transform: scale(1);
+        }
+      }
+    }
+  }
+
+  .post-body {
+    margin: 20px $margin-laterals 60px $margin-laterals;
+
+    .content {
+      margin-bottom: 40px;
+
+      p {
+        font-size: 20px;
+        font-weight: 500;
+        color: #717171;
+      }
+    }
+
+    .attachment {
+      overflow: hidden;
+      border-radius: 20px;
+      height: 500px;
+      width: 100%;
+      box-shadow: 0px 0px 15px 0px rgba(0, 0, 0, 0.3);
+      margin-bottom: 20px;
+      margin-right: 20px;
+
+      img {
+        object-fit: cover;
+        height: 100%;
+        width: 100%;
+      }
+    }
+  }
+
+  .post-comment {
+    background-color: #eeeeee;
+    border-radius: 0 0 20px 20px;
+    height: 200px;
+    padding: 30px 0;
+
+    .comment-header {
+      display: flex;
+      align-items: center;
+      margin-bottom: 40px;
+
+      .buttons {
+        display: flex;
+        align-items: center;
+        margin-left: $margin-laterals;
+
+        .likes {
+          display: flex;
+          align-items: center;
+
+          button {
+            border: none;
+            border-radius: 100px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: white;
+            padding: 20px;
+            height: $nav-buttons-height;
+            width: $nav-buttons-height;
+            margin-right: 15px;
+            box-shadow: 0px 0px 15px 0px rgba(0, 0, 0, 0.1);
+            transition: all 400ms;
+
+            fa-icon {
+              color: grey;
+              margin: 0;
+              font-size: 20px;
+            }
+
+            &:hover {
+              transform: scale(1.05);
+            }
+
+            &:active {
+              transform: scale(1);
+              background-color: darken(white, 3%);
+            }
+          }
+
+          .liked-btn {
+            background-color: $danger-color;
+
+            fa-icon {
+              color: white;
+            }
+
+            &:hover {
+              transform: scale(1.05);
+            }
+
+            &:active {
+              transform: scale(1);
+              background-color: darken($danger-color, 7%);
+            }
+          }
+
+          p {
+            font-size: 20px;
+            font-weight: 600;
+            margin: 0 30px 0 0;
+            color: grey;
+          }
+        }
+
+        .comments {
+          display: flex;
+          align-items: center;
+
+          button {
+            border: none;
+            border-radius: 100px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: white;
+            padding: 20px;
+            height: $nav-buttons-height;
+            width: $nav-buttons-height;
+            margin-right: 15px;
+            box-shadow: 0px 0px 15px 0px rgba(0, 0, 0, 0.1);
+            transition: all 400ms;
+
+            fa-icon {
+              color: grey;
+              margin: 0;
+              font-size: 20px;
+            }
+
+            &:hover {
+              transform: scale(1.05);
+            }
+
+            &:active {
+              transform: scale(1);
+              background-color: darken(white, 3%);
+            }
+          }
+
+          p {
+            font-size: 20px;
+            font-weight: 600;
+            margin: 0;
+            color: grey;
+          }
+        }
+      }
+
+      .post-date {
+        margin-right: $margin-laterals;
+
+        p {
+          color: grey;
+          font-size: 18px;
+          font-weight: 500;
+          margin: 0;
+        }
+      }
+    }
+
+    form {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin: 0 $margin-laterals;
+
+      input {
+        border-radius: 100px;
+        height: $nav-buttons-height;
+        width: 100%;
+        border: none;
+        background-color: white;
+        color: grey;
+        font-size: 16px;
+        font-weight: 500;
+        margin-right: 20px;
+        padding-left: 20px;
+
+        &::placeholder {
+          opacity: 40%;
+          color: grey;
+        }
+      }
+
+      button {
+        border: none;
+        background-color: $primary-color;
+        min-height: $nav-buttons-height;
+        min-width: $nav-buttons-height;
+        border-radius: 100px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0px 0px 15px 0px rgba(0, 0, 0, 0.1);
+        margin-left: 0;
+        transition: all 400ms;
+
+        fa-icon {
+          color: white;
+          margin: 0;
+          font-size: 20px;
+        }
+
+        &:enabled:hover {
+          transform: scale(1.05);
+        }
+
+        &:enabled:active {
+          transform: scale(1);
+          background-color: darken($primary-color, 3%);
+        }
+
+        &:disabled {
+          opacity: 50%;
+          background-color: grey;
+        }
+      }
+    }
+  }
+}
+
+#godiv {
+  background-color: white;
+  border-radius: 20px;
+  padding: 50px;
+  box-shadow: 0px 0px 15px 0px rgba(0, 0, 0, 0.15);
+
+  #and-you {
+    font-size: 40px;
+    color: $primary-color;
+    margin: 0;
+    font-weight: 600;
+  }
+
+  #go {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 20px;
+    background-color: white;
+    border-radius: 100px;
+    text-decoration: none;
+    height: $nav-buttons-height*2;
+    width: $nav-buttons-height*2;
+    padding: 40px;
+    color: $primary-color;
+    font-size: 40px;
+    border: none;
+    font-weight: 600;
+    box-shadow: 0px 0px 15px 0px rgba(0, 0, 0, 0.1);
+    transition: all 400ms;
+
+    &:hover {
+      transform: scale(1.05);
+    }
+
+    &:active {
+      transform: scale(1);
+      background-color: darken(white, 3%);
+    }
   }
 }

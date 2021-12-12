@@ -1,8 +1,8 @@
-<h3 id="welcome">Bonjour, <span>{{connectedUserInfo.firstName}} 😁</span></h3>
+<h2 id="welcome">Bonjour, <span>{{userConnected.firstName}}</span> 😁</h2>
 
 <app-file-upload></app-file-upload>
 
-<div id="users-title">
+<div id="posts-from-user-title">
     <h3>Publications</h3>
     <h3>{{posts.length}}</h3>
 </div>
@@ -19,44 +19,94 @@
 </div>
 
 <div class="list-group" id="post-list">
-    <div class="list-group-item" *ngFor="let post of posts;">
+    <div class="post-item" *ngFor="let post of posts;">
 
-        <div class="user router-link" routerLink="../my-profile/{{ post.user_id }}">
-            <div class="pp-and-name">
-                <div class="pp">
-                    <img *ngIf="post.User.profilePicture === null" src="../../../assets/images/default_pp/default1.png"
+        <div class="post-header">
+
+            <div class="pp-name">
+
+                <div [ngClass]="{'pp': true, 'admin-pp': post.User.isAdmin}">
+                    <img *ngIf="!post.User.profilePicture" src="../../../assets/images/default_pp/default1.png"
                         alt="default-profile-picture">
-                    <img *ngIf="post.User.profilePicture !== null" src="{{ post.User.profilePicture }}"
-                        alt="profile-picture">
+                    <img *ngIf="post.User.profilePicture" src="{{ post.User.profilePicture }}" alt="profile-picture">
                 </div>
-                <p><span>{{ post.User.firstName + ' ' + post.User.lastName}}</span><span id="admin"
-                        *ngIf="post.User.isAdmin === 1">ADMIN</span></p>
+
+                <div class="name">
+                    <p>{{post.User.firstName}}<br><span>{{post.User.lastName}}</span></p>
+                </div>
+
             </div>
-            <p id="date">il y a {{ post.createdAt | timeAgo }}</p>
+
+            <div class="buttons" *ngIf="userConnected.isAdmin || userConnected.id == post.user_id">
+                <button id="edit">
+                    <fa-icon [icon]="faEdit"></fa-icon>
+                </button>
+                <button id="delete" (click)="onDeletePost(post.id)">
+                    <fa-icon [icon]="faTrash"></fa-icon>
+                </button>
+            </div>
+
         </div>
 
-        <p id="content" routerLink="{{ post.id }}" class="router-link">{{ post.content }}</p>
-        <div *ngIf="post.attachment" id="attachment" routerLink="{{ post.id }}" class="router-link">
-            <img src="{{ post.attachment }}" alt="post-file">
-        </div>
-        <br>
-        <p class="router-link" routerLink="{{ post.id }}">Commentaires ({{ post.Comments.length }})</p>
-        <br>
-        <div class="like-comment">
-            <div class="like">
-                <button
-                    [ngClass]="{'btn': true, 'btn-danger': !isThisPostLiked(post.id), 'btn-warning': isThisPostLiked(post.id)}"
-                    (click)="onLikePost(post.id)"><span *ngIf="isThisPostLiked(post.id)">Disliker</span><span
-                        *ngIf="!isThisPostLiked(post.id)">Liker</span></button>
-                <p id="likes">Likes: {{ post.nbOfLikes }}</p>
+        <div class="post-body">
+
+            <div class="content">
+                <p>{{post.content}}</p>
             </div>
-            <form class="form-group" id="comments-form" #createCommentForm="ngForm"
-                (ngSubmit)="onCreateComment(createCommentForm.value, post.id)">
-                <input type="text" class="form-control" placeholder="Commenter la publication..." minlength="5"
-                    name="content" #content="ngModel" required ngModel>
-                <button type="submit" class="btn btn-primary" [disabled]="content.invalid">Publier</button>
-            </form>
+
+            <div *ngIf="post.attachment" class="attachment">
+                <img src="{{post.attachment}}" alt="post-attachment">
+            </div>
+
         </div>
-        <br>
+
+        <div class="post-comment">
+
+            <div class="comment-header">
+
+                <div class="buttons">
+
+                    <div class="likes">
+
+                        <button [ngClass]="{'liked-btn': isThisPostLiked(post.id)}" (click)="onLikePost(post.id)">
+                            <fa-icon [icon]="faHeart"></fa-icon>
+                        </button>
+
+                        <p>{{post.nbOfLikes}}</p>
+
+                    </div>
+
+                    <div class="comments">
+
+                        <button class="comment-btn" routerLink="../../posts/{{post.id}}">
+                            <fa-icon [icon]="faComment"></fa-icon>
+                        </button>
+
+                        <p>{{post.Comments.length}}</p>
+
+                    </div>
+
+                </div>
+
+                <div class="post-date">
+                    <p>Il y a {{post.createdAt | timeAgo}}</p>
+                </div>
+
+            </div>
+
+            <form class="comment-form" id="comment-form" #createCommentForm="ngForm"
+                (ngSubmit)="onCreateComment(createCommentForm.value, post.id)">
+
+                <input type="text" placeholder="Commenter la publication..." minlength="5" name="content"
+                    #content="ngModel" required ngModel>
+
+                <button type="submit" class="comment-submit" [disabled]="content.invalid">
+                    <fa-icon [icon]="faPaperPlane"></fa-icon>
+                </button>
+
+            </form>
+
+        </div>
+
     </div>
 </div>
