@@ -39,12 +39,15 @@ export class PostsFromUserComponent implements OnInit {
   commentedWithSuccess: boolean = false;
 
   // Fonctions
-  pairOuImpair(postId: any) {
-    if (postId % 2 == 0) {
-      return 'pair';
-    } else {
-      return 'impair';
-    }
+  onActivate(event: any) {
+    let scrollToTop = window.setInterval(() => {
+      let pos = window.pageYOffset;
+      if (pos > 0) {
+        window.scrollTo(0, pos - 20); // how far to scroll on each step
+      } else {
+        window.clearInterval(scrollToTop);
+      }
+    }, 5);
   }
 
   isThisPostLiked(postId: any) {

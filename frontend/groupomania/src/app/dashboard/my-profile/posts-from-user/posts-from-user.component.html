@@ -8,7 +8,7 @@
 
         <div class="post-header">
 
-            <div class="pp-name">
+            <div class="pp-name" (click)="onActivate($event)">
 
                 <div [ngClass]="{'pp': true, 'admin-pp': post.User.isAdmin}">
                     <img *ngIf="!post.User.profilePicture" src="../../../assets/images/default_pp/default1.png"

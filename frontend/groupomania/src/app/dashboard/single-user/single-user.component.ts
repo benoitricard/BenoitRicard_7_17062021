@@ -81,11 +81,7 @@ export class SingleUserComponent implements OnInit {
     this.http
       .put(`http://localhost:3000/api/user/${this.user.id}`, formData)
       .subscribe(() => {
-        if (this.router.url == 'dashboard/my-profile/user/modify') {
-          this.router.navigate(['dashboard/my-profile/user']);
-        } else {
-          this.router.navigate([`dashboard/profile/${this.user.id}`]);
-        }
+        this.router.navigate([`dashboard/profile/${this.user.id}`]);
       });
   }
 

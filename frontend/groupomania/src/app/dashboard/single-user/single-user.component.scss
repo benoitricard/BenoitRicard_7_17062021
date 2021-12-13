@@ -47,7 +47,7 @@ $pp-profile-size: 300px;
         position: absolute;
         bottom: 95px;
         cursor: pointer;
-        transition: all 400ms;
+        transition: all 200ms;
 
         &:hover {
           transform: scale(1.05);
@@ -226,10 +226,10 @@ $pp-profile-size: 300px;
       font-weight: 500;
       height: $nav-buttons-height;
       margin-top: 50px;
-      transition: all 400ms;
+      transition: all 200ms;
 
       &:hover {
-        transform: scale(1.03);
+        transform: scale(1.1);
       }
 
       &:active {

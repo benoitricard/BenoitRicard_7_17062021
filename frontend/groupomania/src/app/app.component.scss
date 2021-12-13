@@ -8,6 +8,25 @@
   justify-content: space-between;
   align-items: center;
 
+  #arrow-back {
+    position: absolute;
+    font-size: 35px;
+    color: white;
+    left: 0;
+    margin-left: 100px;
+    cursor: pointer;
+    transition: all 200ms;
+
+    &:hover {
+      transform: scale(1.1);
+    }
+
+    &:active {
+      transform: scale(1);
+      color: darken(white, 8%);
+    }
+  }
+
   // Logo Groupomania
   img {
     width: $navbar-height*2;
@@ -60,6 +79,7 @@
       color: white;
       padding: 10px;
       margin-left: 20px;
+      font-size: 20px;
       height: $nav-buttons-height;
       width: $nav-buttons-height;
       transition: all 200ms;
@@ -84,6 +104,26 @@
   flex-direction: column;
   align-items: center;
   padding: 30px 0;
+
+  #arrow-top {
+    position: absolute;
+    font-size: 35px;
+    color: white;
+    left: 0;
+    margin-left: 100px;
+    margin-top: 32px;
+    cursor: pointer;
+    transition: all 200ms;
+
+    &:hover {
+      transform: scale(1.1);
+    }
+
+    &:active {
+      transform: scale(1);
+      color: darken(white, 8%);
+    }
+  }
 
   .footer-btns {
     height: $nav-buttons-height*1.1;

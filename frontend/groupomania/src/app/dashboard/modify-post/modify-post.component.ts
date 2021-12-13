@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-modify-post',
@@ -49,14 +50,28 @@ export class ModifyPostComponent implements OnInit {
     this.http
       .put(`http://localhost:3000/api/post/${this.post.id}`, formData)
       .subscribe(() => {
-        this.router.navigate([`dashboard/posts/${this.post.id}`]);
+        this.location.back();
       });
+  }
+
+  getPost() {
+    let postId: number = this.route.snapshot.params.id;
+
+    this.http.get(`http://localhost:3000/api/post/${postId}`).subscribe(
+      (res) => {
+        this.post = res;
+      },
+      (err) => {
+        console.error(err);
+      }
+    );
   }
 
   constructor(
     private http: HttpClient,
     private route: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    private location: Location
   ) {}
 
   ngOnInit(): void {
@@ -67,6 +82,8 @@ export class ModifyPostComponent implements OnInit {
     } else {
       connectedUserId = sessionStorage.getItem('userId');
     }
+
+    this.getPost();
 
     this.http
       .get(`http://localhost:3000/api/user/${connectedUserId}`)
@@ -79,17 +96,5 @@ export class ModifyPostComponent implements OnInit {
           console.error(err);
         }
       );
-
-    let postId: number = this.route.snapshot.params.id;
-
-    this.http.get(`http://localhost:3000/api/post/${postId}`).subscribe(
-      (res) => {
-        this.post = res;
-        console.log(this.post);
-      },
-      (err) => {
-        console.error(err);
-      }
-    );
   }
 }

@@ -36,7 +36,7 @@
 
         <div class="post-header">
 
-            <div class="pp-name">
+            <div class="pp-name" routerLink="../profile/{{post.user_id}}">
 
                 <div [ngClass]="{'pp': true, 'admin-pp': post.User.isAdmin}">
                     <img *ngIf="!post.User.profilePicture" src="../../../assets/images/default_pp/default1.png"
@@ -51,7 +51,7 @@
             </div>
 
             <div class="buttons" *ngIf="userConnected.isAdmin || userConnected.id == post.user_id">
-                <button id="edit">
+                <button id="edit" routerLink="{{post.id}}/modify">
                     <fa-icon [icon]="faEdit"></fa-icon>
                 </button>
                 <button id="delete" (click)="onDeletePost(post.id)">

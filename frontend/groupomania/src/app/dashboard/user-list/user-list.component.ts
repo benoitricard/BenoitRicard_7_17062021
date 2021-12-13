@@ -17,14 +17,15 @@ export class UserListComponent implements OnInit {
   faCrown = faCrown;
 
   // Variables
-  users: any[] = [];
-  connectedUser: any;
+  users: any;
+  authId: any;
+  authUser: any;
   order: any = '';
 
   // Récupérer les posts triés
   getUsers() {
     this.http
-      .get<any[]>(`http://localhost:3000/api/user${this.whichOrder()}`)
+      .get(`http://localhost:3000/api/user${this.whichOrder()}`)
       .subscribe(
         (res) => {
           this.users = res;
@@ -71,26 +72,23 @@ export class UserListComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.getUsers();
-
-    let connectedUserId: any;
-
+    // Récupération de l'id de l'user authentifié
     if (localStorage.getItem('userId')) {
-      connectedUserId = localStorage.getItem('userId');
+      this.authId = localStorage.getItem('userId');
     } else {
-      connectedUserId = sessionStorage.getItem('userId');
+      this.authId = sessionStorage.getItem('userId');
     }
 
-    this.http
-      .get(`http://localhost:3000/api/user/${connectedUserId}`)
-      .subscribe(
-        (res: any) => {
-          this.connectedUser = res;
-          return res;
-        },
-        (err) => {
-          console.error(err);
-        }
-      );
+    // Récupération du profil de l'user authentifié
+    this.http.get(`http://localhost:3000/api/user/${this.authId}`).subscribe(
+      (res: any) => {
+        this.authUser = res;
+      },
+      (err) => {
+        console.error(err);
+      }
+    );
+
+    this.getUsers();
   }
 }

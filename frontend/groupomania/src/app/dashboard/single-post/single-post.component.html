@@ -16,7 +16,7 @@
 
                     <div class="post-header">
 
-                        <div class="pp-name">
+                        <div class="pp-name" routerLink="../../profile/{{post.user_id}}">
 
                             <div [ngClass]="{'pp': true, 'admin-pp': post.User.isAdmin}">
                                 <img *ngIf="!post.User.profilePicture"
@@ -111,7 +111,7 @@
 
                             <div class="comment-header">
 
-                                <div class="pp-name">
+                                <div class="pp-name" routerLink="../../profile/{{comment.user_id}}">
 
                                     <div [ngClass]="{'pp': true, 'admin-pp': comment.User.isAdmin}">
                                         <img *ngIf="!comment.User.profilePicture"
@@ -129,7 +129,7 @@
                                 </div>
 
                                 <div class="buttons"
-                                    *ngIf="connectedUserInfo.isAdmin || connectedUserInfo.id == post.user_id">
+                                    *ngIf="connectedUserInfo.isAdmin || connectedUserInfo.id == comment.user_id">
                                     <button id="edit" routerLink="../../comment/{{comment.id}}">
                                         <fa-icon [icon]="faEdit"></fa-icon>
                                     </button>

@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { faAngular } from '@fortawesome/free-brands-svg-icons';
 import {
   faBirthdayCake,
   faPencilAlt,
@@ -9,6 +10,7 @@ import {
   faTrash,
   faCrown,
 } from '@fortawesome/free-solid-svg-icons';
+import { AppComponent } from 'src/app/app.component';
 import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
@@ -21,7 +23,8 @@ export class MyProfileComponent implements OnInit {
     private http: HttpClient,
     private router: Router,
     private authService: AuthService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private appComponent: AppComponent
   ) {}
 
   // Icônes FontAwesome
@@ -65,14 +68,26 @@ export class MyProfileComponent implements OnInit {
     }
   }
 
-  ngOnInit(): void {
+  getUser() {
     let userId: number = this.route.snapshot.params.id;
+    this.http.get(`http://localhost:3000/api/user/${userId}`).subscribe(
+      (res: any) => {
+        this.user = res;
+      },
+      (err) => {
+        console.error(err);
+      }
+    );
+  }
 
+  ngOnInit(): void {
     if (localStorage.getItem('userId')) {
       this.connectedUserId = localStorage.getItem('userId');
     } else {
       this.connectedUserId = sessionStorage.getItem('userId');
     }
+
+    this.getUser();
 
     // Récupération des infos sur l'user connecté
     this.http
@@ -85,28 +100,5 @@ export class MyProfileComponent implements OnInit {
           console.error(err);
         }
       );
-
-    // Récupération du profil affiché
-    if (this.router.url == '/dashboard/my-profile/user') {
-      this.http
-        .get(`http://localhost:3000/api/user/${this.connectedUserId}`)
-        .subscribe(
-          (res: any) => {
-            this.user = res;
-          },
-          (err) => {
-            console.error(err);
-          }
-        );
-    } else {
-      this.http.get(`http://localhost:3000/api/user/${userId}`).subscribe(
-        (res: any) => {
-          this.user = res;
-        },
-        (err) => {
-          console.error(err);
-        }
-      );
-    }
   }
 }

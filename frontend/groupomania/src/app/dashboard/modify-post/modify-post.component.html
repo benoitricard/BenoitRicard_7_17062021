@@ -39,18 +39,19 @@
                             id="content" minlength="5">
 
                         <div *ngIf="post.attachment" class="attachment">
-                            <img src="{{post.attachment}}" alt="post-attachment">
+                            <img src="{{post.attachment}}" alt="post-attachment" id="imageAttachment">
                         </div>
 
                         <div class="attachment-btns">
 
                             <label for="attachmentInput"
                                 [ngClass]="{'attachment-btn': true, 'attachment-btn-width': !post.attachment}"
-                                id="file"><span *ngIf="post.attachment">Modifier la photo</span><span
-                                    *ngIf="!post.attachment">Ajouter une photo</span></label>
+                                id="file"><span *ngIf="post.attachment">Modifier la
+                                    photo</span><span *ngIf="!post.attachment">Ajouter une photo</span></label>
                             <input class="hidden" formControlName="attachment" id="attachmentInput" name="attachment"
                                 type="file" (change)="onFileChange($event)">
-                            <button class="delete-attachment" type="button" *ngIf="post.attachment">Supprimer la
+                            <button class="delete-attachment" type="button" *ngIf="post.attachment"
+                                (click)="onDeleteAttachment()">Supprimer la
                                 photo</button>
 
                         </div>

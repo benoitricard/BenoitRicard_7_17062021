@@ -14,8 +14,8 @@ export class AuthGuard implements CanActivate {
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot
   ): boolean {
-    if (!sessionStorage.getItem('auth')) {
-      if (!localStorage.getItem('auth')) {
+    if (!sessionStorage.getItem('token')) {
+      if (!localStorage.getItem('token')) {
         this.router.navigate(['access-denied']);
         return false;
       }

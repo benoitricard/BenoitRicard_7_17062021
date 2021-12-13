@@ -23,10 +23,10 @@
     color: white;
     border: none;
     font-weight: 500;
-    transition: all 400ms;
+    transition: all 200ms;
 
     &:hover {
-      transform: scale(1.05);
+      transform: scale(1.1);
     }
 
     &:active {
@@ -62,7 +62,7 @@
         margin-left: 40px;
 
         &:hover>.admin-and-pp>.pp {
-          transform: scale(1.05);
+          transform: scale(1.1);
           box-shadow: 0px 0px 15px 0px rgba(0, 0, 0, 0.3);
         }
 
@@ -103,7 +103,7 @@
             border-radius: 100px;
             box-shadow: 0px 0px 15px 0px rgba(0, 0, 0, 0.15);
             margin-right: 25px;
-            transition: all 400ms;
+            transition: all 200ms;
 
             img {
               object-fit: cover;
@@ -181,10 +181,10 @@
           height: 35px;
           padding: 8px;
           color: white;
-          transition: all 400ms;
+          transition: all 200ms;
 
           &:hover {
-            transform: scale(1.1);
+            transform: scale(1.15);
           }
 
           &:active {

@@ -204,7 +204,7 @@ $pp-profile-size: 300px;
       height: 35px;
       padding: 8px;
       color: white;
-      transition: all 400ms;
+      transition: all 200ms;
 
       &:hover {
         transform: scale(1.1);
@@ -229,10 +229,10 @@ $pp-profile-size: 300px;
     color: white;
     border: none;
     font-weight: 500;
-    transition: all 400ms;
+    transition: all 200ms;
 
     &:hover {
-      transform: scale(1.05);
+      transform: scale(1.1);
     }
 
     &:active {

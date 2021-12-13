@@ -40,7 +40,7 @@
       cursor: pointer;
 
       &:hover>.pp {
-        transform: scale(1.05);
+        transform: scale(1.1);
         box-shadow: 0px 0px 15px 0px rgba(0, 0, 0, 0.3);
       }
 
@@ -56,7 +56,7 @@
         width: $pp-height;
         margin-right: 20px;
         box-shadow: 0px 0px 15px 0px rgba(0, 0, 0, 0.3);
-        transition: all 400ms;
+        transition: all 200ms;
 
         img {
           object-fit: cover;
@@ -141,13 +141,13 @@
         line-height: $nav-buttons-height;
 
         &:hover {
-          transform: scale(1.03);
+          transform: scale(1.1);
         }
       }
 
       label {
         background-color: $primary-color;
-        transition: all 400ms;
+        transition: all 200ms;
 
         &:active {
           transform: scale(1);
@@ -157,7 +157,7 @@
 
       button {
         background-color: $danger-color;
-        transition: all 400ms;
+        transition: all 200ms;
 
         &:active {
           transform: scale(1);

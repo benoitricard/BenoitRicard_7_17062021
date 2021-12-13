@@ -3,13 +3,13 @@
 .comment-success {
   background-color: #33c13f !important;
   transform: scale(1.1);
-  transition: all 400ms;
+  transition: all 200ms;
 }
 
 .post-success {
   background-color: #33c13f !important;
   transform: scaleX(1.05);
-  transition: all 400ms;
+  transition: all 200ms;
 }
 
 #welcome {
@@ -427,7 +427,7 @@
     border: none;
     font-weight: 600;
     box-shadow: 0px 0px 15px 0px rgba(0, 0, 0, 0.1);
-    transition: all 400ms;
+    transition: all 200ms;
 
     &:hover {
       transform: scale(1.15);

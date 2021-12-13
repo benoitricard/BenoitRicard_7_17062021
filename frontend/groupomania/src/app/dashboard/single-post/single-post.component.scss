@@ -3,7 +3,7 @@
 .comment-success {
   background-color: #33c13f !important;
   transform: scale(1.1);
-  transition: all 400ms;
+  transition: all 200ms;
 }
 
 #posts-from-user-title {
@@ -79,7 +79,7 @@
         width: $pp-height;
         margin-right: 20px;
         box-shadow: 0px 0px 15px 0px rgba(0, 0, 0, 0.3);
-        transition: all 400ms;
+        transition: all 200ms;
 
         img {
           object-fit: cover;
@@ -144,7 +144,7 @@
         height: 35px;
         padding: 8px;
         color: white;
-        transition: all 400ms;
+        transition: all 200ms;
 
         &:hover {
           transform: scale(1.1);
@@ -218,7 +218,7 @@
             width: $nav-buttons-height;
             margin-right: 15px;
             box-shadow: 0px 0px 15px 0px rgba(0, 0, 0, 0.1);
-            transition: all 400ms;
+            transition: all 200ms;
 
             fa-icon {
               color: grey;
@@ -227,7 +227,7 @@
             }
 
             &:hover {
-              transform: scale(1.05);
+              transform: scale(1.1);
             }
 
             &:active {
@@ -277,7 +277,7 @@
             width: $nav-buttons-height;
             margin-right: 15px;
             box-shadow: 0px 0px 15px 0px rgba(0, 0, 0, 0.1);
-            transition: all 400ms;
+            transition: all 200ms;
 
             fa-icon {
               color: grey;
@@ -286,7 +286,7 @@
             }
 
             &:hover {
-              transform: scale(1.05);
+              transform: scale(1.1);
             }
 
             &:active {
@@ -351,7 +351,7 @@
         justify-content: center;
         box-shadow: 0px 0px 15px 0px rgba(0, 0, 0, 0.1);
         margin-left: 0;
-        transition: all 400ms;
+        transition: all 200ms;
 
         fa-icon {
           color: white;
@@ -360,7 +360,7 @@
         }
 
         &:enabled:hover {
-          transform: scale(1.05);
+          transform: scale(1.1);
         }
 
         &:enabled:active {

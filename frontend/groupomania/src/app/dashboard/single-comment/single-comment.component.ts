@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-single-comment',
@@ -16,7 +17,7 @@ export class SingleCommentComponent implements OnInit {
       .put(`http://localhost:3000/api/comment/${this.comment.id}`, form)
       .subscribe(
         () => {
-          this.router.navigate([`dashboard/posts/${this.comment.post_id}`]);
+          this.location.back();
         },
         (err) => {
           console.error(err);
@@ -30,7 +31,7 @@ export class SingleCommentComponent implements OnInit {
         .delete(`http://localhost:3000/api/comment/${this.comment['id']}`)
         .subscribe(
           () => {
-            this.router.navigate([`dashboard/posts/${this.comment.post_id}`]);
+            this.location.back();
           },
           (err) => {
             console.error(err);
@@ -42,7 +43,8 @@ export class SingleCommentComponent implements OnInit {
   constructor(
     private http: HttpClient,
     private route: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    private location: Location
   ) {}
 
   ngOnInit(): void {

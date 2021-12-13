@@ -44,9 +44,9 @@
 
             </div>
 
-            <div class="buttons" *ngIf="connectedUser.isAdmin">
+            <div class="buttons" *ngIf="authUser.isAdmin === 1">
 
-                <button id="edit">
+                <button id="edit" routerLink="../profile/{{user.id}}/modify">
                     <fa-icon [icon]="faEdit"></fa-icon>
                 </button>
 
