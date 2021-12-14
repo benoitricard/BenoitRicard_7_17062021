@@ -9,29 +9,22 @@ import { AuthService } from '../services/auth.service';
 })
 @Injectable()
 export class DashboardComponent implements OnInit {
-  connectedUserInfo: any = {};
-
   constructor(private http: HttpClient, private authService: AuthService) {}
 
+  // Variables
+  authId: number | any; // ID de l'user authentifié
+  authObject: {} | any; // Infos de l'user authentifié
+
   ngOnInit(): void {
-    let connectedUserId: any;
+    this.authId = this.authService.getUserIdConnected();
 
-    if (localStorage.getItem('userId')) {
-      connectedUserId = localStorage.getItem('userId');
-    } else {
-      connectedUserId = sessionStorage.getItem('userId');
-    }
-
-    this.http
-      .get(`http://localhost:3000/api/user/${connectedUserId}`)
-      .subscribe(
-        (res: any) => {
-          this.connectedUserInfo = res;
-          return res;
-        },
-        (err) => {
-          console.error(err);
-        }
-      );
+    this.http.get(`http://localhost:3000/api/user/${this.authId}`).subscribe(
+      (res: any) => {
+        this.authObject = res;
+      },
+      (err) => {
+        console.error(err);
+      }
+    );
   }
 }

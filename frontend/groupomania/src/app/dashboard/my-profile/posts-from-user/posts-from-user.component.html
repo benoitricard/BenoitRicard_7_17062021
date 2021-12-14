@@ -22,7 +22,7 @@
 
             </div>
 
-            <div class="buttons" *ngIf="userConnected.isAdmin || userConnected.id == post.user_id">
+            <div class="buttons" *ngIf="authObject.isAdmin === 1 || authId === post.user_id">
                 <button id="edit" routerLink="../../posts/{{post.id}}/modify">
                     <fa-icon [icon]="faEdit"></fa-icon>
                 </button>

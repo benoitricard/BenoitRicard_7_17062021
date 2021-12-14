@@ -3,17 +3,6 @@
     <h3>{{users.length}}</h3>
 </div>
 
-<div class="order-btns">
-    <button [ngClass]="{'order-btn': true, 'order-btn-active': whichOrder() == ''}"
-        (click)="onChangeOrder('recentscreation')">Nouveaux membres</button>
-    <button [ngClass]="{'order-btn': true, 'order-btn-active': whichOrder() == '/oldscreation'}"
-        (click)="onChangeOrder('oldscreation')">Anciens membres</button>
-    <button [ngClass]="{'order-btn': true, 'order-btn-active': whichOrder() == '/recentsconnexion'}"
-        (click)="onChangeOrder('recentsconnexion')">Connectés récemment</button>
-    <button [ngClass]="{'order-btn': true, 'order-btn-active': whichOrder() == '/oldsconnexion'}"
-        (click)="onChangeOrder('oldsconnexion')">Connectés anciennement</button>
-</div>
-
 <div class="list-group" id="user-list">
     <div [ngClass]="{'user-item-card': true, 'user-item-admin': user.isAdmin}" *ngFor="let user of users;">
 

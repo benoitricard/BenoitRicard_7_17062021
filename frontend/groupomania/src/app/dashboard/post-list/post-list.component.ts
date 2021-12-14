@@ -1,12 +1,6 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import {
-  FormBuilder,
-  FormGroup,
-  FormControl,
-  Validators,
-} from '@angular/forms';
-import { UserService } from 'src/app/services/user.service';
+import { FormGroup, FormControl, Validators } from '@angular/forms';
 import {
   faComment,
   faCrown,
@@ -15,7 +9,8 @@ import {
   faPaperPlane,
   faTrash,
 } from '@fortawesome/free-solid-svg-icons';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Router } from '@angular/router';
+import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
   selector: 'app-post-list',
@@ -25,10 +20,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 export class PostListComponent implements OnInit {
   constructor(
     private http: HttpClient,
-    private fb: FormBuilder,
-    private userService: UserService,
     public router: Router,
-    private route: ActivatedRoute
+    public authService: AuthService
   ) {}
 
   // Icônes FontAwesome
@@ -40,15 +33,17 @@ export class PostListComponent implements OnInit {
   faCrown = faCrown;
 
   // Variables
-  posts: any = [];
-  likesFromUser: any = [];
-  userConnected: any = {};
-  userConnectedId: any;
-  order: any;
+  posts: [] | any;
+  authLikes: [] | any;
+  authObject: {} | any;
+  authId: number | any;
+  postOrder: string | any;
   emptyContent: string = '';
   postedWithSuccess: boolean = false;
   commentedWithSuccess: boolean = false;
 
+  // Fonctions
+  // Création d'un post
   postCreationForm = new FormGroup({
     content: new FormControl('', [
       Validators.required,
@@ -104,11 +99,10 @@ export class PostListComponent implements OnInit {
 
   getLikes() {
     this.http
-      .get(`http://localhost:3000/api/user/${this.userConnectedId}/like`)
+      .get(`http://localhost:3000/api/user/${this.authId}/like`)
       .subscribe(
         (res: any) => {
-          this.likesFromUser = res;
-          return res;
+          this.authLikes = res;
         },
         (err) => {
           console.error(err);
@@ -117,13 +111,13 @@ export class PostListComponent implements OnInit {
   }
 
   whichOrder() {
-    if (this.order == 'recents') {
+    if (this.postOrder == 'recents') {
       return '';
-    } else if (this.order == 'olds') {
+    } else if (this.postOrder == 'olds') {
       return '/olds';
-    } else if (this.order == 'liked') {
+    } else if (this.postOrder == 'liked') {
       return '/liked';
-    } else if (this.order == 'unliked') {
+    } else if (this.postOrder == 'unliked') {
       return '/unliked';
     } else {
       return '';
@@ -132,13 +126,13 @@ export class PostListComponent implements OnInit {
 
   // Clic du bouton de tri
   onChangeOrder(orderChanged: any) {
-    this.order = orderChanged;
+    this.postOrder = orderChanged;
     this.getPosts();
   }
 
   isThisPostLiked(postId: any) {
-    for (let i = 0; i < this.likesFromUser.length; i++) {
-      if (this.likesFromUser[i].post_id === postId) {
+    for (let i = 0; i < this.authLikes.length; i++) {
+      if (this.authLikes[i].post_id === postId) {
         return true;
       }
     }
@@ -188,29 +182,18 @@ export class PostListComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    let connectedUserId: any;
-
-    if (localStorage.getItem('userId')) {
-      connectedUserId = localStorage.getItem('userId');
-    } else {
-      connectedUserId = sessionStorage.getItem('userId');
-    }
-
-    this.userConnectedId = connectedUserId;
+    this.authId = this.authService.getUserIdConnected();
 
     this.getPosts();
     this.getLikes();
 
-    this.http
-      .get(`http://localhost:3000/api/user/${connectedUserId}`)
-      .subscribe(
-        (res: any) => {
-          this.userConnected = res;
-          return res;
-        },
-        (err) => {
-          console.error(err);
-        }
-      );
+    this.http.get(`http://localhost:3000/api/user/${this.authId}`).subscribe(
+      (res: any) => {
+        this.authObject = res;
+      },
+      (err) => {
+        console.error(err);
+      }
+    );
   }
 }

@@ -9,6 +9,7 @@ import {
   faPaperPlane,
   faTrash,
 } from '@fortawesome/free-solid-svg-icons';
+import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
   selector: 'app-likes-from-user',
@@ -19,7 +20,8 @@ export class LikesFromUserComponent implements OnInit {
   constructor(
     private http: HttpClient,
     private route: ActivatedRoute,
-    public router: Router
+    public router: Router,
+    public authService: AuthService
   ) {}
 
   // Icônes FontAwesome
@@ -31,22 +33,24 @@ export class LikesFromUserComponent implements OnInit {
   faCrown = faCrown;
 
   // Variables
-  likesFromConnected: any = [];
-  likesFromUser: any = [];
-  userReqId: any;
-  userConnected: any = {};
-  userConnectedId: any;
+  authLikes: [] | any;
+  profileLikes: [] | any;
+  authObject: {} | any;
+  authId: number | any;
   commentedWithSuccess: boolean = false;
 
+  // Fonctions
+  // Vérifier si un post est liké par l'user authentifié
   isThisPostLiked(postId: any) {
-    for (let i = 0; i < this.likesFromConnected['length']; i++) {
-      if (this.likesFromConnected[i].post_id === postId) {
+    for (let i = 0; i < this.authLikes['length']; i++) {
+      if (this.authLikes[i].post_id === postId) {
         return true;
       }
     }
     return false;
   }
 
+  // Créer un commentaire
   onCreateComment(form: any, postId: any) {
     this.http
       .post(`http://localhost:3000/api/comment/${postId}`, form)
@@ -64,6 +68,7 @@ export class LikesFromUserComponent implements OnInit {
       );
   }
 
+  // Supprimer un post
   onDeletePost(postId: any) {
     if (confirm('Êtes-vous sûr de vouloir supprimer cette publication ?')) {
       this.http.delete(`http://localhost:3000/api/post/${postId}`).subscribe(
@@ -77,6 +82,7 @@ export class LikesFromUserComponent implements OnInit {
     }
   }
 
+  // Liker un post
   onLikePost(postId: any) {
     this.http.post(`http://localhost:3000/api/like/${postId}`, null).subscribe(
       () => {
@@ -89,37 +95,26 @@ export class LikesFromUserComponent implements OnInit {
     );
   }
 
+  // Récupérer les posts likés du profil
   getPosts() {
     let userId: number = this.route.snapshot.params.id;
-    if (this.router.url == '/dashboard/my-profile/user') {
-      this.http
-        .get(`http://localhost:3000/api/user/${this.userConnectedId}/like`)
-        .subscribe(
-          (res: any) => {
-            this.likesFromUser = res;
-          },
-          (err) => {
-            console.error(err);
-          }
-        );
-    } else {
-      this.http.get(`http://localhost:3000/api/user/${userId}/like`).subscribe(
-        (res: any) => {
-          this.likesFromUser = res;
-        },
-        (err) => {
-          console.error(err);
-        }
-      );
-    }
+    this.http.get(`http://localhost:3000/api/user/${userId}/like`).subscribe(
+      (res: any) => {
+        this.profileLikes = res;
+      },
+      (err) => {
+        console.error(err);
+      }
+    );
   }
 
+  // Récupérer les likes de l'user authentifié
   getLikes() {
     this.http
-      .get(`http://localhost:3000/api/user/${this.userConnectedId}/like`)
+      .get(`http://localhost:3000/api/user/${this.authId}/like`)
       .subscribe(
         (res: any) => {
-          this.likesFromConnected = res;
+          this.authLikes = res;
         },
         (err) => {
           console.error(err);
@@ -128,29 +123,18 @@ export class LikesFromUserComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    let connectedUserId: any;
-
-    if (localStorage.getItem('userId')) {
-      connectedUserId = localStorage.getItem('userId');
-    } else {
-      connectedUserId = sessionStorage.getItem('userId');
-    }
-
-    this.userConnectedId = connectedUserId;
+    this.authId = this.authService.getUserIdConnected();
 
     this.getPosts();
     this.getLikes();
 
-    this.http
-      .get(`http://localhost:3000/api/user/${connectedUserId}`)
-      .subscribe(
-        (res: any) => {
-          this.userConnected = res;
-          return res;
-        },
-        (err) => {
-          console.error(err);
-        }
-      );
+    this.http.get(`http://localhost:3000/api/user/${this.authId}`).subscribe(
+      (res: any) => {
+        this.authObject = res;
+      },
+      (err) => {
+        console.error(err);
+      }
+    );
   }
 }

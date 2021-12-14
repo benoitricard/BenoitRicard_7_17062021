@@ -1,8 +1,9 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Location } from '@angular/common';
+import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
   selector: 'app-modify-post',
@@ -10,9 +11,20 @@ import { Location } from '@angular/common';
   styleUrls: ['./modify-post.component.scss'],
 })
 export class ModifyPostComponent implements OnInit {
-  post: any = {};
-  connectedUserInfo: any = {};
+  constructor(
+    private http: HttpClient,
+    private route: ActivatedRoute,
+    private location: Location,
+    public authService: AuthService
+  ) {}
 
+  // Variables
+  post: {} | any;
+  authObject: {} | any;
+  authId: number | any;
+
+  // Fonctions
+  // Update d'un post
   postUpdateForm = new FormGroup({
     content: new FormControl('', [
       Validators.required,
@@ -67,34 +79,18 @@ export class ModifyPostComponent implements OnInit {
     );
   }
 
-  constructor(
-    private http: HttpClient,
-    private route: ActivatedRoute,
-    private router: Router,
-    private location: Location
-  ) {}
-
   ngOnInit(): void {
-    let connectedUserId: any;
-
-    if (localStorage.getItem('userId')) {
-      connectedUserId = localStorage.getItem('userId');
-    } else {
-      connectedUserId = sessionStorage.getItem('userId');
-    }
+    this.authId = this.authService.getUserIdConnected();
 
     this.getPost();
 
-    this.http
-      .get(`http://localhost:3000/api/user/${connectedUserId}`)
-      .subscribe(
-        (res: any) => {
-          this.connectedUserInfo = res;
-          return res;
-        },
-        (err) => {
-          console.error(err);
-        }
-      );
+    this.http.get(`http://localhost:3000/api/user/${this.authId}`).subscribe(
+      (res: any) => {
+        this.authObject = res;
+      },
+      (err) => {
+        console.error(err);
+      }
+    );
   }
 }

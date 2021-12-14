@@ -1,10 +1,10 @@
 <div id="likes-from-user-title">
     <h3>Publications aimées par l'utilisateur</h3>
-    <h3>{{likesFromUser.length}}</h3>
+    <h3>{{profileLikes.length}}</h3>
 </div>
 
 <div class="list-group" id="like-list">
-    <div class="post-item" *ngFor="let like of likesFromUser;">
+    <div class="post-item" *ngFor="let like of profileLikes;">
 
         <div class="post-header">
 
@@ -23,7 +23,7 @@
 
             </div>
 
-            <div class="buttons" *ngIf="userConnected.isAdmin || userConnected.id == like.Post.user_id">
+            <div class="buttons" *ngIf="authObject.isAdmin === 1 || authId === like.Post.user_id">
                 <button id="edit" routerLink="../../posts/{{like.Post.id}}/modify">
                     <fa-icon [icon]="faEdit"></fa-icon>
                 </button>
@@ -98,7 +98,7 @@
 
     </div>
 
-    <div id="godiv" *ngIf="router.url !== '/dashboard/my-profile/user' && likesFromUser.length > 0">
+    <div id="godiv" *ngIf="router.url !== '/dashboard/my-profile/user' && profileLikes.length > 0">
         <h3 id="and-you">Et si vous aussi<br> vous écriviez vos <br>propres
             publications ?<br>
         </h3>

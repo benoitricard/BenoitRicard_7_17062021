@@ -8,8 +8,7 @@
             <form class="form-group" #loginForm="ngForm" (ngSubmit)="onLogin(loginForm.value)">
 
                 <div class="input">
-                    <input type="email" class="form-control" placeholder="Adresse e-mail"
-                        pattern="^[A-Za-z0-9_.+-]+\@[A-Za-z0-9_.+-]+\.[A-Za-z]+$" name="email" minlength="5"
+                    <input type="email" class="form-control" placeholder="Adresse e-mail" name="email" minlength="5"
                         #email="ngModel" required ngModel>
                     <fa-icon class="fa-icon-input" [icon]="faEnvelope"></fa-icon>
                 </div>

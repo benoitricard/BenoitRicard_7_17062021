@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
 import { faCrown, faEdit, faTrash } from '@fortawesome/free-solid-svg-icons';
+import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
   selector: 'app-user-list',
@@ -9,7 +9,7 @@ import { faCrown, faEdit, faTrash } from '@fortawesome/free-solid-svg-icons';
   styleUrls: ['./user-list.component.scss'],
 })
 export class UserListComponent implements OnInit {
-  constructor(private http: HttpClient, private router: Router) {}
+  constructor(private http: HttpClient, public authService: AuthService) {}
 
   // Icônes FontAwesome
   faEdit = faEdit;
@@ -17,44 +17,20 @@ export class UserListComponent implements OnInit {
   faCrown = faCrown;
 
   // Variables
-  users: any;
-  authId: any;
-  authUser: any;
-  order: any = '';
+  users: [] | any;
+  authId: number | any;
+  authUser: {} | any;
 
   // Récupérer les posts triés
   getUsers() {
-    this.http
-      .get(`http://localhost:3000/api/user${this.whichOrder()}`)
-      .subscribe(
-        (res) => {
-          this.users = res;
-        },
-        (err) => {
-          console.error(err);
-        }
-      );
-  }
-
-  // Style des boutons de tri en fonction du choix
-  whichOrder() {
-    if (this.order == 'recentscreation') {
-      return '';
-    } else if (this.order == 'oldscreation') {
-      return '/oldscreation';
-    } else if (this.order == 'recentsconnexion') {
-      return '/recentsconnexion';
-    } else if (this.order == 'oldsconnexion') {
-      return '/oldsconnexion';
-    } else {
-      return '';
-    }
-  }
-
-  // Clic du bouton de tri
-  onChangeOrder(orderChanged: any) {
-    this.order = orderChanged;
-    this.getUsers();
+    this.http.get('http://localhost:3000/api/user').subscribe(
+      (res) => {
+        this.users = res;
+      },
+      (err) => {
+        console.error(err);
+      }
+    );
   }
 
   // Supprimer un utilisateur
@@ -73,11 +49,7 @@ export class UserListComponent implements OnInit {
 
   ngOnInit(): void {
     // Récupération de l'id de l'user authentifié
-    if (localStorage.getItem('userId')) {
-      this.authId = localStorage.getItem('userId');
-    } else {
-      this.authId = sessionStorage.getItem('userId');
-    }
+    this.authId = this.authService.getUserIdConnected();
 
     // Récupération du profil de l'user authentifié
     this.http.get(`http://localhost:3000/api/user/${this.authId}`).subscribe(

@@ -43,18 +43,10 @@ export class LoginComponent implements OnInit {
       (res: any) => {
         if (form['checkbox'] == true) {
           localStorage.setItem('token', res['token']);
-          localStorage.setItem('auth', 'true');
-          localStorage.setItem('userId', res['userId']);
           sessionStorage.removeItem('token');
-          sessionStorage.removeItem('auth');
-          sessionStorage.removeItem('userId');
         } else {
           sessionStorage.setItem('token', res['token']);
-          sessionStorage.setItem('auth', 'true');
-          sessionStorage.setItem('userId', res['userId']);
           localStorage.removeItem('token');
-          localStorage.removeItem('auth');
-          localStorage.removeItem('userId');
         }
         this.router.navigate(['dashboard/posts']);
       },
@@ -66,7 +58,7 @@ export class LoginComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    if (localStorage.getItem('auth') || sessionStorage.getItem('auth')) {
+    if (localStorage.getItem('token') || sessionStorage.getItem('token')) {
       this.router.navigate(['dashboard/posts']);
     }
   }

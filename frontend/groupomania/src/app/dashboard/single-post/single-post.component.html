@@ -31,7 +31,7 @@
 
                         </div>
 
-                        <div class="buttons" *ngIf="connectedUserInfo.isAdmin || connectedUserInfo.id == post.user_id">
+                        <div class="buttons" *ngIf="authObject.isAdmin === 1 || authId === post.user_id">
                             <button id="edit" routerLink="modify">
                                 <fa-icon [icon]="faEdit"></fa-icon>
                             </button>
@@ -128,8 +128,7 @@
 
                                 </div>
 
-                                <div class="buttons"
-                                    *ngIf="connectedUserInfo.isAdmin || connectedUserInfo.id == comment.user_id">
+                                <div class="buttons" *ngIf="authObject.isAdmin === 1 || authId === comment.user_id">
                                     <button id="edit" routerLink="../../comment/{{comment.id}}">
                                         <fa-icon [icon]="faEdit"></fa-icon>
                                     </button>

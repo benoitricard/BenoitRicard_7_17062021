@@ -1,4 +1,4 @@
-<h2 id="welcome">Bonjour, <span>{{userConnected.firstName}}</span> 😁</h2>
+<h2 id="welcome">Bonjour, <span>{{authObject.firstName}}</span> 😁</h2>
 
 <form [formGroup]="postCreationForm" (ngSubmit)="onPostCreation()" id="form">
 
@@ -50,7 +50,7 @@
 
             </div>
 
-            <div class="buttons" *ngIf="userConnected.isAdmin || userConnected.id == post.user_id">
+            <div class="buttons" *ngIf="authObject.isAdmin === 1 || authId === post.user_id">
                 <button id="edit" routerLink="{{post.id}}/modify">
                     <fa-icon [icon]="faEdit"></fa-icon>
                 </button>

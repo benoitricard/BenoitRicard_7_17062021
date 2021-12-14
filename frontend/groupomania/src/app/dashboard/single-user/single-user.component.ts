@@ -30,13 +30,13 @@ export class SingleUserComponent implements OnInit {
   faCrown = faCrown;
 
   // Variables
-  user: any = {};
-  whichOne: any = 'posts';
-  connectedUserId: number | any;
-  userConnected: any = {};
+  authId: number | any; // ID de l'user authentifié
+  authObject: {} | any; // Infos de l'user authentifié
+  user: {} | any;
   userUpdatedWithSuccess: boolean = false;
 
   // Fonctions
+  // Formulaire d'update de l'user
   userUpdateForm = new FormGroup({
     firstName: new FormControl('', [
       Validators.required,
@@ -85,50 +85,33 @@ export class SingleUserComponent implements OnInit {
       });
   }
 
+  // Récupération de l'user
   getUser() {
     let userId: number = this.route.snapshot.params.id;
-    if (this.router.url == '/dashboard/my-profile/user/modify') {
-      this.http
-        .get(`http://localhost:3000/api/user/${this.connectedUserId}`)
-        .subscribe(
-          (res: any) => {
-            this.user = res;
-          },
-          (err) => {
-            console.error(err);
-          }
-        );
-    } else {
-      this.http.get(`http://localhost:3000/api/user/${userId}`).subscribe(
-        (res: any) => {
-          this.user = res;
-        },
-        (err) => {
-          console.error(err);
-        }
-      );
-    }
+    this.http.get(`http://localhost:3000/api/user/${userId}`).subscribe(
+      (res: any) => {
+        this.user = res;
+      },
+      (err) => {
+        console.error(err);
+      }
+    );
   }
 
   ngOnInit(): void {
-    if (localStorage.getItem('userId')) {
-      this.connectedUserId = localStorage.getItem('userId');
-    } else {
-      this.connectedUserId = sessionStorage.getItem('userId');
-    }
+    // Récupération de l'id de l'user authentifié
+    this.authId = this.authService.getUserIdConnected();
 
     this.getUser();
 
     // Récupération des infos sur l'user connecté
-    this.http
-      .get(`http://localhost:3000/api/user/${this.connectedUserId}`)
-      .subscribe(
-        (res: any) => {
-          this.userConnected = res;
-        },
-        (err) => {
-          console.error(err);
-        }
-      );
+    this.http.get(`http://localhost:3000/api/user/${this.authId}`).subscribe(
+      (res: any) => {
+        this.authObject = res;
+      },
+      (err) => {
+        console.error(err);
+      }
+    );
   }
 }
