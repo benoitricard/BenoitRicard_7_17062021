@@ -17,9 +17,9 @@ export class UserListComponent implements OnInit {
   faCrown = faCrown;
 
   // Variables
-  users: [] | any;
+  users: any = [];
   authId: number | any;
-  authUser: {} | any;
+  authUser: any = {};
 
   // Récupérer les posts triés
   getUsers() {

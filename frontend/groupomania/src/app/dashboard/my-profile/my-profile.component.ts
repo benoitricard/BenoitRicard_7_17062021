@@ -33,10 +33,14 @@ export class MyProfileComponent implements OnInit {
   faCrown = faCrown;
 
   // Variables
-  user: {} | any;
+  user: any = {};
   whichOne: string | any = 'posts';
   authId: number | any;
-  authObject: {} | any;
+  authObject: any = {};
+  posts: any = [];
+  likes: any = [];
+  postsBtnDisabled: boolean = true;
+  likesBtnDisabled: boolean = true;
 
   // Fonctions
   // Toggle entre afficher les posts ou les likes du profil
@@ -48,6 +52,34 @@ export class MyProfileComponent implements OnInit {
       this.whichOne = 'likes';
       return 'likes';
     }
+  }
+
+  // Récupérer les posts du profil
+  getPosts() {
+    let reqId: number = this.route.snapshot.params.id;
+    this.http.get(`http://localhost:3000/api/user/${reqId}/post`).subscribe(
+      (res: any) => {
+        this.posts = res;
+        this.postsBtnDisabled = false;
+      },
+      () => {
+        this.postsBtnDisabled = true;
+      }
+    );
+  }
+
+  // Récupérer les posts likés du profil
+  getLikes() {
+    let userId: number = this.route.snapshot.params.id;
+    this.http.get(`http://localhost:3000/api/user/${userId}/like`).subscribe(
+      (res: any) => {
+        this.likes = res;
+        this.likesBtnDisabled = false;
+      },
+      () => {
+        this.likesBtnDisabled = true;
+      }
+    );
   }
 
   // Supprimer un profil
@@ -97,5 +129,14 @@ export class MyProfileComponent implements OnInit {
         console.error(err);
       }
     );
+
+    this.getPosts();
+    this.getLikes();
+
+    setInterval(() => {
+      if (this.route.snapshot.params.id == 0) {
+        this.router.navigate([`dashboard/profile/${this.authId}`]);
+      }
+    }, 1000);
   }
 }

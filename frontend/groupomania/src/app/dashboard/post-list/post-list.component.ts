@@ -33,9 +33,9 @@ export class PostListComponent implements OnInit {
   faCrown = faCrown;
 
   // Variables
-  posts: [] | any;
-  authLikes: [] | any;
-  authObject: {} | any;
+  posts: any = [];
+  authLikes: any = [];
+  authObject: any = {};
   authId: number | any;
   postOrder: string | any;
   emptyContent: string = '';

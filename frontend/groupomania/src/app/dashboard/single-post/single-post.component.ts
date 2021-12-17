@@ -33,12 +33,12 @@ export class SinglePostComponent implements OnInit {
   faPaperPlane = faPaperPlane;
 
   // Variables
-  post: {} | any;
-  authObject: {} | any;
+  post: any = { User: [], Comments: [] };
+  authObject: any = {};
   authId: number | any;
-  authLikes: [] | any;
+  authLikes: any = [];
   commentedWithSuccess: boolean = false;
-  commentInput: any;
+  commentInput: string | any;
 
   // Fonctions
   // Supprimer un post

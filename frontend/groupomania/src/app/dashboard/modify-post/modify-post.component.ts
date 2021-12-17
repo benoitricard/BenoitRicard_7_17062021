@@ -19,9 +19,10 @@ export class ModifyPostComponent implements OnInit {
   ) {}
 
   // Variables
-  post: {} | any;
-  authObject: {} | any;
+  post: any = { User: [] };
+  authObject: any = {};
   authId: number | any;
+  attachmentChanged: boolean = false;
 
   // Fonctions
   // Update d'un post
@@ -44,6 +45,7 @@ export class ModifyPostComponent implements OnInit {
       this.postUpdateForm.patchValue({
         attachmentSource: attachment,
       });
+      this.attachmentChanged = true;
     }
   }
 
@@ -53,10 +55,14 @@ export class ModifyPostComponent implements OnInit {
 
   onPostUpdate() {
     const formData = new FormData();
-    formData.append(
-      'attachment',
-      this.postUpdateForm.get('attachmentSource')?.value
-    );
+    if (this.attachmentChanged) {
+      formData.append(
+        'attachment',
+        this.postUpdateForm.get('attachmentSource')?.value
+      );
+    } else {
+      formData.append('attachment', this.post.attachment);
+    }
     formData.append('content', this.postUpdateForm.get('content')?.value);
 
     this.http

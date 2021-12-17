@@ -8,11 +8,11 @@ import { AuthGuard } from './guard/auth-guard.guard';
 import { AccessDeniedComponent } from './access-denied/access-denied.component';
 import { PostListComponent } from './dashboard/post-list/post-list.component';
 import { SinglePostComponent } from './dashboard/single-post/single-post.component';
-import { MyProfileComponent } from './dashboard/my-profile/my-profile.component';
 import { UserListComponent } from './dashboard/user-list/user-list.component';
 import { ModifyPostComponent } from './dashboard/modify-post/modify-post.component';
 import { SingleCommentComponent } from './dashboard/single-comment/single-comment.component';
 import { SingleUserComponent } from './dashboard/single-user/single-user.component';
+import { MyProfileComponent } from './dashboard/my-profile/my-profile.component';
 
 export const appRoutes: Routes = [
   // Routes Authentification

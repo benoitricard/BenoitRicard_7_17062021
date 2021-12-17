@@ -31,8 +31,8 @@ export class SingleUserComponent implements OnInit {
 
   // Variables
   authId: number | any; // ID de l'user authentifié
-  authObject: {} | any; // Infos de l'user authentifié
-  user: {} | any;
+  authObject: any = {}; // Infos de l'user authentifié
+  user: any = {};
   userUpdatedWithSuccess: boolean = false;
 
   // Fonctions

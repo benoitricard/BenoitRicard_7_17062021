@@ -413,77 +413,67 @@ exports.getAllPostsFromUser = (req, res) => {
             return res.status(404).json({ error: 'USER NOT FOUND' });
           }
           // vérifier que l'user a publié des posts
-          models.Post.count({ where: { user_id: req.params.id } })
-            .then((nbOfPosts) => {
-              if (nbOfPosts === 0) {
-                return res.status(404).json({ error: 'POSTS NOT FOUND' });
-              }
-              // trouver tous les posts de l'user
-              models.Post.findAll({
-                where: { user_id: req.params.id },
+          models.Post.findAll({
+            where: { user_id: req.params.id },
+            attributes: [
+              'id',
+              'content',
+              'attachment',
+              'nbOfLikes',
+              'user_id',
+              'createdAt',
+              'updatedAt',
+            ],
+            include: [
+              {
+                model: models.User,
+                attributes: [
+                  'firstName',
+                  'lastName',
+                  'profilePicture',
+                  'isAdmin',
+                  'createdAt',
+                  'updatedAt',
+                  'lastConnexion',
+                ],
+                where: {
+                  id: { [Op.col]: 'Post.user_id' },
+                },
+              },
+              {
+                model: models.Comment,
                 attributes: [
                   'id',
                   'content',
-                  'attachment',
-                  'nbOfLikes',
                   'user_id',
+                  'post_id',
                   'createdAt',
                   'updatedAt',
                 ],
-                include: [
-                  {
-                    model: models.User,
-                    attributes: [
-                      'firstName',
-                      'lastName',
-                      'profilePicture',
-                      'isAdmin',
-                      'createdAt',
-                      'updatedAt',
-                      'lastConnexion',
-                    ],
-                    where: {
-                      id: { [Op.col]: 'Post.user_id' },
-                    },
-                  },
-                  {
-                    model: models.Comment,
-                    attributes: [
-                      'id',
-                      'content',
-                      'user_id',
-                      'post_id',
-                      'createdAt',
-                      'updatedAt',
-                    ],
-                    where: {
-                      post_id: { [Op.col]: 'Post.id' },
-                    },
-                    include: {
-                      model: models.User,
-                      attributes: [
-                        'firstName',
-                        'lastName',
-                        'profilePicture',
-                        'isAdmin',
-                        'createdAt',
-                        'updatedAt',
-                        'lastConnexion',
-                      ],
-                    },
-                    required: false,
-                  },
-                ],
-                order: [['createdAt', 'DESC']],
-              })
-                .then((posts) => {
-                  res.status(200).send(posts);
-                })
-                .catch((error) =>
-                  res.status(500).json({ error: 'A - ' + error })
-                );
+                where: {
+                  post_id: { [Op.col]: 'Post.id' },
+                },
+                include: {
+                  model: models.User,
+                  attributes: [
+                    'firstName',
+                    'lastName',
+                    'profilePicture',
+                    'isAdmin',
+                    'createdAt',
+                    'updatedAt',
+                    'lastConnexion',
+                  ],
+                },
+                required: false,
+              },
+            ],
+            order: [['createdAt', 'DESC']],
+          })
+            .then((data) => {
+              res.status(200).json(data);
             })
-            .catch((error) => res.status(500).json({ error: 'B - ' + error }));
+            .catch((error) => res.status(500).json({ error }));
         })
         .catch((error) => res.status(500).json({ error: 'C - ' + error }));
     })

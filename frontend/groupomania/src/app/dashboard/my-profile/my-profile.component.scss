@@ -231,13 +231,17 @@ $pp-profile-size: 300px;
     font-weight: 500;
     transition: all 200ms;
 
-    &:hover {
+    &:enabled:hover {
       transform: scale(1.1);
     }
 
-    &:active {
+    &:enabled:active {
       background-color: darken($primary-color, 10%);
       transform: scale(1);
+    }
+
+    &:disabled {
+      opacity: 50%;
     }
   }
 

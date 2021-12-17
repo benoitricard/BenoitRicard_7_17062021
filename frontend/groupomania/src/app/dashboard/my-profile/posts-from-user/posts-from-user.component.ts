@@ -9,6 +9,8 @@ import {
   faPaperPlane,
   faTrash,
 } from '@fortawesome/free-solid-svg-icons';
+import { PostClass } from 'src/app/models/post-class.model';
+import { UserClass } from 'src/app/models/user-class.model';
 import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
@@ -33,10 +35,10 @@ export class PostsFromUserComponent implements OnInit {
   faCrown = faCrown;
 
   // Variables
-  posts: [] | any;
-  authLikes: [] | any;
-  userReqId: any;
-  authObject: {} | any;
+  posts: PostClass[] = [];
+  authLikes: any = [];
+  userReqId: number | any;
+  authObject: any = {};
   authId: number | any;
   commentedWithSuccess: boolean = false;
 
@@ -88,8 +90,8 @@ export class PostsFromUserComponent implements OnInit {
         () => {
           this.getPosts();
         },
-        (err) => {
-          console.error(err);
+        () => {
+          window.location.reload();
         }
       );
     }
@@ -111,27 +113,14 @@ export class PostsFromUserComponent implements OnInit {
   // Récupérer les posts
   getPosts() {
     let reqId: number = this.route.snapshot.params.id;
-    if (this.router.url == '/dashboard/my-profile/user') {
-      this.http
-        .get(`http://localhost:3000/api/user/${this.authId}/post`)
-        .subscribe(
-          (res: any) => {
-            this.posts = res;
-          },
-          (err) => {
-            console.error(err);
-          }
-        );
-    } else {
-      this.http.get(`http://localhost:3000/api/user/${reqId}/post`).subscribe(
-        (res: any) => {
-          this.posts = res;
-        },
-        (err) => {
-          console.error(err);
-        }
-      );
-    }
+    this.http.get(`http://localhost:3000/api/user/${reqId}/post`).subscribe(
+      (res: any) => {
+        this.posts = res;
+      },
+      (err) => {
+        console.error(err);
+      }
+    );
   }
 
   // Récupérer les likes de l'user authentifié

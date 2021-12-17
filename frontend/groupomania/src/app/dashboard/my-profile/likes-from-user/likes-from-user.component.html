@@ -8,7 +8,7 @@
 
         <div class="post-header">
 
-            <div class="pp-name" routerLink="../{{like.Post.user_id}}">
+            <div class="pp-name" (click)="goToProfile(like.Post.user_id)">
 
                 <div [ngClass]="{'pp': true, 'admin-pp': like.Post.User.isAdmin}">
                     <img *ngIf="!like.Post.User.profilePicture" src="../../../assets/images/default_pp/default1.png"

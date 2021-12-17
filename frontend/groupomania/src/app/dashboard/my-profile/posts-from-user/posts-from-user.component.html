@@ -10,14 +10,14 @@
 
             <div class="pp-name" (click)="onActivate($event)">
 
-                <div [ngClass]="{'pp': true, 'admin-pp': post.User.isAdmin}">
-                    <img *ngIf="!post.User.profilePicture" src="../../../assets/images/default_pp/default1.png"
+                <div [ngClass]="{'pp': true, 'admin-pp': post?.User?.isAdmin === 1}">
+                    <img *ngIf="!post?.User?.profilePicture" src="../../../assets/images/default_pp/default1.png"
                         alt="default-profile-picture">
-                    <img *ngIf="post.User.profilePicture" src="{{ post.User.profilePicture }}" alt="profile-picture">
+                    <img *ngIf="post?.User?.profilePicture" src="{{ post.User.profilePicture }}" alt="profile-picture">
                 </div>
 
                 <div class="name">
-                    <p>{{post.User.firstName}}<br><span>{{post.User.lastName}}</span></p>
+                    <p>{{post?.User?.firstName}}<br><span>{{post?.User?.lastName}}</span></p>
                 </div>
 
             </div>
@@ -67,7 +67,7 @@
                             <fa-icon [icon]="faComment"></fa-icon>
                         </button>
 
-                        <p>{{post.Comments.length}}</p>
+                        <p>{{post?.Comments?.length}}</p>
 
                     </div>
 

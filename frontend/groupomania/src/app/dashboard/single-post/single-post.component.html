@@ -18,7 +18,7 @@
 
                         <div class="pp-name" routerLink="../../profile/{{post.user_id}}">
 
-                            <div [ngClass]="{'pp': true, 'admin-pp': post.User.isAdmin}">
+                            <div [ngClass]="{'pp': true, 'admin-pp': post.User.isAdmin === 1}">
                                 <img *ngIf="!post.User.profilePicture"
                                     src="../../../assets/images/default_pp/default1.png" alt="default-profile-picture">
                                 <img *ngIf="post.User.profilePicture" src="{{ post.User.profilePicture }}"

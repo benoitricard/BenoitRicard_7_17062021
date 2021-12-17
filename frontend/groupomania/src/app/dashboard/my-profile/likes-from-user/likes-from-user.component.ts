@@ -33,9 +33,9 @@ export class LikesFromUserComponent implements OnInit {
   faCrown = faCrown;
 
   // Variables
-  authLikes: [] | any;
-  profileLikes: [] | any;
-  authObject: {} | any;
+  authLikes: any = [{ User: {} }];
+  profileLikes: any = [];
+  authObject: any = {};
   authId: number | any;
   commentedWithSuccess: boolean = false;
 
@@ -75,8 +75,8 @@ export class LikesFromUserComponent implements OnInit {
         () => {
           this.getPosts();
         },
-        (err) => {
-          console.error(err);
+        () => {
+          window.location.reload();
         }
       );
     }
@@ -120,6 +120,22 @@ export class LikesFromUserComponent implements OnInit {
           console.error(err);
         }
       );
+  }
+
+  goToProfile(postUserId: number) {
+    if (postUserId === this.authId) {
+      let scrollToTop = window.setInterval(() => {
+        let pos = window.pageYOffset;
+        if (pos > 0) {
+          window.scrollTo(0, pos - 20); // how far to scroll on each step
+        } else {
+          window.clearInterval(scrollToTop);
+        }
+      }, 5);
+    } else {
+      window.scroll(0, 0);
+      this.router.navigate([`dashboard/profile/${postUserId}`]);
+    }
   }
 
   ngOnInit(): void {

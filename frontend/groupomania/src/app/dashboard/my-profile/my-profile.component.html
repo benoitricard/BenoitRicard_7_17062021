@@ -74,9 +74,9 @@
 
             <div class="profile-btns">
                 <button [ngClass]="{'profile-btn': true, 'profile-btn-active': whichOne == 'posts'}"
-                    (click)="whichOne = 'posts'">Publications</button>
+                    (click)="whichOne = 'posts'" [disabled]="postsBtnDisabled">Publications</button>
                 <button [ngClass]="{'profile-btn': true, 'profile-btn-active': whichOne == 'likes'}"
-                    (click)="whichOne = 'likes'">Likes</button>
+                    (click)="whichOne = 'likes'" [disabled]="likesBtnDisabled">Likes</button>
             </div>
 
             <app-posts-from-user *ngIf="whichOne == 'posts'"></app-posts-from-user>

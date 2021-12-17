@@ -22,7 +22,6 @@ import { AccessDeniedComponent } from './access-denied/access-denied.component';
 import { FileUploadService } from './services/file-upload.service';
 import { SinglePostComponent } from './dashboard/single-post/single-post.component';
 import { SingleUserComponent } from './dashboard/single-user/single-user.component';
-import { MyProfileComponent } from './dashboard/my-profile/my-profile.component';
 import { UserListComponent } from './dashboard/user-list/user-list.component';
 import { ModifyPostComponent } from './dashboard/modify-post/modify-post.component';
 import { SingleCommentComponent } from './dashboard/single-comment/single-comment.component';
@@ -31,6 +30,7 @@ import { PostsFromUserComponent } from './dashboard/my-profile/posts-from-user/p
 import { LikesFromUserComponent } from './dashboard/my-profile/likes-from-user/likes-from-user.component';
 import { UserService } from './services/user.service';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { MyProfileComponent } from './dashboard/my-profile/my-profile.component';
 
 @NgModule({
   declarations: [

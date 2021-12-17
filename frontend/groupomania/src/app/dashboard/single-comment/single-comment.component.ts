@@ -20,8 +20,8 @@ export class SingleCommentComponent implements OnInit {
 
   // Variables
   authId: number | any; // ID de l'user authentifié
-  authObject: {} | any; // Infos de l'user authentifié
-  comment: {} | any;
+  authObject: any = {}; // Infos de l'user authentifié
+  comment: any = { User: [] };
 
   // Fonctions
   // Update du commentaire
