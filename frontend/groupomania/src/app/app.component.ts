@@ -31,7 +31,7 @@ export class AppComponent implements OnInit {
 
   // Variables et constantes //
   // ID de l'user actuellement connecté
-  userIdConnected: number | any = 0;
+  authId: number | any = 0;
 
   // Bouton 'se déconnecter' de la navbar
   onLogOut() {
@@ -96,9 +96,7 @@ export class AppComponent implements OnInit {
       return 'posts';
     } else if (this.router.url == '/dashboard/users') {
       return 'users';
-    } else if (
-      this.router.url == `/dashboard/profile/${this.userIdConnected}`
-    ) {
+    } else if (this.router.url == `/dashboard/profile/${this.authId}`) {
       return 'my-profile';
     } else {
       return null;
@@ -106,9 +104,6 @@ export class AppComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    // Actualisation de l'ID de l'user connecté, toutes les secondes, pour éviter les bugs
-    setInterval(() => {
-      this.userIdConnected = this.authService.getUserIdConnected();
-    }, 1000);
+    this.authId = this.authService.getUserIdConnected();
   }
 }

@@ -1,0 +1,3 @@
+Pour lancer le projet:
+- npm install, puis ng serve dans le dossier frontend
+- npm install, puis npm start OU nodemon server dans le dossier backend

@@ -1,3 +1,5 @@
+import { PostClass } from './post-class.model';
+
 export class UserClass {
   public id: number;
   public firstName: string;
@@ -12,6 +14,7 @@ export class UserClass {
   public updatedAt: Date;
   public lastConnexion: Date;
   public isAdmin: number;
+  public Post: PostClass[];
 
   constructor(
     id: number,
@@ -26,7 +29,8 @@ export class UserClass {
     createdAt: Date,
     updatedAt: Date,
     lastConnexion: Date,
-    isAdmin: number
+    isAdmin: number,
+    Post: PostClass[]
   ) {
     this.id = id;
     this.firstName = firstName;
@@ -41,5 +45,6 @@ export class UserClass {
     this.updatedAt = updatedAt;
     this.lastConnexion = lastConnexion;
     this.isAdmin = isAdmin;
+    this.Post = Post;
   }
 }

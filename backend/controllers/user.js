@@ -244,7 +244,7 @@ exports.getOneUser = (req, res) => {
 };
 
 // Obtention de tous les users
-exports.getAllUsersRecentsCreation = (req, res) => {
+exports.getAllUsers = (req, res) => {
   const token = req.headers.authorization.split(' ')[1];
   const decodedToken = jwt.verify(token, secretToken);
 
@@ -272,120 +272,6 @@ exports.getAllUsersRecentsCreation = (req, res) => {
           'lastConnexion',
         ],
         order: [['createdAt', 'DESC']],
-      })
-        .then((users) => {
-          res.status(200).send(users);
-        })
-        .catch((error) => res.status(400).json({ error: 'A - ' + error }));
-    });
-  });
-};
-
-// Obtention de tous les users
-exports.getAllUsersOldsCreation = (req, res) => {
-  const token = req.headers.authorization.split(' ')[1];
-  const decodedToken = jwt.verify(token, secretToken);
-
-  models.User.findOne({ where: { id: decodedToken.userId } }).then((user) => {
-    if (!user) {
-      return res.status(404).json({ error: 'TOKEN' });
-    }
-    models.User.count().then((nbOfUsers) => {
-      if (nbOfUsers === 0) {
-        return res.status(404).json({ error: 'USER NOT FOUND' });
-      }
-      models.User.findAll({
-        attributes: [
-          'id',
-          'email',
-          'firstName',
-          'lastName',
-          'profilePicture',
-          'biography',
-          'jobTitle',
-          'birthday',
-          'createdAt',
-          'updatedAt',
-          'isAdmin',
-          'lastConnexion',
-        ],
-        order: [['createdAt', 'ASC']],
-      })
-        .then((users) => {
-          res.status(200).send(users);
-        })
-        .catch((error) => res.status(400).json({ error: 'A - ' + error }));
-    });
-  });
-};
-
-// Obtention de tous les users
-exports.getAllUsersRecentsConnexion = (req, res) => {
-  const token = req.headers.authorization.split(' ')[1];
-  const decodedToken = jwt.verify(token, secretToken);
-
-  models.User.findOne({ where: { id: decodedToken.userId } }).then((user) => {
-    if (!user) {
-      return res.status(404).json({ error: 'TOKEN' });
-    }
-    models.User.count().then((nbOfUsers) => {
-      if (nbOfUsers === 0) {
-        return res.status(404).json({ error: 'USER NOT FOUND' });
-      }
-      models.User.findAll({
-        attributes: [
-          'id',
-          'email',
-          'firstName',
-          'lastName',
-          'profilePicture',
-          'biography',
-          'jobTitle',
-          'birthday',
-          'createdAt',
-          'updatedAt',
-          'isAdmin',
-          'lastConnexion',
-        ],
-        order: [['lastConnexion', 'DESC']],
-      })
-        .then((users) => {
-          res.status(200).send(users);
-        })
-        .catch((error) => res.status(400).json({ error: 'A - ' + error }));
-    });
-  });
-};
-
-// Obtention de tous les users
-exports.getAllUsersOldsConnexion = (req, res) => {
-  const token = req.headers.authorization.split(' ')[1];
-  const decodedToken = jwt.verify(token, secretToken);
-
-  models.User.findOne({ where: { id: decodedToken.userId } }).then((user) => {
-    if (!user) {
-      return res.status(404).json({ error: 'TOKEN' });
-    }
-    models.User.count().then((nbOfUsers) => {
-      if (nbOfUsers === 0) {
-        return res.status(404).json({ error: 'USER NOT FOUND' });
-      }
-      models.User.findAll({
-        attributes: [
-          'id',
-          'email',
-          'firstName',
-          'lastName',
-          'profilePicture',
-          'biography',
-          'jobTitle',
-          'birthday',
-          'createdAt',
-          'updatedAt',
-          'isAdmin',
-          'lastConnexion',
-        ],
-        order: [['lastConnexion', 'ASC']],
       })
         .then((users) => {
           res.status(200).send(users);

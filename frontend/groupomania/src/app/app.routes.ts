@@ -30,19 +30,9 @@ export const appRoutes: Routes = [
   },
   // Routes User
   {
-    path: 'dashboard/my-profile/user',
-    canActivate: [AuthGuard],
-    component: MyProfileComponent,
-  },
-  {
     path: 'dashboard/profile/:id',
     canActivate: [AuthGuard],
     component: MyProfileComponent,
-  },
-  {
-    path: 'dashboard/my-profile/user/modify',
-    canActivate: [AuthGuard],
-    component: SingleUserComponent,
   },
   {
     path: 'dashboard/profile/:id/modify',

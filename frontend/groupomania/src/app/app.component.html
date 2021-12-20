@@ -13,7 +13,7 @@
         <button [ngClass]="{'nav-btn': true, 'nav-btn-active': whichPath() == 'users'}"
             routerLink="dashboard/users">Utilisateurs</button>
         <button [ngClass]="{'nav-btn': true, 'nav-btn-active': whichPath() == 'my-profile'}"
-            routerLink="dashboard/profile/{{userIdConnected}}">Mon
+            routerLink="dashboard/profile/{{authId}}">Mon
             profil</button>
         <button [ngClass]="{'nav-btn-signout': true}" (click)="onLogOut()">
             <fa-icon [icon]="faSignOutAlt"></fa-icon>

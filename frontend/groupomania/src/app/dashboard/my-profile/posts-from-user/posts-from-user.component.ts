@@ -10,7 +10,6 @@ import {
   faTrash,
 } from '@fortawesome/free-solid-svg-icons';
 import { PostClass } from 'src/app/models/post-class.model';
-import { UserClass } from 'src/app/models/user-class.model';
 import { AuthService } from 'src/app/services/auth.service';
 
 @Component({

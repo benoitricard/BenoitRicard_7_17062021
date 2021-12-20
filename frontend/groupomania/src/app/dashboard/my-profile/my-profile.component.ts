@@ -9,6 +9,8 @@ import {
   faTrash,
   faCrown,
 } from '@fortawesome/free-solid-svg-icons';
+import { Observable } from 'rxjs';
+import { UserClass } from 'src/app/models/user-class.model';
 import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
